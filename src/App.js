@@ -6,11 +6,12 @@ function App() {
   const [value, setValue] = useState('');
   useEffect(() => {
     console.log(value);
-  }, []);
+  }, [value]);
   return (
     <div>
       <p>
-        qwe <code> asd </code>
+        qwe
+        <code />
       </p>
     </div>
   );
