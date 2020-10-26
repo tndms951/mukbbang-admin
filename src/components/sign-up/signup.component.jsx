@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-// import { onlyNumber } from '../../shared/common';
-
 import './signup.style.css';
 
 function Signup() {
@@ -35,12 +33,6 @@ function Signup() {
     } else {
       setValidPassword('');
     }
-
-    // if (!pattern1.test(str) || !pattern2.test(str) || !pattern3.test(str) || str.length < 8) {
-    //   alert('비밀번호는 8자리 이상 문자, 숫자, 특수문자로 구성하여야 합니다.');
-    //   return false;
-    // }
-    // return true;
   };
 
   // 이메일 형식 체크
@@ -79,22 +71,10 @@ function Signup() {
     });
   };
 
-  // const onReset = () => {
-  //   setValue({
-  //     name: '',
-  //     email: '',
-  //     password: '',
-  //     checkpassword: '',
-  //     isChecked: false,
-  //   });
-  // };
-
   // 폼의 내용 변경시 사용되는 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(value);
-
-    // onReset();
   };
 
   // 토글 버튼
@@ -134,17 +114,7 @@ function Signup() {
   };
 
   const onClick = () => {
-    // console.log(e.target.value);
-
-    // 인풋값 확인
     warning();
-
-    // 비번, 비번확인 확인
-    // if (value.password === value.checkpassword) {
-    //   alert('일치합니다.');
-    // } else {
-    //   alert('불일치합니다.');
-    // }
   };
 
   return (
@@ -189,7 +159,6 @@ function Signup() {
                     placeholder="Password"
                     value={password}
                     onChange={handleChange}
-                    // ckpassword={chkPWpattern}
                   />
                   {/* 비번 */}
                   <span toggle="#password" className="zmdi zmdi-eye field-icon toggle-password" />
@@ -212,7 +181,7 @@ function Signup() {
                   </div>
                   {/* 비번확인 */}
                 </div>
-                <div className="form-group">
+                <div className="form-group check">
                   <input
                     type="checkbox"
                     name="agree-term"
@@ -224,9 +193,6 @@ function Signup() {
                   />
                   {/* 체크박스 */}
                   <label htmlFor="agree-term" className="label-agree-term">
-                    <span>
-                      <span />
-                    </span>
                     I agree all statements in{' '}
                     <a href="/" className="term-service">
                       Terms of service
