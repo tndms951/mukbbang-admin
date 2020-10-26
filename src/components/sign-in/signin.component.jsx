@@ -110,7 +110,7 @@ function Signin() {
                   data-validate="Username is required"
                 >
                   <input
-                    className="input100"
+                    className="input100 id-input"
                     type="text"
                     name="valueid"
                     onChange={onChange}
@@ -130,7 +130,7 @@ function Signin() {
                     <i className="fa fa-eye" />
                   </span>
                   <input
-                    className="input100"
+                    className="input100 id-input"
                     type="password"
                     name="valuepass"
                     onChange={passwordChange}
@@ -142,9 +142,9 @@ function Signin() {
                 {/* 체크박스 */}
                 <div className="flex-sb-m w-full p-b-48">
                   <div className="contact100-form-checkbox01">
-                    <label className="label-checkbox100" htmlFor="ckb1">
+                    <label className="label-checkbox100 label" htmlFor="ckb1">
                       <input
-                        className="input-checkbox100"
+                        className="input-checkbox100 id-input"
                         id="ckb1"
                         type="checkbox"
                         name="remember-me"

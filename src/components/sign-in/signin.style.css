@@ -14,27 +14,26 @@
 }
 
 /*---------------------------------------------*/
-input {
+.id-input {
 	outline: none;
 	border: none;
 }
 
- input:focus {
+ .id-input:focus {
   border-color: transparent !important;
 }
 
-input:focus::-webkit-input-placeholder { color:transparent; }
-input:focus:-moz-placeholder { color:transparent; }
-input:focus::-moz-placeholder { color:transparent; }
-input:focus:-ms-input-placeholder { color:transparent; }
-input::-webkit-input-placeholder { color: #999999;}
-input:-moz-placeholder { color: #999999;}
-input::-moz-placeholder { color: #999999;}
-input:-ms-input-placeholder { color: #999999;}
+.id-input:focus::-webkit-input-placeholder { color:transparent; }
+.id-input:focus:-moz-placeholder { color:transparent; }
+.id-input:focus::-moz-placeholder { color:transparent; }
+.id-input:focus:-ms-input-placeholder { color:transparent; }
+.id-input::-webkit-input-placeholder { color: #999999;}
+.id-input:-moz-placeholder { color: #999999;}
+.id-input::-moz-placeholder { color: #999999;}
+.id-input:-ms-input-placeholder { color: #999999;}
 
 
-
-label {
+.label {
   display: block;
   margin: 0;
 }
@@ -51,7 +50,6 @@ button:hover {
 }
 
 
-
 /*//////////////////////////////////////////////////////////////////
 [ Utility ]*/
 .txt1 {
@@ -65,7 +63,6 @@ button:hover {
 
 /*//////////////////////////////////////////////////////////////////
 [ login ]*/
-
 .limiter {
   width: 100%;
   margin: 0 auto;
@@ -99,7 +96,6 @@ button:hover {
 
 /*==================================================================
 [ Form ]*/
-
 .login100-form-title {
   font-family: Raleway-Medium;
   font-size: 30px;
@@ -117,7 +113,6 @@ button:hover {
 
 /*------------------------------------------------------------------
 [ Input ]*/
-
 .wrap-input100 {
   width: 100%;
   position: relative;
@@ -142,9 +137,6 @@ button:hover {
 }
 /*------------------------------------------------------------------
 [ Focus Input ]*/
-
-
-
 .idwarning {
   font-size: 12px;
   color: red;
@@ -153,7 +145,6 @@ button:hover {
 
 /*---------------------------------------------*/
 /* password 미리보기 눈 */
-
 .btn-show-pass {
   font-size: 15px;
   color: #999999;
@@ -186,7 +177,6 @@ button:hover {
 
 /*==================================================================
 [ Restyle Checkbox ]*/
-
 .input-checkbox100 {
   display: none;
 }
