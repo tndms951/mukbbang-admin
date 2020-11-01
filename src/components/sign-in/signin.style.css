@@ -286,7 +286,12 @@ button:hover {
   transition: all 0.4s;
 }
 
-.login100-form-btn:hover {
+.login100-form-btn:disabled {
+  background-color: rgba(0, 0, 0, 0.7);
+  cursor: no-drop;
+}
+
+.login100-form-btn:hover:enabled {
   background-image: linear-gradient(to left, #74ebd5, #9face6);
   color: #ffffff;
 }

@@ -3,95 +3,61 @@ import './signin.style.css';
 
 function Signin() {
   const [inputs, setInputs] = useState({
-    valueid: '',
-    valuepass: '',
-    remenber: false,
+    email: '',
+    password: '',
+    remember: false,
   });
 
-  const [textId, setTextId] = useState('');
-  const [textPssword, setTextPassword] = useState('');
+  const [errorMessageEmail, setErrorMessageEmail] = useState('');
+  const [submitStatus, setSubmitStatus] = useState(false);
 
-  const { valueid, valuepass, remenber } = inputs;
+  const { email, password, remember } = inputs;
 
   // form
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(inputs);
-  };
-
-  // 비밀번호 형식 안맞을때
-  const exception = (str) => {
-    const pattern1 = /[0-9]/; // 숫자
-    const pattern2 = /[a-zA-Z]/; // 문자
-    const pattern3 = /[~!@#$%^&*()_+|<>?:{}]/; // 특수문자
-
-    if (!pattern1.test(str)) {
-      setTextPassword('숫자를 포함시켜주세요');
-    } else if (!pattern2.test(str)) {
-      setTextPassword('문자를 포함시켜주세요');
-    } else if (!pattern3.test(str)) {
-      setTextPassword('특수문자를 포함시켜주세요');
-    } else if (str.length < 8) {
-      setTextPassword('8자 이상으로 해주세요');
-    } else {
-      setTextPassword('');
-    }
-  };
-
-  // 비밀번호 이벤트
-  const passwordChange = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
-    });
-
-    if (e.target.name === 'valuepass') {
-      exception(e.target.value);
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      if (!email) {
+        alert('이메일을 입력해주세요.');
+      } else if (errorMessageEmail) {
+        alert('이메일을 형식을 맞춰주세요.');
+      } else if (!password) {
+        alert('비밀번호를 입력해주세요.');
+      } else {
+        setSubmitStatus(true);
+      }
+    } catch (err) {
+      if (err && err.response) {
+        const { data } = err.response;
+        const { message } = data;
+        alert(message);
+      }
+    } finally {
+      setSubmitStatus(false);
     }
   };
 
   // 아이디(이메일) 형식 안맞을때
   const isEmail = (asValue) => {
+    // eslint-disable-next-line no-useless-escape
     const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{3}$/i;
 
     if (!regExp.test(asValue)) {
-      setTextId('이메일 형식이 맞지 않습니다.');
-    } else {
-      setTextId('');
+      setErrorMessageEmail('이메일 형식이 맞지 않습니다.');
+      return;
     }
+    setErrorMessageEmail('');
   };
 
   // 아이디 이벤트
-  const onChange = (e) => {
-    setInputs({
-      ...inputs,
-      [e.target.name]: e.target.value,
-    });
-
-    if (e.target.name === 'valueid') {
+  const handleChange = (e) => {
+    if (e.target.name === 'email') {
       isEmail(e.target.value);
     }
-  };
-
-  // 토글버튼
-  const rememberChange = () => {
     setInputs({
       ...inputs,
-      remenber: !remenber,
+      [e.target.name]: e.target.name === 'remember' ? !remember : e.target.value,
     });
-  };
-
-  // alert창 뜨는거
-  const onClick = (e) => {
-    if (valueid === valuepass) {
-      alert('아이디와 비밀번호를 입력해주세요.');
-    } else if (!valueid) {
-      alert('아이디를 입력해주세요.');
-    } else if (!valuepass) {
-      alert('비밀번호를 입력해주세요.');
-    } else {
-      alert('로그인되었습니다.');
-    }
   };
 
   return (
@@ -104,7 +70,7 @@ function Signin() {
                 <span className="login100-form-title p-b-32">Login</span>
 
                 {/* 아이디 */}
-                <span className="txt1 p-b-11">ID</span>
+                <span className="txt1 p-b-11">EMAIL</span>
                 <div
                   className="wrap-input100 validate-input m-b-36"
                   data-validate="Username is required"
@@ -112,13 +78,15 @@ function Signin() {
                   <input
                     className="input100 id-input"
                     type="text"
-                    name="valueid"
-                    onChange={onChange}
-                    value={valueid}
+                    name="email"
+                    onChange={handleChange}
+                    value={email}
                   />
                   <span className="focus-input100" />
                 </div>
-                <div className="idwarning">{textId && <div>{textId}</div>}</div>
+                <div className="idwarning">
+                  {errorMessageEmail && <div>{errorMessageEmail}</div>}
+                </div>
 
                 {/* 비밀번호 */}
                 <span className="txt1 p-b-11">Password</span>
@@ -132,13 +100,11 @@ function Signin() {
                   <input
                     className="input100 id-input"
                     type="password"
-                    name="valuepass"
-                    onChange={passwordChange}
-                    value={valuepass}
+                    name="password"
+                    onChange={handleChange}
+                    value={password}
                   />
                 </div>
-                <div className="idwarning">{textPssword && <div>{textPssword} </div>}</div>
-
                 {/* 체크박스 */}
                 <div className="flex-sb-m w-full p-b-48">
                   <div className="contact100-form-checkbox01">
@@ -147,9 +113,9 @@ function Signin() {
                         className="input-checkbox100 id-input"
                         id="ckb1"
                         type="checkbox"
-                        name="remember-me"
-                        value={remenber}
-                        onChange={rememberChange}
+                        name="remember"
+                        onChange={handleChange}
+                        checked={!!remember}
                       />
                     </label>
                     Remember me
@@ -158,7 +124,7 @@ function Signin() {
                 </div>
 
                 <div className="container-login100-form-btn">
-                  <button type="submit" className="login100-form-btn" onClick={onClick}>
+                  <button type="submit" className="login100-form-btn" disabled={submitStatus}>
                     Login
                   </button>
                 </div>
