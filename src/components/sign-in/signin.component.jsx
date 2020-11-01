@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './signin.style.css';
+import { isEmailValid } from '../utils/common';
 
 function Signin() {
   const [inputs, setInputs] = useState({
@@ -39,10 +40,7 @@ function Signin() {
 
   // 아이디(이메일) 형식 안맞을때
   const isEmail = (asValue) => {
-    // eslint-disable-next-line no-useless-escape
-    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{3}$/i;
-
-    if (!regExp.test(asValue)) {
+    if (isEmailValid(asValue)) {
       setErrorMessageEmail('이메일 형식이 맞지 않습니다.');
       return;
     }

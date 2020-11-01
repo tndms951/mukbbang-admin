@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './signup.style.css';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { isEmailValid } from '../utils/common';
 
 function Signup() {
   const [value, setValue] = useState({
@@ -13,6 +16,14 @@ function Signup() {
   const [validEmail, setValidEmail] = useState('');
   const [validPassword, setValidPassword] = useState('');
   const [validRePassword, setValidRePassword] = useState('');
+
+  const valueRef = {
+    nameRef: useRef(null),
+    emailRef: useRef(null),
+    passwordRef: useRef(null),
+    checkpasswordRef: useRef(null),
+    isCheckedRef: useRef(null),
+  };
 
   const { name, email, password, checkpassword, isChecked } = value;
 
@@ -37,9 +48,7 @@ function Signup() {
 
   // 이메일 형식 체크
   const chkEmailpattern = (str) => {
-    const regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{3,3}$/i;
-
-    if (!regExp.test(str)) {
+    if (isEmailValid(str)) {
       setValidEmail('이메일 형식에 맞게 작성해 주세요');
     } else {
       setValidEmail('');
@@ -56,7 +65,6 @@ function Signup() {
   };
 
   const handleChange = (e) => {
-    // console.log(e.target);
     if (e.target.name === 'password') {
       chkPWpattern(e.target.value);
     } else if (e.target.name === 'checkpassword') {
@@ -67,54 +75,65 @@ function Signup() {
 
     setValue({
       ...value,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.name === 'isChecked' ? !isChecked : e.target.value,
     });
+  };
+
+  // axios API
+  const onSignup = async () => {
+    try {
+      const signupObject = {
+        name: value.name,
+        email: value.email,
+        password: value.password,
+        isChecked: value.isChecked,
+        type: 'bread',
+      };
+      const { data } = await axios.post('http://3.35.109.159:3000/admin/signup', signupObject);
+      // console.log(signupObject.type);
+      console.log(data);
+
+      // setValue.name(response.data);
+    } catch (err) {
+      if (err && err.response) {
+        const { data } = err.response;
+        const { message } = data;
+        alert(message);
+      }
+    }
   };
 
   // 폼의 내용 변경시 사용되는 핸들러
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(value);
-  };
-
-  // 토글 버튼
-  const toggleChange = () => {
-    setValue({
-      ...value,
-      isChecked: !isChecked,
-    });
-  };
-
-  // 인풋 값들 경고 창
-  const warning = () => {
+    const { nameRef, emailRef, passwordRef, checkpasswordRef, isCheckedRef } = valueRef;
     if (!name) {
       alert('이름을 입력하세요');
+      nameRef.current.focus();
     } else if (!email) {
       alert('이메일을 입력하세요');
+      emailRef.current.focus();
     } else if (!password) {
       alert('비번을 입력하세요');
-      // if (password === false) {
-      //   chkPWpattern();
-      // }
+      passwordRef.current.focus();
     } else if (!checkpassword) {
       alert('재비번을 입력하세요');
+      checkpasswordRef.current.focus();
+    } else if (validEmail) {
+      alert('이메일 형식을 맞춰주세요.');
+      emailRef.current.focus();
+    } else if (validPassword) {
+      alert('비밀번호 형식을 맞춰주세요.');
+      passwordRef.current.focus();
+    } else if (validRePassword) {
+      alert('비밀번호가 일치하지 않습니다.');
+      checkpasswordRef.current.focus();
     } else if (!isChecked) {
       alert('약관에 동의해 주세요');
-      if (password === checkpassword) {
-        return value;
-      }
-      alert('비번이 불일치합니다.');
-    } else if (password === checkpassword) {
-      alert('회원가입 성공');
-    } else if (password !== checkpassword) {
-      alert('패스워드가 맞지 않습니다');
+      isCheckedRef.current.focus();
     } else {
-      alert('패스워드가 맞지 않습니다');
+      onSignup();
     }
-  };
-
-  const onClick = () => {
-    warning();
   };
 
   return (
@@ -123,7 +142,7 @@ function Signup() {
         <section className="signup">
           <div className="container">
             <div className="signup-content">
-              <form method="POST" id="signup-form" className="signup-form" onSubmit={handleSubmit}>
+              <form id="signup-form" className="signup-form" onSubmit={handleSubmit}>
                 <h2 className="form-title">Create account</h2>
                 <div className="form-group">
                   <input
@@ -134,6 +153,7 @@ function Signup() {
                     placeholder="Your Name"
                     value={name}
                     onChange={handleChange}
+                    ref={valueRef.nameRef}
                   />
                   {/* 이름 */}
                 </div>
@@ -146,19 +166,21 @@ function Signup() {
                     placeholder="Your Email"
                     value={email}
                     onChange={handleChange}
+                    ref={valueRef.emailRef}
                   />
                   <div className="warning-email">{validEmail && <div>{validEmail}</div>}</div>
                   {/* 이메일 */}
                 </div>
                 <div className="form-group">
                   <input
-                    type="text"
+                    type="password"
                     className="form-input"
                     name="password"
                     id="password"
                     placeholder="Password"
                     value={password}
                     onChange={handleChange}
+                    ref={valueRef.passwordRef}
                   />
                   {/* 비번 */}
                   <span toggle="#password" className="zmdi zmdi-eye field-icon toggle-password" />
@@ -175,6 +197,7 @@ function Signup() {
                     placeholder="Repeat your password"
                     value={checkpassword}
                     onChange={handleChange}
+                    ref={valueRef.checkpasswordRef}
                   />
                   <div className="warning-check-password">
                     {validRePassword && <div>{validRePassword}</div>}
@@ -184,12 +207,13 @@ function Signup() {
                 <div className="form-group check">
                   <input
                     type="checkbox"
-                    name="agree-term"
+                    name="isChecked"
                     id="agree-term"
                     className="agree-term"
                     value={isChecked}
-                    onChange={toggleChange}
+                    onChange={handleChange}
                     checked={isChecked}
+                    ref={valueRef.isCheckedRef}
                   />
                   {/* 체크박스 */}
                   <label htmlFor="agree-term" className="label-agree-term">
@@ -206,7 +230,7 @@ function Signup() {
                     id="submit"
                     className="form-submit"
                     value="sign up"
-                    onClick={onClick}
+                    onClick={handleSubmit}
                   >
                     Sign up
                   </button>
@@ -214,9 +238,9 @@ function Signup() {
               </form>
               <p className="loginhere">
                 Have already an account ?{' '}
-                <a href="/" className="loginhere-link">
+                <Link to="/login" className="loginhere-link">
                   Login here
-                </a>
+                </Link>
               </p>
             </div>
           </div>
