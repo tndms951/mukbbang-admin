@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './signin.style.css';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { isEmailValid } from '../utils/common';
 
 function Signin() {
@@ -14,19 +16,42 @@ function Signin() {
 
   const { email, password, remember } = inputs;
 
+  const valueRef = {
+    emailRef: useRef(null),
+    passwordRef: useRef(null),
+  };
+
   // form
   const handleSubmit = async (e) => {
     try {
+      const signinObject = {
+        email,
+        password,
+      };
+
       e.preventDefault();
+
+      const { emailRef, passwordRef } = valueRef;
       if (!email) {
         alert('이메일을 입력해주세요.');
+        emailRef.current.focus();
       } else if (errorMessageEmail) {
         alert('이메일을 형식을 맞춰주세요.');
       } else if (!password) {
         alert('비밀번호를 입력해주세요.');
+        passwordRef.current.focus();
       } else {
         setSubmitStatus(true);
       }
+      const { data } = await axios.post('http://3.35.109.159:3000/admin/signin', signinObject);
+
+      const { token } = data.data;
+
+      const { data: currentData } = await axios.get('http://3.35.109.159:3000/admin/current', {
+        headers: {
+          Authorization: token,
+        },
+      });
     } catch (err) {
       if (err && err.response) {
         const { data } = err.response;
@@ -79,6 +104,7 @@ function Signin() {
                     name="email"
                     onChange={handleChange}
                     value={email}
+                    ref={valueRef.emailRef}
                   />
                   <span className="focus-input100" />
                 </div>
@@ -101,6 +127,7 @@ function Signin() {
                     name="password"
                     onChange={handleChange}
                     value={password}
+                    ref={valueRef.passwordRef}
                   />
                 </div>
                 {/* 체크박스 */}
@@ -117,7 +144,9 @@ function Signin() {
                       />
                     </label>
                     Remember me
-                    <span>회원가입</span>
+                    <span>
+                      <Link to="/signup">회원가입</Link>
+                    </span>
                   </div>
                 </div>
 
