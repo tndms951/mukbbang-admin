@@ -89,11 +89,14 @@ function Signup() {
         isChecked: value.isChecked,
         type: 'bread',
       };
-      const { data } = await axios.post('http://3.35.109.159:3000/admin/signup', signupObject);
-      // console.log(signupObject.type);
-      console.log(data);
 
-      // setValue.name(response.data);
+      const { data } = await axios.post('http://3.35.109.159:3000/admin/signup', signupObject);
+      const { token } = data.data;
+      const { data: currentData } = await axios.get('http://3.35.109.159:3000/admin/current', {
+        headers: {
+          Authorization: token,
+        },
+      });
     } catch (err) {
       if (err && err.response) {
         const { data } = err.response;
