@@ -2,9 +2,11 @@ import React, { useState, useRef } from 'react';
 import './signup.style.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { isEmailValid } from '../utils/common';
+import { setCurrentUser } from '../../redux/user/user.actions';
 
-function Signup() {
+function Signup({ onUserSet, history }) {
   const [value, setValue] = useState({
     name: '',
     email: '',
@@ -97,6 +99,10 @@ function Signup() {
           Authorization: token,
         },
       });
+
+      const { data: userInfo } = currentData;
+      onUserSet(userInfo, token);
+      history.push('/login');
     } catch (err) {
       if (err && err.response) {
         const { data } = err.response;
@@ -253,4 +259,8 @@ function Signup() {
   );
 }
 
-export default Signup;
+const mapToPropsDispatch = (dispatch) => ({
+  onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token)),
+});
+
+export default connect(null, mapToPropsDispatch)(Signup);
