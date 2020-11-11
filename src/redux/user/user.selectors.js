@@ -1,5 +1,5 @@
-import { createSelector } from 'reselect';
+import { createSelector } from 'reselect'; // reselet는 부분만 렌더 (성능 최적화)
 
-const selecUser = {state} => state.user;
+const selectUser = (state) => state.user;
 
-export const selectUserInfo = createSelector([selectUser], (user) => user.userInfo
+export const selectUserInfo = createSelector([selectUser], (user) => user.userInfo);

@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react';
 import './signup.style.css';
-import axios from '../utils/axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import axios, { setAuthorization } from '../utils/axios';
+
 import { isEmailValid } from '../utils/common';
 import { setCurrentUser } from '../../redux/user/user.actions';
-import { setAuthorization } from '../utils/axios';
 
 function Signup({ onUserSet, history }) {
+  console.log(history);
   const [value, setValue] = useState({
     name: '',
     email: '',
@@ -255,6 +257,11 @@ function Signup({ onUserSet, history }) {
     </div>
   );
 }
+
+Signup.propTypes = {
+  onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
+  history: PropTypes.objectOf(PropTypes.object()).isRequired,
+};
 
 const mapToPropsDispatch = (dispatch) => ({
   onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token)),

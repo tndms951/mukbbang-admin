@@ -2,9 +2,13 @@ import React, { useState, useRef } from 'react';
 import './signin.style.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { setAuthorization } from '../utils/axios';
 import { isEmailValid } from '../utils/common';
+import { setCurrentUser } from '../../redux/user/user.actions';
 
-function Signin() {
+function Signin({ onUserSet, history }) {
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -43,15 +47,14 @@ function Signin() {
       } else {
         setSubmitStatus(true);
       }
-      const { data } = await axios.post('http://3.35.109.159:3000/admin/signin', signinObject);
-
+      const { data } = await axios.post('/admin/signin', signinObject);
       const { token } = data.data;
-
-      const { data: currentData } = await axios.get('http://3.35.109.159:3000/admin/current', {
-        headers: {
-          Authorization: token,
-        },
-      });
+      // console.log(token);
+      setAuthorization(token);
+      const { data: currentData } = await axios.get('/admin/current');
+      const { data: userInfo } = currentData;
+      onUserSet(userInfo, token);
+      history.push('/');
     } catch (err) {
       if (err && err.response) {
         const { data } = err.response;
@@ -164,4 +167,13 @@ function Signin() {
   );
 }
 
-export default Signin;
+Signin.propTypes = {
+  onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
+  history: PropTypes.objectOf(PropTypes.object()).isRequired,
+};
+
+const mapToPropsDispatch = (dispatch) => ({
+  onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token)),
+});
+
+export default connect(null, mapToPropsDispatch)(Signin);
