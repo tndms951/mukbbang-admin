@@ -473,7 +473,7 @@ function AdminMain() {
                                 maxWidth: '130px',
                               }}
                             >
-                              <option selected>Last Week</option>
+                              <option selected="selected">Last Week</option>
                               <option value="1">Today</option>
                               <option value="2">Last Month</option>
                               <option value="3">Last Year</option>

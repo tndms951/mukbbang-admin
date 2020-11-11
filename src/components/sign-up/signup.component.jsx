@@ -1,10 +1,11 @@
 import React, { useState, useRef } from 'react';
 import './signup.style.css';
-import axios from 'axios';
+import axios from '../utils/axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { isEmailValid } from '../utils/common';
 import { setCurrentUser } from '../../redux/user/user.actions';
+import { setAuthorization } from '../utils/axios';
 
 function Signup({ onUserSet, history }) {
   const [value, setValue] = useState({
@@ -92,17 +93,13 @@ function Signup({ onUserSet, history }) {
         type: 'bread',
       };
 
-      const { data } = await axios.post('http://3.35.109.159:3000/admin/signup', signupObject);
+      const { data } = await axios.post('/admin/signup', signupObject);
       const { token } = data.data;
-      const { data: currentData } = await axios.get('http://3.35.109.159:3000/admin/current', {
-        headers: {
-          Authorization: token,
-        },
-      });
-
+      setAuthorization(token);
+      const { data: currentData } = await axios.get('/admin/current');
       const { data: userInfo } = currentData;
       onUserSet(userInfo, token);
-      history.push('/login');
+      history.push('/');
     } catch (err) {
       if (err && err.response) {
         const { data } = err.response;

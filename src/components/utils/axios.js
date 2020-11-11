@@ -1,13 +1,11 @@
-import React from 'react';
 import axios from 'axios';
 
-function Axios() {
+const instance = axios.create({
+  baseURL: 'http://3.35.109.159:3000',
+});
 
+export const setAuthorization = (token) => {
+  instance.defaults.headers.common.Authorization = token;
+};
 
-
-  return (
-
-  )
-}
-
-export default Axios;
+export default instance;
