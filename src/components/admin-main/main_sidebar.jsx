@@ -14,7 +14,7 @@ const Main_sidebar = () => {
                     }}
                   >
                     <div className="d-table m-auto">
-                      <img
+                      {/* <img
                         id="main-logo"
                         className="d-inline-block align-top mr-1"
                         style={{
@@ -22,7 +22,7 @@ const Main_sidebar = () => {
                         }}
                         src="images/shards-dashboards-logo.svg"
                         alt="Shards Dashboard"
-                      />
+                      /> */}
                       <span className="d-none d-md-inline ml-1">Shards Dashboard</span>
                     </div>
                   </a>

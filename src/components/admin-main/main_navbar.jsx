@@ -87,7 +87,7 @@ const Main_Navbar = () => {
                       >
                         <img
                           className="user-avatar rounded-circle mr-2"
-                          src="images/avatars/0.jpg"
+                          src="images/0.jpg"
                           alt="User Avatar"
                         />
                         <span className="d-none d-md-inline-block">Sierra Brooks</span>
