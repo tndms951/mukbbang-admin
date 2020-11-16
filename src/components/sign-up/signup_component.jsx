@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import './signup.style.css';
+import './signup_style.css';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -260,7 +260,7 @@ function Signup({ onUserSet, history }) {
 
 Signup.propTypes = {
   onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
-  history: PropTypes.objectOf(PropTypes.object()).isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapToPropsDispatch = (dispatch) => ({

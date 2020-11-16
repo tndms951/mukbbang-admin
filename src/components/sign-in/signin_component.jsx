@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import './signin.style.css';
+import './signin_style.css';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -169,7 +169,7 @@ function Signin({ onUserSet, history }) {
 
 Signin.propTypes = {
   onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
-  history: PropTypes.objectOf(PropTypes.object()).isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 const mapToPropsDispatch = (dispatch) => ({

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 
-import ScrollToTop from './components/shared/scroll-to-top';
-import Signin from './components/sign-in/signin.component';
-import Signup from './components/sign-up/signup.component';
+import ScrollToTop from './components/shared/scroll_to_top';
+import Signin from './components/sign-in/signin_component';
+import Signup from './components/sign-up/signup_component';
 
-import AdminMain from './components/admin/admin-main';
+import AdminMain from './components/admin-main/admin_main';
 
 function App() {
   return (
