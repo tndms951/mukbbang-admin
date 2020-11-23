@@ -1,9 +1,11 @@
+.event_wrap {
+    padding: 30px;
+}
 
 .text {
     font-size: 35px;
     font-weight: bold;
-    margin: 40px 0 0 20px;
-    
+    margin: 30px 0 0 20px;
 }
 
 .form-group {
@@ -43,7 +45,11 @@
     height:40px;
     font-size: 15px;
     margin-bottom: 50px;
-    
+}
+
+.register {
+    margin-bottom: 20px;
+    font-size: 15px;
 }
 
 th {
