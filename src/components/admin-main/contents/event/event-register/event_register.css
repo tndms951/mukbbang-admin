@@ -27,6 +27,7 @@
 
 .container {
     width: 100%;
+    background-color: white;
 }
 
 .text1 {
@@ -35,4 +36,20 @@
 
 .delect_button {
     margin-left: 10px;
+}
+
+.myContainer {
+    display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  flex: 1 1 0px;
+
+}
+
+.myDatePicker {
+    width: 100%;
+}
+
+.input1 {
+  border: 1px solid #007bff;
 }

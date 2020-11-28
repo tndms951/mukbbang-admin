@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 
 import './event_register.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 import ko from 'date-fns/locale/ko';
 registerLocale('ko', ko);
@@ -13,35 +14,11 @@ registerLocale('ko', ko);
 const Resgister = () => {
   // 달력 날짜 변경 시 기준점이 되는 날짜
   const [startDate, setStartDate] = useState(new Date());
-
-  // https://reactdatepicker.com/ 참고
-  const ExampleCustomInput = ({ value, onClick }) => (
-    <button class="example-custom-input" onClick={onClick}>
-      {' '}
-      {value}{' '}
-    </button>
-  );
-
-  // 월/일
-  const getFormattedDate = (date) => {
-    const month = date.toLocaleDateString('ko-KR', { month: 'long' });
-    const day = date.toLocaleDateString('ko-KR', { day: 'numeric' });
-    return `${month.substr(0, month.length - 1)}/${day.substr(0, day.length - 1)}`;
-  };
-
-  // 요일 반환
-  const getDayName = (date) => {
-    return date.toLocaleDateString('ko-KR', { weekday: 'long' }).substr(0, 1);
-  };
-
-  // 날짜 비교시 년 월 일까지만 비교하게끔
-  const createDate = (date) => {
-    return new Date(new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0));
-  };
+  const [endDate, setEndDate] = useState(new Date());
 
   return (
     <>
-      <div className="container">
+      <div className="container event_wrap">
         <form className="form_wrap">
           <div className="form-group row justify-content-start">
             <label
@@ -53,7 +30,7 @@ const Resgister = () => {
             <div className="col-sm-5">
               <input
                 type="email"
-                className="form-control form-control-lg"
+                className="form-control form-control-lg input1"
                 id="colFormLabelLg"
                 placeholder="제목을 입력해주세요"
               />
@@ -71,7 +48,7 @@ const Resgister = () => {
                 aria-describedby="inputGroupFileAddon01"
               />
 
-              <label className="custom-file-label image_label" htmlFor="inputGroupFile01">
+              <label className="custom-file-label image_label input1" htmlFor="inputGroupFile01">
                 이미지를 첨부해주세요
               </label>
             </div>
@@ -93,50 +70,42 @@ const Resgister = () => {
             <div className="col-sm-5">
               <input
                 type="email"
-                className="form-control form-control-lg"
+                className="form-control form-control-lg input1"
                 id="colFormLabelLg"
                 placeholder="링크를 입력해주세요"
               />
             </div>
           </div>
 
-          <div className="form-group row justify-content-start">
+          <div className="row justify-content-start align-items-center">
             <label
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg title"
             >
               <span className="text1">이벤트 날짜</span>
             </label>
-            <div className="col-sm-5">
-              <input
-                type="email"
-                className="form-control form-control-lg"
-                id="colFormLabelLg"
-                placeholder="링크를 입력해주세요"
+            <div className="col-sm-5 myContainer">
+              <DatePicker
+                className="myDatePicker input1"
+                locale="ko" // 달력 한글화
+                selected={startDate} // 날짜 state
+                onChange={(date) => setStartDate(date)} // 날짜 설정 콜백 함수
+                selectsStart
+                startDate={startDate}
+                endDate={endDate}
+              />
+
+              <DatePicker
+                className="myDatePicker input1"
+                selected={endDate}
+                onChange={(date) => setEndDate(date)}
+                selectsEnd
+                startDate={startDate}
+                endDate={endDate}
+                minDate={startDate}
               />
             </div>
           </div>
-
-          <DatePicker
-            locale="ko" // 달력 한글화
-            selected={startDate} // 날짜 state
-            onChange={setStartDate} // 날짜 설정 콜백 함수
-            customInput={<ExampleCustomInput />}
-            minDate={new Date()} // 과거 날짜 disable
-            popperModifiers={{
-              // 모바일 web 환경에서 화면을 벗어나지 않도록 하는 설정
-              preventOverflow: { enabled: true },
-            }}
-            popperPlacement="auto" // 화면 중앙에 팝업이 뜨도록
-            // 토요일, 일요일 색깔 바꾸기 위함
-            dayClassName={(date) =>
-              getDayName(createDate(date)) === '토'
-                ? 'saturday'
-                : getDayName(createDate(date)) === '일'
-                ? 'sunday'
-                : undefined
-            }
-          />
 
           <div className="search nav justify-content-end row">
             <button type="button" className="btn btn-secondary btn-sm col-1">
