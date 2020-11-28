@@ -1,18 +1,15 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import Resgister from './event_register';
 import EventList from '../event_list';
 
-const EventRouter = (props) => {
-  console.log(props);
+const EventRouter = ({ match }) => {
   return (
     <>
-      <Router>
-        <Switch>
-          <Route path="/" component={EventList} />
-          <Route exact path="/register" component={Resgister} />
-        </Switch>
-      </Router>
+      <Switch>
+        <Route exact path={match.path} component={EventList} />
+        <Route path={`${match.path}/event_register`} component={Resgister} />
+      </Switch>
     </>
   );
 };

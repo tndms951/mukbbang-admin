@@ -11,6 +11,7 @@ import BreadList from './contents/bread-list/bread_list';
 import YoutubeList from './contents/youtube/youtube';
 import Notice from './contents/notice/notice_list';
 import Event from './contents/event/event_list';
+import EventRouter from './contents/event/event-register/event_router';
 
 function AdminMain() {
   return (
@@ -88,7 +89,7 @@ function AdminMain() {
               <Route path="/bread_house_list" component={BreadHouseList} />
               <Route path="/bread_list" component={BreadList} />
               <Route path="/youtube_list" component={YoutubeList} />
-              <Route path="/event" component={Event} />
+              <Route path="/event" component={EventRouter} />
               <Route path="/notice" component={Notice} />
               <Footer />
             </main>

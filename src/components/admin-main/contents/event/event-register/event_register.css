@@ -1,0 +1,38 @@
+/* .event_register{
+    margin: 30px;
+    margin-top: 40px;
+}
+.text1 {
+    font-size: bold;
+    margin-right: 20px;
+}
+
+
+.image_label{
+    height: 50px;
+} */
+
+
+
+/* Browse 버튼 */
+/* .custom-file-label::after {
+    height: 50px;
+    line-height: 30px;
+} */
+
+/* .delect_button {
+    width: 100%;
+    text-align: right;
+} */
+
+.container {
+    width: 100%;
+}
+
+.text1 {
+    margin-right: 30px;
+}
+
+.delect_button {
+    margin-left: 10px;
+}
