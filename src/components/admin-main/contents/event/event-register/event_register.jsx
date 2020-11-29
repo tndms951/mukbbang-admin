@@ -27,10 +27,10 @@ const Resgister = () => {
             >
               <span className="text1">이벤트 제목</span>
             </label>
-            <div className="col-sm-5">
+            <div className="col-sm-7">
               <input
                 type="email"
-                className="form-control form-control-lg input1"
+                className="form-control form-control-lg"
                 id="colFormLabelLg"
                 placeholder="제목을 입력해주세요"
               />
@@ -40,7 +40,7 @@ const Resgister = () => {
             <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
               <span className="text1">이벤트 이미지</span>
             </label>
-            <div className="custom-file event_inage_input col-xl-6">
+            <div className="custom-file event_inage_input col-sm-6">
               <input
                 type="file"
                 className="custom-file-input"
@@ -48,13 +48,19 @@ const Resgister = () => {
                 aria-describedby="inputGroupFileAddon01"
               />
 
-              <label className="custom-file-label image_label input1" htmlFor="inputGroupFile01">
+              <label
+                className="custom-file-label image_label  event_image_label rounded"
+                htmlFor="inputGroupFile01"
+              >
                 이미지를 첨부해주세요
               </label>
             </div>
 
             <div className="delect_button col-xl-5 delect_button">
-              <button type="button" className="btn btn-secondary col-sm-2 btn-pull-right">
+              <button
+                type="button"
+                className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded"
+              >
                 삭제
               </button>
             </div>
@@ -67,17 +73,17 @@ const Resgister = () => {
             >
               <span className="text1">이벤트 링크</span>
             </label>
-            <div className="col-sm-5">
+            <div className="col-sm-7">
               <input
                 type="email"
-                className="form-control form-control-lg input1"
+                className="form-control form-control-lg "
                 id="colFormLabelLg"
                 placeholder="링크를 입력해주세요"
               />
             </div>
           </div>
 
-          <div className="row justify-content-start align-items-center">
+          <div className="form-group row justify-content-start align-items-center">
             <label
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg title"
@@ -86,7 +92,7 @@ const Resgister = () => {
             </label>
             <div className="col-sm-5 myContainer">
               <DatePicker
-                className="myDatePicker input1"
+                className="form-control input2"
                 locale="ko" // 달력 한글화
                 selected={startDate} // 날짜 state
                 onChange={(date) => setStartDate(date)} // 날짜 설정 콜백 함수
@@ -94,15 +100,32 @@ const Resgister = () => {
                 startDate={startDate}
                 endDate={endDate}
               />
-
+              <span className="wave h5">~</span>
               <DatePicker
-                className="myDatePicker input1"
+                className="form-control input2"
                 selected={endDate}
                 onChange={(date) => setEndDate(date)}
                 selectsEnd
                 startDate={startDate}
                 endDate={endDate}
                 minDate={startDate}
+              />
+            </div>
+          </div>
+
+          <div className="form-group row justify-content-start">
+            <label
+              htmlFor="colFormLabelLg"
+              className="col-xs-2 col-form-label col-form-label-lg title"
+            >
+              <span className="text1">이벤트 내용</span>
+            </label>
+            <div className="col-sm-7">
+              <input
+                type="email"
+                className="form-control form-control-lg evnet_content"
+                id="colFormLabelLg"
+                placeholder="내용을 입력해주세요"
               />
             </div>
           </div>

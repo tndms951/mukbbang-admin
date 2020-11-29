@@ -35,21 +35,34 @@
 }
 
 .delect_button {
-    margin-left: 10px;
+    font-size: 15px;
+    height: 45px;
 }
 
 .myContainer {
     display: flex;
-  flex-wrap: nowrap;
-  flex-direction: row;
-  flex: 1 1 0px;
 
 }
 
-.myDatePicker {
-    width: 100%;
+.input2 {
+    height: 46px;
+    width: 206px;
 }
 
-.input1 {
-  border: 1px solid #007bff;
-}
+.event_image_label {
+    height: calc(2.0625rem + 12px); 
+    padding: .8rem 1rem;
+  }
+  .event_image_label::after {
+    height: calc(2.0625rem + 10px); 
+    padding: .8rem 1rem;
+  }
+
+  .wave {
+    line-height: 40px;
+    margin: 0 10px;
+  }
+
+  .evnet_content {
+       height: 200px;
+  }
