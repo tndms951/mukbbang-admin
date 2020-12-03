@@ -12,7 +12,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       window.localStorage.setItem('token', token);
       return {
         ...state,
-        currentUser: user,
+        currentUser: user, 
         token,
       };
     }

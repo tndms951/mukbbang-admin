@@ -1,8 +1,34 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import axios from '../../../utils/axios';
 import './event_list.css';
 
 const EventList = () => {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const { status, data: eventData } = await axios.get('/admin/event1');
+        console.log(eventData);
+        if (status === 200) {
+          setList(eventData.list);
+        }
+      } catch (err) {
+        if (err && err.response) {
+          // console.log(err.response); response는 콘솔에 찍을 수 없음
+          const { data } = err.response;
+          console.log(err.response);
+          alert(data.message);
+        } else {
+          alert('네트워크가 불안정합니다. 다시 시도해주세요');
+        }
+      }
+    }
+    fetchData();
+  }, []);
+
   return (
     <>
       <div className="event_wrap">
@@ -93,33 +119,19 @@ const EventList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>파리바게트(클릭시 이동)</td>
-                      <td>
-                        <a href="/">www.naver.com(클릭시 새창)</a>
-                      </td>
-                      <td>2020-11-23</td>
-                      <td>2020-12-31</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>투썸</td>
-                      <td>
-                        <a href="/">www.naver.com(클릭시 새창)</a>
-                      </td>
-                      <td>2020-11-23</td>
-                      <td>2020-12-31</td>
-                    </tr>
-                    <tr>
-                      <td>3</td>
-                      <td>등등</td>
-                      <td>
-                        <a href="/">www.naver.com(클릭시 새창)</a>
-                      </td>
-                      <td>2020-11-23</td>
-                      <td>2020-12-31</td>
-                    </tr>
+                    {list.map((eventData) => (
+                      <tr key={`event-list-${eventData.id}`}>
+                        <td>{eventData.id}</td>
+                        <td>{eventData.title}</td>
+                        <td>
+                          <a href={eventData.link} target="_blank" rel="noopener noreferrer">
+                            {eventData.link}
+                          </a>
+                        </td>
+                        <td>{eventData.startAt.substring(0, 10)}</td>
+                        <td>{eventData.endAt.substring(0, 10)}</td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>

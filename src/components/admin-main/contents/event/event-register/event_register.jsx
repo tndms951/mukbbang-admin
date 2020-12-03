@@ -8,10 +8,18 @@ import ko from 'date-fns/locale/ko';
 registerLocale('ko', ko);
 
 /**
- * @author 이벤트(등록하러가기)
+ * @author song-jisu / 이벤트(등록하러가기)
  */
 
 const Resgister = () => {
+  // formData
+  const [formData, setFormData] = useState({
+    title: '',
+    image_url: '',
+    link: '',
+    date: '',
+  });
+
   // 달력 날짜 변경 시 기준점이 되는 날짜
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -43,6 +51,7 @@ const Resgister = () => {
             <div className="custom-file event_inage_input col-sm-6">
               <input
                 type="file"
+                name="file"
                 className="custom-file-input"
                 id="inputGroupFile01"
                 aria-describedby="inputGroupFileAddon01"
@@ -113,7 +122,7 @@ const Resgister = () => {
             </div>
           </div>
 
-          <div className="form-group row justify-content-start">
+          {/* <div className="form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg title"
@@ -128,7 +137,7 @@ const Resgister = () => {
                 placeholder="내용을 입력해주세요"
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="search nav justify-content-end row">
             <button type="button" className="btn btn-secondary btn-sm col-1">
@@ -140,64 +149,6 @@ const Resgister = () => {
           </div>
         </form>
       </div>
-
-      {/* <div className="event_register container">
-        <form className="form_wrap">
-          <div className="form-group row">
-            <label
-              htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title"
-            >
-              <span className="text1">이벤트 제목</span>
-            </label>
-            <div className="col-sm-5">
-              <input
-                type="email"
-                className="form-control form-control-lg"
-                id="colFormLabelLg"
-                placeholder="제목을 입력해주세요"
-              />
-            </div>
-          </div>
-
-          <div className="event_image">
-            <div className="form-group input-group input-group-lg row">
-              <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
-                <span className="text1">이벤트 이미지</span>
-              </label>
-              <div className="custom-file event_inage_input">
-                <input
-                  type="file"
-                  className="custom-file-input form-control"
-                  id="inputGroupFile01"
-                  aria-describedby="inputGroupFileAddon01"
-                />
-
-                <label
-                  className="custom-file-label image_label col-sm-7"
-                  htmlFor="inputGroupFile01"
-                >
-                  이미지를 첨부해주세요
-                </label>
-              </div>
-            </div>
-            <div className="delect_button rouw">
-              <button type="button" className="btn btn-secondary col-sm-2 btn-pull-right">
-                삭제
-              </button>
-            </div>
-          </div>
-
-          <div className="search nav justify-content-end row">
-            <button type="button" className="btn btn-secondary btn-sm col-1">
-              초기화
-            </button>
-            <button type="button" className="btn btn-primary btn-sm col-1">
-              검색
-            </button>
-          </div>
-        </form>
-      </div> */}
     </>
   );
 };
