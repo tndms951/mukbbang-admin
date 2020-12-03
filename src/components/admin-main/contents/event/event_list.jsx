@@ -2,18 +2,23 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from '../../../utils/axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { setCurrentEvent } from '../../../../redux/event/event.actions';
+import { selectEventList } from '../../../../redux/event/event.selectors';
 import './event_list.css';
 
-const EventList = () => {
-  const [list, setList] = useState([]);
+const EventList = ({ eventList, onEventListSet }) => {
+  // const [list, setList] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const { status, data: eventData } = await axios.get('/admin/event1');
+        const { status, data: eventData } = await axios.get('/admin/event');
         console.log(eventData);
         if (status === 200) {
-          setList(eventData.list);
+          onEventListSet(eventData.list);
         }
       } catch (err) {
         if (err && err.response) {
@@ -44,7 +49,7 @@ const EventList = () => {
             </label>
             <div className="col-sm-8">
               <input
-                type="email"
+                type="title"
                 className="form-control form-control-lg"
                 id="colFormLabelLg"
                 placeholder="제목을 입력해주세요"
@@ -119,8 +124,8 @@ const EventList = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {list.map((eventData) => (
-                      <tr key={`event-list-${eventData.id}`}>
+                    {eventList.map((eventData) => (
+                      <tr key={`event-list${eventData.id}`}>
                         <td>{eventData.id}</td>
                         <td>{eventData.title}</td>
                         <td>
@@ -143,4 +148,17 @@ const EventList = () => {
   );
 };
 
-export default EventList;
+EventList.propTypes = {
+  eventList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  onEventListSet: PropTypes.func.isRequired,
+};
+
+const mapToPropsState = createStructuredSelector({
+  eventList: selectEventList,
+});
+
+const mapToPropsDispathch = (dispatch) => ({
+  onEventListSet: (list) => dispatch(setCurrentEvent(list)),
+});
+
+export default connect(mapToPropsState, mapToPropsDispathch)(EventList);
