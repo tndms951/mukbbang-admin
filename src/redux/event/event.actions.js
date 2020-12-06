@@ -5,7 +5,7 @@ import EventListTypes from './event.types';
 export const setCurrentEvent = (list) => ({
   type: EventListTypes.SET_CUTTENT_EVENT,
   payload: {
-      list
+      list,
   },
 })
 
@@ -19,5 +19,6 @@ export const setCurrentEvent = (list) => ({
 //     payload: {
 //         list
 //     },
+    
 //     }
 // }

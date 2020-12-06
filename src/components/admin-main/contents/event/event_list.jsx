@@ -1,10 +1,10 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+
 import { Link } from 'react-router-dom';
-import axios from '../../../utils/axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import axios from '../../../utils/axios';
 import { setCurrentEvent } from '../../../../redux/event/event.actions';
 import { selectEventList } from '../../../../redux/event/event.selectors';
 import './event_list.css';
@@ -43,8 +43,7 @@ const EventList = ({ eventList, onEventListSet }) => {
           <div className="form-group row">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title"
-            >
+              className="col-xs-2 col-form-label col-form-label-lg title">
               <span>제목</span>
             </label>
             <div className="col-sm-8">
@@ -60,8 +59,7 @@ const EventList = ({ eventList, onEventListSet }) => {
           <div className="form-group row">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title"
-            >
+              className="col-xs-2 col-form-label col-form-label-lg title">
               <span>날짜</span>
             </label>
             <div className="col-sm-2">
@@ -149,16 +147,17 @@ const EventList = ({ eventList, onEventListSet }) => {
 };
 
 EventList.propTypes = {
-  eventList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  onEventListSet: PropTypes.func.isRequired,
+  eventList: PropTypes.arrayOf(PropTypes.shape({
+})).isRequired,
+  onEventListSet: PropTypes.func.isRequired
 };
 
-const mapToPropsState = createStructuredSelector({
-  eventList: selectEventList,
+const mapStateToProps = createStructuredSelector({
+  eventList: selectEventList
 });
 
-const mapToPropsDispathch = (dispatch) => ({
-  onEventListSet: (list) => dispatch(setCurrentEvent(list)),
+const mapDispathchToProps = (dispatch) => ({
+  onEventListSet: (list) => dispatch(setCurrentEvent(list))
 });
 
-export default connect(mapToPropsState, mapToPropsDispathch)(EventList);
+export default connect(mapStateToProps, mapDispathchToProps)(EventList);

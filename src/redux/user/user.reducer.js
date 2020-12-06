@@ -2,7 +2,7 @@ import UserActionTypes from './user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
-  token: '',
+  token: ''
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -12,8 +12,8 @@ const userReducer = (state = INITIAL_STATE, action) => {
       window.localStorage.setItem('token', token);
       return {
         ...state,
-        currentUser: user, 
-        token,
+        currentUser: user,
+        token
       };
     }
     default:
