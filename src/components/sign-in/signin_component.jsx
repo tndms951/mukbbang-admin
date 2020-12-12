@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { setAuthorization } from '../utils/axios';
 import { isEmailValid } from '../utils/common';
 import { setCurrentUser } from '../../redux/user/user.actions';
