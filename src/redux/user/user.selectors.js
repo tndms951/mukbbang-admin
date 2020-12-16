@@ -2,4 +2,4 @@ import { createSelector } from 'reselect'; // reselet는 부분만 렌더 (성�
 
 const selectUser = (state) => state.user;
 
-export const selectUserInfo = createSelector([selectUser], (user) => user.userInfo);
+export const selectUserInfo = createSelector([selectUser], (user) => user.currentUser);

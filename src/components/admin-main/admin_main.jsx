@@ -1,16 +1,16 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
-import MainSidebar from './Sidebar/sidebar_main';
-import Header from './Header/header';
-import Footer from '../admin-main/Footer/footer';
+import Footer from './footer/footer';
+import MainSidebar from './sidebar/sidebar_main';
+import Header from './header/header';
 
 import Content from './main_content';
-import BreadHouseList from './Sidebar/bread-house-list/bread_house_list';
-import BreadList from './Sidebar/bread-list/bread_list';
-import YoutubeList from './Sidebar/youtube/youtube';
-import Notice from './Sidebar/notice/notice_list';
-import Event from './Sidebar/event/event_list';
+import BreadHouseList from './contents/bread-house-list/bread_house_list';
+import BreadList from './contents/bread-list/bread_list';
+import YoutubeList from './contents/youtube/youtube';
+import Notice from './contents/notice/notice_router';
+import Event from './contents/event/event_list';
 
 function AdminMain() {
   return (
@@ -40,14 +40,10 @@ function AdminMain() {
             </li>
           </ul>
           <div className="actions mb-4">
-            <div
-              className="mb-2 btn btn-sm btn-primary w-100 d-table mx-auto extra-action"
-            >
+            <div className="mb-2 btn btn-sm btn-primary w-100 d-table mx-auto extra-action">
               <i className="material-icons">cloud</i> Download
             </div>
-            <div
-              className="mb-2 btn btn-sm btn-white w-100 d-table mx-auto extra-action"
-            >
+            <div className="mb-2 btn btn-sm btn-white w-100 d-table mx-auto extra-action">
               <i className="material-icons">book</i> Documentation
             </div>
           </div>
@@ -59,8 +55,7 @@ function AdminMain() {
                   className="github-button"
                   data-icon="octicon-star"
                   data-show-count="true"
-                  aria-label="Star DesignRevision/shards-dashboard on GitHub"
-                >
+                  aria-label="Star DesignRevision/shards-dashboard on GitHub">
                   Star
                 </div>
                 {/* <iframe style="width: 91px; height: 21px;"src="https://yvoschaap.com/producthunt/counter.html#href=https%3A%2F%2Fwww.producthunt.com%2Fr%2Fp%2F112998&layout=wide" width="56" height="65" scrolling="no" frameborder="0" allowtransparency="true"></iframe> --> */}
@@ -85,16 +80,16 @@ function AdminMain() {
         </div>
         <div className="container-fluid">
           <div className="row">
-          <MainSidebar />
+            <MainSidebar />
             <main className="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
               <Header />
-                  <Route path='/' exact component={Content} />
-                  <Route path='/bread_house_list' component={BreadHouseList} />
-                  <Route path='/bread_list' component={BreadList} />
-                  <Route path='/youtube_list' component={YoutubeList} />
-                  <Route path='/event' component={Event} />
-                  <Route path='/notice' component={Notice} />
-            <Footer />
+              <Route exact path="/" component={Content} />
+              <Route path="/bread_house_list" component={BreadHouseList} />
+              <Route path="/bread_list" component={BreadList} />
+              <Route path="/youtube_list" component={YoutubeList} />
+              <Route path="/event" component={Event} />
+              <Route path="/notice" component={Notice} />
+              <Footer />
             </main>
           </div>
         </div>
@@ -114,9 +109,7 @@ function AdminMain() {
           <div className="pp-inner-content">
             <h2>Shards Dashboard Pro</h2>
             <p>A premium & modern Bootstrap 4 admin dashboard template pack.</p>
-            <div className="pp-cta extra-action">
-              Download
-            </div>
+            <div className="pp-cta extra-action">Download</div>
           </div>
         </div>
       </div>
