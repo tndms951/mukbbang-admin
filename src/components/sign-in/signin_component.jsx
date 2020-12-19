@@ -12,7 +12,7 @@ function Signin({ onUserSet, history }) {
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
-    remember: false,
+    remember: false
   });
 
   const [errorMessageEmail, setErrorMessageEmail] = useState('');
@@ -22,7 +22,7 @@ function Signin({ onUserSet, history }) {
 
   const valueRef = {
     emailRef: useRef(null),
-    passwordRef: useRef(null),
+    passwordRef: useRef(null)
   };
 
   // form
@@ -30,7 +30,7 @@ function Signin({ onUserSet, history }) {
     try {
       const signinObject = {
         email,
-        password,
+        password
       };
 
       e.preventDefault();
@@ -82,7 +82,7 @@ function Signin({ onUserSet, history }) {
     }
     setInputs({
       ...inputs,
-      [e.target.name]: e.target.name === 'remember' ? !remember : e.target.value,
+      [e.target.name]: e.target.name === 'remember' ? !remember : e.target.value
     });
   };
 
@@ -99,8 +99,7 @@ function Signin({ onUserSet, history }) {
                 <span className="txt1 p-b-11">EMAIL</span>
                 <div
                   className="wrap-input100 validate-input m-b-36"
-                  data-validate="Username is required"
-                >
+                  data-validate="Username is required">
                   <input
                     className="input100 id-input"
                     type="text"
@@ -119,8 +118,7 @@ function Signin({ onUserSet, history }) {
                 <span className="txt1 p-b-11">Password</span>
                 <div
                   className="wrap-input100 validate-input m-b-12"
-                  data-validate="Password is required"
-                >
+                  data-validate="Password is required">
                   <span className="btn-show-pass">
                     <i className="fa fa-eye" />
                   </span>
@@ -169,11 +167,11 @@ function Signin({ onUserSet, history }) {
 
 Signin.propTypes = {
   onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
-  history: PropTypes.objectOf(PropTypes.object).isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 const mapToPropsDispatch = (dispatch) => ({
-  onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token)),
+  onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token))
 });
 
 export default connect(null, mapToPropsDispatch)(Signin);

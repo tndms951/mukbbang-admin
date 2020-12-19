@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import ko from 'date-fns/locale/ko';
-import DatePicker, { registerLocale } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import qs from 'qs';
+import PropTypes from 'prop-types';
+
 import axios from '../../../../utils/axios';
+import { sweetAlert, errorhandler } from '../../../../utils/common';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -18,9 +19,6 @@ function NoticeRegister({ history, location }) {
     content: '',
     startDate: null
   });
-
-  // 시작 날짜, 끝 날짜
-  // const [startDate, setStartDate] = useState(null);
 
   const [noticeId, setNoticeId] = useState(null);
 
@@ -41,51 +39,41 @@ function NoticeRegister({ history, location }) {
             startDate: new Date(data.startAt)
           });
         }
-        // console.log(noticeData);
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          alert(message);
-        } else {
-          alert('네트워크가 불안정합니다. 다시 시도해 주세요.');
-        }
+        errorhandler(err);
       }
     };
     if (query && query.noticeId) {
       setNoticeId(query.noticeId);
       fetchData();
     }
-  }, []);
+  }, [location.search]);
 
   // 폼 내용 변경시 사용되는 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const registerObject = {
-        title: value.title,
-        startAt: moment(startDate).format('YYYY-MM-DD'),
-        content: value.content
-      };
-      const { status } = noticeId
-        ? await axios.put(`/admin/notice/${noticeId}`, registerObject)
-        : await axios.post('/admin/notice', registerObject);
-      // const { status, data: registerData } = await axios.post('/admin/notice', registerObject);
-      if (status === 201) {
-        // console.log(registerData);
-        history.push(noticeId ? `/notice/${noticeId}` : '/notice');
+      if (!title) {
+        sweetAlert('제목을 입력해주세요.');
+      } else if (!startDate) {
+        sweetAlert('날짜를 입력해주세요.');
+      } else if (!content) {
+        sweetAlert('내용을 입력해주세요.');
+      } else {
+        const registerObject = {
+          title,
+          startAt: moment(startDate).format('YYYY-MM-DD'),
+          content
+        };
+        const { status } = noticeId
+          ? await axios.put(`/admin/notice/${noticeId}`, registerObject)
+          : await axios.post('/admin/notice', registerObject);
+        if (status === 201) {
+          history.push(noticeId ? `/notice/${noticeId}` : '/notice');
+        }
       }
     } catch (err) {
-      console.log('에러');
-      if (err && err.response) {
-        console.log(err.response);
-        const { data } = err.response;
-        const { message } = data;
-        alert(message);
-        console.log(data);
-      } else {
-        alert('네트워크가 불안정합니다. 다시 시도해 주세요.');
-      }
+      errorhandler(err);
     }
   };
 
@@ -99,7 +87,6 @@ function NoticeRegister({ history, location }) {
 
   // 날짜 handlechange
   const handleDate = (date) => {
-    console.log(date);
     setValue({
       ...value,
       startDate: date
@@ -169,5 +156,10 @@ function NoticeRegister({ history, location }) {
     </>
   );
 }
+
+NoticeRegister.propTypes = {
+  location: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
+};
 
 export default NoticeRegister;
