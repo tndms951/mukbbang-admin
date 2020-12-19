@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
+import React, { useState, useRef } from 'react';
+import DatePicker, { registerLocale } from 'react-datepicker';
 import moment from 'moment';
 import axios from '../../../../utils/axios';
+import { Link } from 'react-router-dom';
 
 import './event_register.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -30,6 +31,19 @@ function Resgister({ history }) {
     imageUrl: ''
   });
 
+  // 이미지 삭제 Ref
+  const imageRef = useRef(null);
+
+  // 이미지 삭제버튼
+  const resetInput = () => {
+    const { current } = imageRef;
+    current.value = ''; // files에는 input기록이 남아았어서 직접 삭제를 해줘야 기록이 없어짐 text value는 직접 설정할수있지만 file value는 설정못하기때문
+    setRegisterImage({
+      imageName: '이미지를 첨부해주세요',
+      imageUrl: ''
+    });
+  };
+
   const { title, link } = value;
 
   // 핸들체인지
@@ -56,6 +70,7 @@ function Resgister({ history }) {
       if (status === 200) {
         const { data } = imageData;
         console.log(data);
+        console.log(registerImage.imageUrl);
         setRegisterImage({
           ...registerImage,
           imageName: name,
@@ -90,12 +105,14 @@ function Resgister({ history }) {
       const registerObject = {
         title: value.title,
         link: value.link,
-        imageUrl: registerImage,
+        imageUrl: registerImage.imageUrl,
         startAt: moment(startDate).format('YYYY-MM-DD'),
         endAt: moment(endDate).format('YYYY-MM-DD')
       };
-      console.log(registerObject);
+      console.log(registerImage);
 
+      console.log(registerObject);
+      // return;
       // 제목, 이미지, 링크, 날짜 API
       const { status, data: registerData } = await axios.post('/admin/event', registerObject);
       console.log(registerData);
@@ -119,15 +136,13 @@ function Resgister({ history }) {
       title: '',
       link: ''
     });
+    setRegisterImage({
+      imageName: '이미지를 첨부해주세요',
+      imageUrl: ''
+    });
+
     setStartDate('');
     setEndDate('');
-  };
-
-  // 이미지 삭제버튼
-
-  const resetInput = () => {
-    const { imageUrl } = registerImage;
-    console.log(imageUrl);
   };
 
   return (
@@ -161,10 +176,12 @@ function Resgister({ history }) {
                 name="registerImage"
                 className="custom-file-input"
                 onChange={ImagehandleChange}
-                placeholder="여긴왜 이게 안먹음?"
+                ref={imageRef}
+                // placeholder="" //파일에서는 placeholder가 안먹음!
                 // value={registerImage}
                 // value={registerImage} //이미지에서는 value값 넣으면 에러!
               />
+
               <label
                 className="custom-file-label image_label  event_image_label rounded"
                 htmlFor="inputGroupFile01">
@@ -172,6 +189,7 @@ function Resgister({ history }) {
               </label>
               {registerImage.imageUrl && <img src={registerImage.imageUrl} alt="" />}
             </div>
+
             <div className="delect_button col-xl-5 delect_button">
               <button
                 type="button"
@@ -226,24 +244,6 @@ function Resgister({ history }) {
               />
             </div>
           </div>
-
-          {/* <div className="form-group row justify-content-start">
-            <label
-              htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title"
-            >
-              <span className="text1">이벤트 내용</span>
-            </label>
-            <div className="col-sm-7">
-              <input
-                type="email"
-                className="form-control form-control-lg evnet_content"
-                id="colFormLabelLg"
-                placeholder="내용을 입력해주세요"
-              />
-            </div>
-          </div> */}
-
           <div className="search nav justify-content-end row">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleRemove}>
               취소
@@ -252,6 +252,13 @@ function Resgister({ history }) {
             <button type="submit" className="btn btn-primary btn-sm col-1">
               저장
             </button>
+          </div>
+          <div className="search nav justify-content-end row">
+            <Link to="/event">
+              <button type="button" className="btn btn-primary btn-sm col-1">
+                목록
+              </button>
+            </Link>
           </div>
         </form>
       </div>

@@ -10,8 +10,7 @@ import BreadHouseList from './contents/bread-house-list/bread_house_list';
 import BreadList from './contents/bread-list/bread_list';
 import YoutubeList from './contents/youtube/youtube';
 import Notice from './contents/notice/notice_list';
-import Event from './contents/event/event_list';
-import EventRouter from './contents/event/event-register/event_router';
+import EventRouter from './contents/event/event_router';
 
 function AdminMain() {
   return (
@@ -56,8 +55,7 @@ function AdminMain() {
                   className="github-button"
                   data-icon="octicon-star"
                   data-show-count="true"
-                  aria-label="Star DesignRevision/shards-dashboard on GitHub"
-                >
+                  aria-label="Star DesignRevision/shards-dashboard on GitHub">
                   Star
                 </div>
                 {/* <iframe style="width: 91px; height: 21px;"src="https://yvoschaap.com/producthunt/counter.html#href=https%3A%2F%2Fwww.producthunt.com%2Fr%2Fp%2F112998&layout=wide" width="56" height="65" scrolling="no" frameborder="0" allowtransparency="true"></iframe> --> */}
