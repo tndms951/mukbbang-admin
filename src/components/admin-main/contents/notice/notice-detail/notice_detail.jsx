@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
-
 import moment from 'moment';
 import Swal from 'sweetalert2';
+import PropTypes from 'prop-types';
 
-import purgeStoredState from 'redux-persist/es/purgeStoredState';
 import axios from '../../../../utils/axios';
+import { errorhandler, sweetAlertConfirm } from '../../../../utils/common';
 
 // 캘린더 한국어 지정
 registerLocale('ko', ko);
@@ -18,57 +18,41 @@ function NoticeDetail({ match, history }) {
     startDate: ''
   });
 
-  // 서버에서 가져온값 저장
   const [notice, setNotice] = useState(null);
-  console.log(notice);
 
   const [edit, setEdit] = useState(false);
-  console.log(edit);
 
   useEffect(() => {
     const { id } = match.params;
-    // console.log(match.params);
     const noticeDetailApiCall = async () => {
       try {
         const { status, data: detailData } = await axios.get(`/admin/notice/${id}`);
         if (status === 200) {
           const { data } = detailData;
-          console.log(detailData);
           setNotice(data);
         }
       } catch (err) {
-        if (err && err.response) {
-          console.log(err.response);
-          const { data } = err.response;
-          console.log(data);
-          const { message } = data;
-          alert(message);
-        } else {
-          alert('에러 뭥미');
-        }
+        errorhandler(err);
       }
     };
     noticeDetailApiCall();
-  }, []);
+  }, [match.params]);
 
   // 삭제 api 연결
   const onDeleteClick = async () => {
     const { id } = match.params;
-    if (window.confirm('해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.')) {
+
+    const confirm = await sweetAlertConfirm(
+      '해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.'
+    );
+    if (confirm) {
       try {
         const { status } = await axios.delete(`/admin/notice/${id}`);
         if (status === 200) {
           history.push('/notice');
-          console.log(status);
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          Swal.fire(message);
-        } else {
-          Swal.fire('네트워크가 불안정합니다. 다시 시도해 주세요.');
-        }
+        errorhandler(err);
       }
     }
   };
@@ -106,7 +90,6 @@ function NoticeDetail({ match, history }) {
 
       const { status } = await axios.put(`/admin/notice/${id}`, modifyObject);
       if (status === 201) {
-        console.log(value.startDate);
         setNotice({
           ...value,
           title: value.title,
@@ -118,7 +101,8 @@ function NoticeDetail({ match, history }) {
     } catch (err) {
       if (err && err.response) {
         const { data } = err.response;
-        console.log(data);
+        const { message } = data;
+        Swal.fire(message);
       }
     }
   };
@@ -305,5 +289,10 @@ function NoticeDetail({ match, history }) {
     </>
   );
 }
+
+NoticeDetail.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
+};
 
 export default NoticeDetail;
