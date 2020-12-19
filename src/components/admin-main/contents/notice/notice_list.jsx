@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import ko from 'date-fns/locale/ko';
+import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import qs from 'qs';
 
@@ -34,7 +33,6 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
           ignoreQueryPrefix: true
           // 문자열 맨 앞에 ?를 생략
         });
-        console.log(location);
         const { status, data: noticeData } = await axios.get(`/admin/notice${location.search}`);
 
         if (status === 200) {
@@ -44,24 +42,25 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
         }
       } catch (err) {
         if (err && err.response) {
-          console.log(err.response);
           const { data } = err.response;
+          const { message } = data;
+          alert(message);
         } else {
           alert('네트워크가 불안정합니다. 다시 시도해 주세요.');
         }
       }
     };
     noticeListApiCall();
-  }, [location.search]);
+  }, [location.search, onNoticeList]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    // eslint-disable-next-line object-curly-newline
     const queryObject = {};
 
     if (title) {
       queryObject.title = title;
-      console.log(queryObject.title);
     }
     if (startDate) {
       queryObject.startDate = moment(startDate).format('YYYY-MM-DD');
@@ -186,7 +185,9 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
 
 NoticeList.propTypes = {
   noticeList: PropTypes.instanceOf(Array).isRequired,
-  onNoticeList: PropTypes.func.isRequired
+  onNoticeList: PropTypes.func.isRequired,
+  location: PropTypes.objectOf(PropTypes.object).isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
 const mapStateToProps = createStructuredSelector({
