@@ -19,4 +19,5 @@
     "react/jsx-closing-bracket-location": 0,
     "jsx-a11y/label-has-associated-control": "off"
   }
+  
 }

@@ -61,7 +61,8 @@ const EventList = ({ eventList, onEventList, history, location }) => {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    const queryObject = {};
+    const queryObject = {
+};
     if (title) {
       queryObject.title = title;
     }
@@ -201,7 +202,8 @@ const EventList = ({ eventList, onEventList, history, location }) => {
 };
 
 EventList.propTypes = {
-  eventList: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  eventList: PropTypes.arrayOf(PropTypes.shape({
+})).isRequired,
   onEventList: PropTypes.func.isRequired
 };
 

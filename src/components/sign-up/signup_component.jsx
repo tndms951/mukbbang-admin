@@ -15,7 +15,7 @@ function Signup({ onUserSet, history }) {
     email: '',
     password: '',
     checkpassword: '',
-    isChecked: false,
+    isChecked: false
   });
 
   const [validEmail, setValidEmail] = useState('');
@@ -27,7 +27,7 @@ function Signup({ onUserSet, history }) {
     emailRef: useRef(null),
     passwordRef: useRef(null),
     checkpasswordRef: useRef(null),
-    isCheckedRef: useRef(null),
+    isCheckedRef: useRef(null)
   };
 
   const { name, email, password, checkpassword, isChecked } = value;
@@ -80,7 +80,7 @@ function Signup({ onUserSet, history }) {
 
     setValue({
       ...value,
-      [e.target.name]: e.target.name === 'isChecked' ? !isChecked : e.target.value,
+      [e.target.name]: e.target.name === 'isChecked' ? !isChecked : e.target.value
     });
   };
 
@@ -92,7 +92,7 @@ function Signup({ onUserSet, history }) {
         email: value.email,
         password: value.password,
         isChecked: value.isChecked,
-        type: 'bread',
+        type: 'bread'
       };
 
       const { data } = await axios.post('/admin/signup', signupObject);
@@ -238,8 +238,7 @@ function Signup({ onUserSet, history }) {
                     id="submit"
                     className="form-submit"
                     value="sign up"
-                    onClick={handleSubmit}
-                  >
+                    onClick={handleSubmit}>
                     Sign up
                   </button>
                 </div>
@@ -260,11 +259,11 @@ function Signup({ onUserSet, history }) {
 
 Signup.propTypes = {
   onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
-  history: PropTypes.objectOf(PropTypes.object).isRequired,
+  history: PropTypes.objectOf(PropTypes.object).isRequired
 };
 
-const mapToPropsDispatch = (dispatch) => ({
-  onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token)),
+const mapDispatchToProps = (dispatch) => ({
+  onUserSet: (userInfo, token) => dispatch(setCurrentUser(userInfo, token))
 });
 
-export default connect(null, mapToPropsDispatch)(Signup);
+export default connect(null, mapDispatchToProps)(Signup);

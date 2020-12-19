@@ -1,0 +1,15 @@
+.wrap {
+    width: 50%;
+    display: block;
+    outline: 1px solid red;
+    background: orange;
+}
+.delete {
+    width: 100%;
+    border: 1px solid maroon;
+}
+.block {
+    width: 100%;
+    display: block;
+    outline: 1px solid red;
+}
