@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
-import { Link } from 'react-router-dom';
 
 import moment from 'moment';
 import Swal from 'sweetalert2';
@@ -138,7 +137,11 @@ function NoticeDetail({ match, history }) {
 
   return (
     <>
-      <div className="card-body">
+      <div
+        className="card-body"
+        style={{
+          margin: '4% auto 35%'
+        }}>
         <form className="quick-post-form">
           <div>
             <div
@@ -284,7 +287,6 @@ function NoticeDetail({ match, history }) {
 
               <div className="col-sm-9 text-right" />
               <hr />
-              {/* <Link to="/notice"> */}
               <button
                 type="submit"
                 className="btn btn-secondary col-sm-1"
@@ -296,7 +298,6 @@ function NoticeDetail({ match, history }) {
                 onClick={onClicklist}>
                 목록
               </button>
-              {/* </Link> */}
             </div>
           </div>
         </form>

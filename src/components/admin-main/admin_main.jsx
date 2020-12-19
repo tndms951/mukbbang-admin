@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import Footer from './footer/footer';
 import MainSidebar from './sidebar/sidebar_main';
@@ -8,6 +8,7 @@ import Header from './header/header';
 import Content from './main_content';
 import BreadHouseList from './contents/bread-house-list/bread_house_list';
 import BreadList from './contents/bread-list/bread_list';
+import BreadBossList from './contents/bread-boss-list/bread_boss_list';
 import YoutubeList from './contents/youtube/youtube';
 import Notice from './contents/notice/notice_router';
 import Event from './contents/event/event_list';
@@ -83,12 +84,15 @@ function AdminMain() {
             <MainSidebar />
             <main className="main-content col-lg-10 col-md-9 col-sm-12 p-0 offset-lg-2 offset-md-3">
               <Header />
-              <Route exact path="/" component={Content} />
-              <Route path="/bread_house_list" component={BreadHouseList} />
-              <Route path="/bread_list" component={BreadList} />
-              <Route path="/youtube_list" component={YoutubeList} />
-              <Route path="/event" component={Event} />
-              <Route path="/notice" component={Notice} />
+              <Switch>
+                <Route exact path="/" component={Content} />
+                <Route path="/bread_house_list" component={BreadHouseList} />
+                <Route path="/bread_list" component={BreadList} />
+                <Route path="/bread_boss_list" component={BreadBossList} />
+                <Route path="/youtube_list" component={YoutubeList} />
+                <Route path="/event" component={Event} />
+                <Route path="/notice" component={Notice} />
+              </Switch>
               <Footer />
             </main>
           </div>

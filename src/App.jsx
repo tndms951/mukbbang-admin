@@ -13,9 +13,9 @@ function App() {
     <BrowserRouter>
       <ScrollToTop />
       <Switch>
-        <Route exact path='/signin' component={Signin} />
-        <Route exact path='/signup' component={Signup} />
-        <Route path='/' component={AdminMain} />
+        <Route exact path="/signin" component={Signin} />
+        <Route exact path="/signup" component={Signup} />
+        <Route path="/" component={AdminMain} />
       </Switch>
     </BrowserRouter>
   );

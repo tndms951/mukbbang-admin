@@ -5,7 +5,7 @@ import NoticeList from './notice_list';
 import NoticeResister from './notice-register/notice_register';
 import NoticeDetail from './notice-detail/notice_detail';
 
-function noticeResister({ match }) {
+function noticeRouter({ match }) {
   // console.log(match);
   return (
     <Switch>
@@ -16,4 +16,4 @@ function noticeResister({ match }) {
   );
 }
 
-export default noticeResister;
+export default noticeRouter;

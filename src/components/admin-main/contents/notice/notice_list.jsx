@@ -57,7 +57,8 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const queryObject = {};
+    const queryObject = {
+};
 
     if (title) {
       queryObject.title = title;
@@ -80,8 +81,8 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
   };
 
   return (
-    <div className="wrap_template container">
-      <h1 className="row justify-content-md-start">검색조건</h1>
+    <div className="wrap_template card-header">
+      <h2 className="row justify-content-md-start mb-5 m-0">검색조건</h2>
       <form className="form_wrap" onSubmit={handleSubmit}>
         <div className="row">
           <label htmlFor="inputEmail3" className="h3 col-sm-1 col-form-label">
@@ -102,9 +103,9 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
           <label htmlFor="inputPassword3" className="h3 col-sm-1">
             날짜
           </label>
-          <div className="input-group col-sm-11 mb-3">
+          <div className="input-group col-sm-11">
             <DatePicker
-              className="form-control"
+              className="form-control col"
               selected={startDate}
               onChange={setStartDate} // value 값이 바뀔때
               locale="ko" // 달력 한글화
@@ -130,7 +131,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
             marginTop: '5%'
           }}>
           <Link to="/notice/notice_register">
-            <button type="submit" className="submit mb-2 btn btn-primary mr-1">
+            <button type="button" className="submit mb-2 btn btn-primary mr-1">
               등록하기
             </button>
           </Link>
@@ -142,7 +143,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
             <div className="card-header border-bottom">
               <h6 className="m-0">검색 결과</h6>
             </div>
-            <div className="card-body p-0 pb-3 text-center">
+            <div className="p-0 pb-3 text-center">
               <table className="table mb-0">
                 <thead className="bg-light">
                   <tr>
