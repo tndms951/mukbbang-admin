@@ -5,6 +5,7 @@ import qs from 'qs';
 import PropTypes from 'prop-types';
 
 import axios from '../../../../utils/axios';
+import { sweetAlert, errorhandler } from '../../../../utils/common';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -18,9 +19,6 @@ function NoticeRegister({ history, location }) {
     content: '',
     startDate: null
   });
-
-  // 시작 날짜, 끝 날짜
-  // const [startDate, setStartDate] = useState(null);
 
   const [noticeId, setNoticeId] = useState(null);
 
@@ -42,13 +40,7 @@ function NoticeRegister({ history, location }) {
           });
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          alert(message);
-        } else {
-          alert('네트워크가 불안정합니다. 다시 시도해 주세요.');
-        }
+        errorhandler(err);
       }
     };
     if (query && query.noticeId) {
@@ -61,25 +53,27 @@ function NoticeRegister({ history, location }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const registerObject = {
-        title: value.title,
-        startAt: moment(startDate).format('YYYY-MM-DD'),
-        content: value.content
-      };
-      const { status } = noticeId
-        ? await axios.put(`/admin/notice/${noticeId}`, registerObject)
-        : await axios.post('/admin/notice', registerObject);
-      if (status === 201) {
-        history.push(noticeId ? `/notice/${noticeId}` : '/notice');
+      if (!title) {
+        sweetAlert('제목을 입력해주세요.');
+      } else if (!startDate) {
+        sweetAlert('날짜를 입력해주세요.');
+      } else if (!content) {
+        sweetAlert('내용을 입력해주세요.');
+      } else {
+        const registerObject = {
+          title,
+          startAt: moment(startDate).format('YYYY-MM-DD'),
+          content
+        };
+        const { status } = noticeId
+          ? await axios.put(`/admin/notice/${noticeId}`, registerObject)
+          : await axios.post('/admin/notice', registerObject);
+        if (status === 201) {
+          history.push(noticeId ? `/notice/${noticeId}` : '/notice');
+        }
       }
     } catch (err) {
-      if (err && err.response) {
-        const { data } = err.response;
-        const { message } = data;
-        alert(message);
-      } else {
-        alert('네트워크가 불안정합니다. 다시 시도해 주세요.');
-      }
+      errorhandler(err);
     }
   };
 
@@ -164,8 +158,8 @@ function NoticeRegister({ history, location }) {
 }
 
 NoticeRegister.propTypes = {
-  location: PropTypes.objectOf(PropTypes.object).isRequired,
-  history: PropTypes.objectOf(PropTypes.object).isRequired
+  location: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
 };
 
 export default NoticeRegister;

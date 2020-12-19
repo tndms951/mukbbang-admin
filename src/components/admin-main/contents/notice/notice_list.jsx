@@ -4,17 +4,17 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import qs from 'qs';
-
-import './notice_list.css';
-import 'react-datepicker/dist/react-datepicker.css';
-
 // 리덕스 부분
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+
 import axios from '../../../utils/axios';
 import { selectNoticeList } from '../../../../redux/notice/notice.selectors';
 import { setNoticeList } from '../../../../redux/notice/notice.actions';
-// import Moment from 'react-moment';
+import { errorhandler } from '../../../utils/common';
+
+import './notice_list.css';
+import 'react-datepicker/dist/react-datepicker.css';
 
 /**
  * @author 송지은
@@ -41,13 +41,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
           setStartDate(query.startDate ? new Date(query.startDate) : null);
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          alert(message);
-        } else {
-          alert('네트워크가 불안정합니다. 다시 시도해 주세요.');
-        }
+        errorhandler(err);
       }
     };
     noticeListApiCall();
@@ -186,8 +180,8 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
 NoticeList.propTypes = {
   noticeList: PropTypes.instanceOf(Array).isRequired,
   onNoticeList: PropTypes.func.isRequired,
-  location: PropTypes.objectOf(PropTypes.object).isRequired,
-  history: PropTypes.objectOf(PropTypes.object).isRequired
+  location: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
 
 import axios from '../../../../utils/axios';
+import { errorhandler, sweetAlertConfirm } from '../../../../utils/common';
 
 // 캘린더 한국어 지정
 registerLocale('ko', ko);
@@ -31,13 +32,7 @@ function NoticeDetail({ match, history }) {
           setNotice(data);
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          alert(message);
-        } else {
-          alert('네트워크 오류입니다.');
-        }
+        errorhandler(err);
       }
     };
     noticeDetailApiCall();
@@ -46,7 +41,8 @@ function NoticeDetail({ match, history }) {
   // 삭제 api 연결
   const onDeleteClick = async () => {
     const { id } = match.params;
-    const confirm = window.confirm(
+
+    const confirm = await sweetAlertConfirm(
       '해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.'
     );
     if (confirm) {
@@ -56,13 +52,7 @@ function NoticeDetail({ match, history }) {
           history.push('/notice');
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          Swal.fire(message);
-        } else {
-          Swal.fire('네트워크가 불안정합니다. 다시 시도해 주세요.');
-        }
+        errorhandler(err);
       }
     }
   };
@@ -299,8 +289,8 @@ function NoticeDetail({ match, history }) {
 }
 
 NoticeDetail.propTypes = {
-  match: PropTypes.objectOf(PropTypes.object).isRequired,
-  history: PropTypes.objectOf(PropTypes.object).isRequired
+  match: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
 };
 
 export default NoticeDetail;

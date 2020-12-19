@@ -17,7 +17,7 @@ function noticeResister({ match }) {
 }
 
 noticeResister.propTypes = {
-  match: PropTypes.objectOf(PropTypes.object).isRequired
+  match: PropTypes.instanceOf(Object).isRequired
 };
 
 export default noticeResister;
