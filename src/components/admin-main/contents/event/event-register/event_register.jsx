@@ -36,8 +36,10 @@ function Resgister({ history }) {
 
   // 이미지 삭제버튼
   const resetInput = () => {
-    const { current } = imageRef;
-    current.value = ''; // files에는 input기록이 남아았어서 직접 삭제를 해줘야 기록이 없어짐 text value는 직접 설정할수있지만 file value는 설정못하기때문
+    // const { current } = imageRef;
+    // current.value = '';
+    // files에는 input기록이 남아았어서 직접 삭제를 해줘야 기록이 없어짐 text value는 직접 설정할수있지만 file value는 설정못하기때문
+    // 이걸 없앤이유는 삼항연산자를 사용하면 value값이 사라져서 직접 초기화 할필요없어서 삭제함
     setRegisterImage({
       imageName: '이미지를 첨부해주세요',
       imageUrl: ''
@@ -170,33 +172,44 @@ function Resgister({ history }) {
             <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
               <span className="text1">이벤트 이미지</span>
             </label>
-            <div className="custom-file event_inage_input col-sm-6">
-              <input
-                type="file"
-                name="registerImage"
-                className="custom-file-input"
-                onChange={ImagehandleChange}
-                ref={imageRef}
-                // placeholder="" //파일에서는 placeholder가 안먹음!
-                // value={registerImage}
-                // value={registerImage} //이미지에서는 value값 넣으면 에러!
-              />
+            <div
+              className="custom-file event_inage_input col-sm-6"
+              style={{
+                display: 'inline-flex'
+              }}>
+              {registerImage.imageUrl ? (
+                <>
+                  <div className="mt-5 mb-5 d-flex">
+                    <img src={registerImage.imageUrl} alt="" className="image" />
+                    <div className="delect_button col-xl-5 delect_button">
+                      <button
+                        type="button"
+                        className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded"
+                        onClick={resetInput}>
+                        삭제
+                      </button>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <input
+                    type="file"
+                    name="registerImage"
+                    className="custom-file-input"
+                    onChange={ImagehandleChange}
+                    ref={imageRef}
+                    // placeholder="" //파일에서는 placeholder가 안먹음!
+                    // value={registerImage} //이미지에서는 value값 넣으면 에러!
+                  />
 
-              <label
-                className="custom-file-label image_label  event_image_label rounded"
-                htmlFor="inputGroupFile01">
-                {registerImage.imageName}
-              </label>
-              {registerImage.imageUrl && <img src={registerImage.imageUrl} alt="" />}
-            </div>
-
-            <div className="delect_button col-xl-5 delect_button">
-              <button
-                type="button"
-                className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded"
-                onClick={resetInput}>
-                삭제
-              </button>
+                  <label
+                    className="custom-file-label image_label  event_image_label rounded"
+                    htmlFor="inputGroupFile01">
+                    {registerImage.imageName}
+                  </label>
+                </>
+              )}
             </div>
           </div>
 
@@ -254,10 +267,8 @@ function Resgister({ history }) {
             </button>
           </div>
           <div className="search nav justify-content-end row">
-            <Link to="/event">
-              <button type="button" className="btn btn-primary btn-sm col-1">
-                목록
-              </button>
+            <Link to="/event" className="btn btn-primary btn-sm col-2 text3">
+              목록
             </Link>
           </div>
         </form>

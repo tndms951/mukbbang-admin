@@ -10,6 +10,8 @@ import DatePicker from 'react-datepicker';
 import axios from '../../../utils/axios';
 import { setCurrentEvent } from '../../../../redux/event/event.actions';
 import { selectEventList } from '../../../../redux/event/event.selectors';
+import PageNation from '../pagenation/pagenation';
+
 import './event_list.css';
 
 const EventList = ({ eventList, onEventList, history, location }) => {
@@ -47,6 +49,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
     fetchData();
   }, [location.search]);
   console.log(location);
+
   const handleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -61,8 +64,8 @@ const EventList = ({ eventList, onEventList, history, location }) => {
   const handleSearch = (e) => {
     e.preventDefault();
 
-    const queryObject = {
-};
+    // eslint-disable-next-line object-curly-newline
+    const queryObject = {};
     if (title) {
       queryObject.title = title;
     }
@@ -73,11 +76,10 @@ const EventList = ({ eventList, onEventList, history, location }) => {
       queryObject.endDate = moment(endDate).format('YYYY-MM-DD');
     }
     const queryData = qs.stringify(queryObject);
-    history.push(`/event${queryData ? `?${queryData}` : ''}`);
     console.log(queryData);
+    console.log(queryObject);
+    history.push(`/event${queryData ? `?${queryData}` : ''}`);
   };
-
-  console.log(history);
 
   return (
     <>
@@ -196,6 +198,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </div>
           </div>
         </div>
+        <PageNation totalPage={12} currentPage={1} />
       </div>
     </>
   );

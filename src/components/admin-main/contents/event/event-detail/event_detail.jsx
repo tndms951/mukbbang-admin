@@ -189,7 +189,9 @@ const Detail = ({ match, history }) => {
             </div>
           ) : (
             <div className="custom-file event_inage_input col-sm-6 wrap1">
-              <span className="contentName">{listDate && listDate.imageUrl} </span>
+              <span className="contentName">
+                {listDate && <img src={listDate.imageUrl} alt="이벤트 이미지" className="image" />}
+              </span>
             </div>
           )}
         </div>
