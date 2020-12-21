@@ -173,7 +173,7 @@ const Detail = ({ match, history }) => {
           <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
             <span className="text1">이벤트 이미지</span>
           </label>
-          {modify ? (
+          {!modify ? (
             <div className="custom-file event_inage_input col-sm-6">
               <input
                 type="file"
