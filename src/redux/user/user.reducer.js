@@ -2,7 +2,7 @@ import UserActionTypes from './user.types';
 
 const INITIAL_STATE = {
   currentUser: null,
-  token: '',
+  token: ''
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -13,7 +13,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         currentUser: user,
-        token,
+        token
       };
     }
     default:

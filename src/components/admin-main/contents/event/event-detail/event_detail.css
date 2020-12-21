@@ -1,0 +1,19 @@
+.wrap1 {
+  line-height: 55px;
+  margin-left: 20px;
+  /* outline: 1px solid red; */
+  height: 100%;
+}
+
+.contentName {
+  height: 100%;
+  line-height: 55px;
+}
+
+.wave {
+  line-height: 50px;
+}
+
+.image {
+  width: 100%;
+}
