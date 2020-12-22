@@ -7,6 +7,7 @@ import qs from 'qs';
 // 리덕스 부분
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
+import Pagination from '../../pagination';
 
 import axios from '../../../utils/axios';
 import { selectNoticeList } from '../../../../redux/notice/notice.selectors';
@@ -171,6 +172,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
               </table>
             </div>
           </div>
+          <Pagination totalPage={12} currentPage={4} rangePage={2} />
         </div>
       </div>
     </div>
