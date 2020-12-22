@@ -1,19 +1,40 @@
-import React, { useEffect } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-function BreadBossList({ match, history }) {
-  useEffect(() => {}, []);
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import axios from '../../../utils/axios';
+import Pagenation from '../pagenation/pagination';
+import { errorhandler } from '../../../utils/common';
 
-  // const onClick = (e) => {
-  //   e.preventDefault();
-  //   history.push('/bread_boss_list/register');
-  // };
+import { setBreadBossList } from '../../../../redux/bread-boss/breadBoss.actions';
+import { selectBreadBossList } from '../../../../redux/bread-boss/breadBoss.selectors';
+
+function BreadBossList({ breadBossList, onBreadBossList, history }) {
+  // const [breadBossList, setBreadBossList] = useState([]);
+
+  useEffect(() => {
+    const bossListApiCall = async () => {
+      try {
+        const { status, data: bossData } = await axios.get('/admin/shop');
+        if (status === 200) {
+          console.log('연결성공!!!!!');
+          console.log(bossData);
+          setBreadBossList(bossData.list);
+        }
+      } catch (err) {
+        errorhandler(err);
+      }
+    };
+    console.log(breadBossList);
+    bossListApiCall();
+  }, []);
 
   return (
     <>
       <div className="col-lg-12 mb-4 mt-10">
-        <div className="card card-small mb-5 mt-5">
+        <div className="card card-small mb-3 mt-5">
           <div className="card-header border-bottom">
             <h2 className="m-0">빵집 사장 목록</h2>
           </div>
@@ -84,29 +105,52 @@ function BreadBossList({ match, history }) {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-center">
+                {breadBossList.map((bossData) => (
+                  <tr className="text-center" key={`breadBoss-list${bossData.id}`}>
+                    <th>{bossData.id}</th>
+                    <td>
+                      <Link to="/bread_boss_list/bread_boss_detail">{bossData.name}</Link>
+                    </td>
+                    <td>{bossData.phoneNumber}</td>
+                    <td>{bossData.imageUrl}</td>
+                    <td>{bossData.enabled}</td>
+                  </tr>
+                ))}
+
+                {/* <tr className="text-center">
                   <th>1</th>
                   <td>
-                    <Link to="/bread_boss_list/bread_boss_detail">빠리바게트</Link>
+                    <Link to="/bread_boss_list/bread_boss_detail">지니</Link>
                   </td>
-                  <td>010.9239.3349</td>
-                  <td>이미지</td>
-                  <td>Yes</td>
-                </tr>
-                <tr className="text-center">
-                  <th>2</th>
-                  <td>Jacob</td>
-                  <td>Thornton</td>
-                  <td>@fat</td>
-                  <td>랄라</td>
-                </tr>
+                  <td>010.9234424</td>
+                  <td>이미지 주소</td>
+                  <td>탈퇴</td>
+                </tr> */}
               </tbody>
             </table>
           </div>
         </div>
+        <Pagenation totalPages={12} currentPage={6} />
       </div>
     </>
   );
 }
 
-export default BreadBossList;
+BreadBossList.prototype = {
+  breadBossList: PropTypes.instanceOf(Array).isRequired,
+  onBreadBossList: PropTypes.instanceOf(Array).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
+};
+
+const mapStateToProps = createStructuredSelector({
+  breadBossList: selectBreadBossList
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onBreadBossList: (list) => dispatch(setBreadBossList(list))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BreadBossList);
+
+// export default BreadBossList;

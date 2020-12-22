@@ -74,7 +74,9 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
 
   return (
     <div className="wrap_template card-header">
-      <h2 className="row justify-content-md-start mb-5 m-0">검색조건</h2>
+      <div className="border-bottom mb-5">
+        <h2 className="row justify-content-md-start m-3">검색조건</h2>
+      </div>
       <form className="form_wrap" onSubmit={handleSubmit}>
         <div className="row">
           <label htmlFor="inputEmail3" className="h3 col-sm-1 col-form-label">
@@ -123,7 +125,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
             marginTop: '5%'
           }}>
           <Link to="/notice/notice_register">
-            <button type="button" className="submit mb-2 btn btn-primary mr-1">
+            <button type="button" className="mb-2 btn btn-outline-primary mr-1">
               등록하기
             </button>
           </Link>
@@ -131,7 +133,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
       </form>
       <div className="row">
         <div className="col">
-          <div className="card card-small mb-4">
+          <div className="mb-4">
             <div className="card-header border-bottom">
               <h6 className="m-0">검색 결과</h6>
             </div>
@@ -156,7 +158,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
                 <tbody>
                   {noticeList.map((noticeData) => (
                     <tr key={`notice-list${noticeData.id}`}>
-                      <td>{noticeData.id}</td>
+                      <th>{noticeData.id}</th>
                       <td>
                         {/* <Link to={noticeData.link}>{noticeData.link}</Link> */}
                         <Link to={`/notice/notice_detail/${noticeData.id}`}>
@@ -169,6 +171,41 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
                   ))}
                 </tbody>
               </table>
+              <nav
+                aria-label="Page navigation example "
+                style={{
+                  // outline: '1px solid red',
+                  width: '18%',
+                  margin: '8% auto 0 auto'
+                }}>
+                <ul className="pagination">
+                  <li className="page-item">
+                    <a className="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      1
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      2
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      3
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
