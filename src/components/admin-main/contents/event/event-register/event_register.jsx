@@ -181,8 +181,9 @@ function Resgister({ history }) {
               }}>
               {registerImage.imageUrl ? (
                 <>
-                  <div className="mt-5 mb-5 d-flex">
+                  <div className="d-flex">
                     <img src={registerImage.imageUrl} alt="" className="image" />
+<<<<<<< HEAD
                     <div className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded">
                       <button
                         type="button"
@@ -190,6 +191,12 @@ function Resgister({ history }) {
                         style={{
                           lineHeight: '24px'
                         }}
+=======
+                    <div className="delect_button delect_button">
+                      <button
+                        type="button"
+                        className="btn btn-secondary btn-pull-right delect_button rounded"
+>>>>>>> 410ac2e1814be3b8694d8a93c76dce03b7cc8b89
                         onClick={resetInput}>
                         삭제
                       </button>
