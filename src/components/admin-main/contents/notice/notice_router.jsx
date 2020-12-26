@@ -10,7 +10,7 @@ function noticeResister({ match }) {
   return (
     <Switch>
       <Route path={`${match.path}/notice_register`} component={NoticeResister} />
-      <Route path={`${match.path}/notice_detail/:id`} component={NoticeDetail} />
+      <Route path={`${match.path}/notice_detail/:noticeId`} component={NoticeDetail} />
       <Route exact path={match.path} component={NoticeList} />
     </Switch>
   );

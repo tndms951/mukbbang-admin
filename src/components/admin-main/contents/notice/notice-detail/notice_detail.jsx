@@ -23,10 +23,10 @@ function NoticeDetail({ match, history }) {
   const [edit, setEdit] = useState(false);
 
   useEffect(() => {
-    const { id } = match.params;
+    const { noticeId } = match.params;
     const noticeDetailApiCall = async () => {
       try {
-        const { status, data: detailData } = await axios.get(`/admin/notice/${id}`);
+        const { status, data: detailData } = await axios.get(`/admin/notice/${noticeId}`);
         if (status === 200) {
           const { data } = detailData;
           setNotice(data);
@@ -40,14 +40,14 @@ function NoticeDetail({ match, history }) {
 
   // 삭제 api 연결
   const onDeleteClick = async () => {
-    const { id } = match.params;
+    const { noticeId } = match.params;
 
     const confirm = await sweetAlertConfirm(
       '해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.'
     );
     if (confirm) {
       try {
-        const { status } = await axios.delete(`/admin/notice/${id}`);
+        const { status } = await axios.delete(`/admin/notice/${noticeId}`);
         if (status === 200) {
           history.push('/notice');
         }
@@ -80,7 +80,7 @@ function NoticeDetail({ match, history }) {
 
   // 저장 핸들써브밋
   const handleSubmit = async () => {
-    const { id } = match.params;
+    const { noticeId } = match.params;
     try {
       const modifyObject = {
         title: value.title,
@@ -88,7 +88,7 @@ function NoticeDetail({ match, history }) {
         startAt: moment(value.startDate).format('YYYY-MM-DD')
       };
 
-      const { status } = await axios.put(`/admin/notice/${id}`, modifyObject);
+      const { status } = await axios.put(`/admin/notice/${noticeId}`, modifyObject);
       if (status === 201) {
         setNotice({
           ...value,
@@ -109,7 +109,7 @@ function NoticeDetail({ match, history }) {
 
   // 수정 온클릭
   const handleEdit = (e) => {
-    e.preventDefault();
+    // e.preventDefault();
 
     setEdit(!edit);
     setValue({

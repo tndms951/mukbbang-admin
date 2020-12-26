@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -11,17 +12,25 @@ import { errorhandler } from '../../../utils/common';
 import { setBreadBossList } from '../../../../redux/bread-boss/breadBoss.actions';
 import { selectBreadBossList } from '../../../../redux/bread-boss/breadBoss.selectors';
 
-function BreadBossList({ breadBossList, onBreadBossList, history }) {
+function BreadBossList({ breadBossList, onBreadBossList, location }) {
   // const [breadBossList, setBreadBossList] = useState([]);
+
+  const [name, setName] = useState('');
+
+  const [enabled, setEnabled] = useState(null);
 
   useEffect(() => {
     const bossListApiCall = async () => {
       try {
+        const query = qs.parse(location.search, {
+          ignoreQueryPrefix: true
+        });
         const { status, data: bossData } = await axios.get('/admin/shop');
         if (status === 200) {
           console.log('연결성공!!!!!');
-          console.log(bossData);
-          setBreadBossList(bossData.list);
+          console.log(bossData.list);
+          onBreadBossList(bossData.list);
+          // setBreadBossList(bossData.list);
         }
       } catch (err) {
         errorhandler(err);
@@ -30,6 +39,11 @@ function BreadBossList({ breadBossList, onBreadBossList, history }) {
     console.log(breadBossList);
     bossListApiCall();
   }, []);
+
+  const handleReset = () => {
+    setName('');
+    setEnabled(null);
+  };
 
   return (
     <>
@@ -70,17 +84,17 @@ function BreadBossList({ breadBossList, onBreadBossList, history }) {
               <div className="form-group col-md-4">
                 <select className="form-control">
                   <option readOnly>선택하세요</option>
-                  <option>탈퇴하지 않겠습니다</option>
-                  <option>탈퇴 하겠습니다</option>
+                  <option>사용중</option>
+                  <option>탈퇴</option>
                 </select>
               </div>
             </div>
             <div className="row mb-3 mt-5">
               <div className="col text-right">
-                <button type="button" className="mb-2 btn btn-secondary mr-2">
+                <button type="button" className="mb-2 btn btn-secondary mr-2" onClick={handleReset}>
                   초기화
                 </button>
-                <button type="button" className="mb-2 btn btn-primary mr-2">
+                <button type="submit" className="mb-2 btn btn-primary mr-2">
                   검색
                 </button>
               </div>
@@ -109,23 +123,23 @@ function BreadBossList({ breadBossList, onBreadBossList, history }) {
                   <tr className="text-center" key={`breadBoss-list${bossData.id}`}>
                     <th>{bossData.id}</th>
                     <td>
-                      <Link to="/bread_boss_list/bread_boss_detail">{bossData.name}</Link>
+                      <Link to={`/bread_boss_list/bread_boss_detail/${bossData.id}`}>
+                        {bossData.name}
+                      </Link>
                     </td>
                     <td>{bossData.phoneNumber}</td>
-                    <td>{bossData.imageUrl}</td>
-                    <td>{bossData.enabled}</td>
+                    <td>
+                      <img
+                        src={bossData.imageUrl}
+                        alt=""
+                        style={{
+                          width: '80px'
+                        }}
+                      />
+                    </td>
+                    <td>{bossData.enabled === 'true' ? '사용중' : '탈퇴'}</td>
                   </tr>
                 ))}
-
-                {/* <tr className="text-center">
-                  <th>1</th>
-                  <td>
-                    <Link to="/bread_boss_list/bread_boss_detail">지니</Link>
-                  </td>
-                  <td>010.9234424</td>
-                  <td>이미지 주소</td>
-                  <td>탈퇴</td>
-                </tr> */}
               </tbody>
             </table>
           </div>
@@ -136,9 +150,9 @@ function BreadBossList({ breadBossList, onBreadBossList, history }) {
   );
 }
 
-BreadBossList.prototype = {
+BreadBossList.propTypes = {
   breadBossList: PropTypes.instanceOf(Array).isRequired,
-  onBreadBossList: PropTypes.instanceOf(Array).isRequired,
+  onBreadBossList: PropTypes.func.isRequired,
   location: PropTypes.instanceOf(Object).isRequired,
   history: PropTypes.instanceOf(Object).isRequired
 };

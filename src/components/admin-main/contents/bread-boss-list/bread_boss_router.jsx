@@ -10,7 +10,7 @@ function BreadBossRouter({ match }) {
   return (
     <Switch>
       <Route path={`${match.path}/register`} component={BreadBossRegister} />
-      <Route path={`${match.path}/bread_boss_detail`} component={BreadBossDetail} />
+      <Route path={`${match.path}/bread_boss_detail/:bossId`} component={BreadBossDetail} />
       <Route exact path={match.path} component={BreadBossList} />
     </Switch>
   );

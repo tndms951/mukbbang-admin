@@ -17,6 +17,7 @@ function BreadBossRegister({ history }) {
     profileName: '이미지를 넣으세요',
     profileUrl: ''
   });
+  console.log(profile);
 
   const { name, phoneNumber } = value;
 
@@ -166,15 +167,15 @@ function BreadBossRegister({ history }) {
                   <label className="input-group-text">Upload</label>
                 </div>
               </div>
-              <div className="col mb-4 mt-5">
-                <div className="col text-right">
-                  <button type="button" className="mb-2 btn btn-secondary mr-2">
-                    취소
-                  </button>
-                  <button type="submit" className="mb-2 btn btn-primary mr-2">
-                    등록
-                  </button>
-                </div>
+            </div>
+            <div className="col mb-4 mt-5">
+              <div className="col text-right">
+                <button type="button" className="mb-2 btn btn-secondary mr-2">
+                  취소
+                </button>
+                <button type="submit" className="mb-2 btn btn-primary mr-2">
+                  등록
+                </button>
               </div>
             </div>
           </div>
