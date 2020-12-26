@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import moment from 'moment';
-import axios from '../../../../utils/axios';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import ko from 'date-fns/locale/ko';
+
+import axios from '../../../../utils/axios';
+import { errorhandler } from '../../../../utils/common';
 
 import './event_register.css';
 import 'react-datepicker/dist/react-datepicker.css';
-
-import ko from 'date-fns/locale/ko';
 
 registerLocale('ko', ko);
 
@@ -61,8 +63,6 @@ function Resgister({ history }) {
     try {
       // 이미지 API
       const { name } = e.target.files[0];
-      console.log(e.target.files[0]);
-      console.log('bbbb');
       const imageFormData = new FormData();
       imageFormData.append('imgFile', e.target.files[0]);
       const { status, data: imageData } = await axios.post('/upload/event', imageFormData, {
@@ -72,34 +72,23 @@ function Resgister({ history }) {
       });
       if (status === 200) {
         const { data } = imageData;
-        console.log(data);
-        console.log(registerImage.imageUrl);
         setRegisterImage({
           ...registerImage,
           imageName: name,
           imageUrl: data.imageUrl
         });
-        console.log('이미지성공');
       }
     } catch (err) {
-      console.log('오류');
-      if (err && err.response) {
-        const { data } = err.response;
-        alert(data.message);
-      } else {
-        alert('네트워크가 불안정합니다.');
-      }
+      errorhandler(err);
     }
   };
 
   // 날짜 핸들체인지
   const starthandleChange = (date) => {
     setStartDate(date);
-    console.log(date);
   };
   const endhandleChange = (date) => {
     setEndDate(date);
-    console.log(date);
   };
 
   const handleSubmit = async (e) => {
@@ -112,24 +101,14 @@ function Resgister({ history }) {
         startAt: moment(startDate).format('YYYY-MM-DD'),
         endAt: moment(endDate).format('YYYY-MM-DD')
       };
-      console.log(registerImage);
-
-      console.log(registerObject);
-      // return;
       // 제목, 이미지, 링크, 날짜 API
-      const { status, data: registerData } = await axios.post('/admin/event', registerObject);
-      console.log(registerData);
+      const { status } = await axios.post('/admin/event', registerObject);
       if (status === 201) {
         // alert('나머지성공!');
         history.push('/event');
       }
     } catch (err) {
-      if (err && err.response) {
-        const { data } = err.response;
-        alert(data.message);
-      } else {
-        alert('네트워크가 불안정합니다.');
-      }
+      errorhandler(err);
     }
   };
 
@@ -183,7 +162,6 @@ function Resgister({ history }) {
                 <>
                   <div className="d-flex">
                     <img src={registerImage.imageUrl} alt="" className="image" />
-<<<<<<< HEAD
                     <div className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded">
                       <button
                         type="button"
@@ -191,12 +169,6 @@ function Resgister({ history }) {
                         style={{
                           lineHeight: '24px'
                         }}
-=======
-                    <div className="delect_button delect_button">
-                      <button
-                        type="button"
-                        className="btn btn-secondary btn-pull-right delect_button rounded"
->>>>>>> 410ac2e1814be3b8694d8a93c76dce03b7cc8b89
                         onClick={resetInput}>
                         삭제
                       </button>
@@ -288,5 +260,9 @@ function Resgister({ history }) {
     </>
   );
 }
+
+Resgister.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired
+};
 
 export default Resgister;

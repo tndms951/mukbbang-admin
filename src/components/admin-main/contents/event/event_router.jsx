@@ -1,12 +1,12 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import Resgister from './event-register/event_register';
 import Detail from './event-detail/event_detail';
 import EventList from './event_list';
 
 function EventRouter({ match }) {
-  console.log(match);
   return (
     <>
       <Switch>
@@ -17,5 +17,9 @@ function EventRouter({ match }) {
     </>
   );
 }
+
+EventRouter.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired
+};
 
 export default EventRouter;

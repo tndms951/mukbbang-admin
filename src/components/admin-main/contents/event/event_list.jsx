@@ -11,12 +11,11 @@ import axios from '../../../utils/axios';
 import { setCurrentEvent } from '../../../../redux/event/event.actions';
 import { selectEventList } from '../../../../redux/event/event.selectors';
 import PageNation from '../pagenation/pagenation';
+import { errorhandler } from '../../../utils/common';
 
 import './event_list.css';
 
 const EventList = ({ eventList, onEventList, history, location }) => {
-  console.log(eventList);
-
   // 검색조회
   const [title, setTitle] = useState('');
 
@@ -31,7 +30,6 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           ignoreQueryPrefix: true
         });
         const { status, data: eventData } = await axios.get(`/admin/event${location.search}`);
-        console.log(eventData);
         if (status === 200) {
           onEventList(eventData.list);
           setTitle(query.title || '');
@@ -39,18 +37,11 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           setEndDate(query.endDate ? new Date(query.endDate) : null);
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          // console.log(err.response); response는 콘솔에 찍을 수 없음
-          alert(data.message);
-        } else {
-          alert('네트워크가 불안정합니다. 다시 시도해주세요');
-        }
+        errorhandler(err);
       }
     }
     fetchData();
-  }, [location.search]);
-  console.log(location);
+  }, [location.search, onEventList]);
 
   const handleChange = (e) => {
     setTitle(e.target.value);
@@ -78,8 +69,6 @@ const EventList = ({ eventList, onEventList, history, location }) => {
       queryObject.endDate = moment(endDate).format('YYYY-MM-DD');
     }
     const queryData = qs.stringify(queryObject);
-    console.log(queryData);
-    console.log(queryObject);
     history.push(`/event${queryData ? `?${queryData}` : ''}`);
   };
 
@@ -207,9 +196,10 @@ const EventList = ({ eventList, onEventList, history, location }) => {
 };
 
 EventList.propTypes = {
-  eventList: PropTypes.arrayOf(PropTypes.shape({
-})).isRequired,
-  onEventList: PropTypes.func.isRequired
+  eventList: PropTypes.instanceOf(Array).isRequired,
+  onEventList: PropTypes.func.isRequired,
+  history: PropTypes.instanceOf(Array).isRequired,
+  location: PropTypes.instanceOf(Array).isRequired
 };
 
 const mapStateToProps = createStructuredSelector({

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
+import DatePicker from 'react-datepicker';
+import PropTypes from 'prop-types';
 
 import axios from '../../../../utils/axios';
+import { errorhandler } from '../../../../utils/common';
 import './event_detail.css';
 
 const Detail = ({ match, history }) => {
@@ -13,11 +15,9 @@ const Detail = ({ match, history }) => {
     startAt: '',
     endAt: ''
   });
-  console.log(value.imageUrl);
 
   // 서버에 받아온 값 저장
   const [listDate, setListDate] = useState(null);
-  console.log(listDate);
 
   // 수정,취소 값 버튼
   const [modify, setModify] = useState(false);
@@ -26,26 +26,17 @@ const Detail = ({ match, history }) => {
     async function fetchData() {
       try {
         const { eventId } = match.params;
-        console.log(match.params);
-        console.log(eventId);
         const { status, data: detailData } = await axios.get(`/admin/event/${eventId}`);
         if (status === 200) {
           const { data } = detailData;
-          console.log(detailData);
           setListDate(data);
         }
       } catch (err) {
-        if (err && err.response) {
-          const { data } = err.response;
-          const { message } = data;
-          alert(message);
-        } else {
-          alert('네트원크가 불안정합니다. 다시 시도해 주세요');
-        }
+        errorhandler(err);
       }
     }
     fetchData();
-  }, []);
+  }, [match.params]);
 
   // 수정 취소 버튼시
   const handleEdit = (e) => {
@@ -76,15 +67,10 @@ const Detail = ({ match, history }) => {
         history.push('/event');
       }
     } catch (err) {
-      if (err && err.response) {
-        const { data } = err.response;
-        const { message } = data;
-        alert(message);
-      } else {
-        alert('네트워크가 불안정합니다. 다시 시도해주세요');
-      }
+      errorhandler(err);
     }
   };
+
   // 시작날짜 핸들체인지
   const startChange = (date) => {
     setValue({
@@ -92,6 +78,7 @@ const Detail = ({ match, history }) => {
       startAt: date
     });
   };
+
   // 마지막날짜 핸들체인지
   const endChange = (date) => {
     setValue({
@@ -125,13 +112,7 @@ const Detail = ({ match, history }) => {
         setModify(!modify);
       }
     } catch (err) {
-      if (err && err.response) {
-        const { data } = err.response;
-        const { message } = data;
-        alert(message);
-      } else {
-        alert('네트워크가 불안정합니다. 다시 시도해 주세요');
-      }
+      errorhandler(err);
     }
   };
 
@@ -278,6 +259,11 @@ const Detail = ({ match, history }) => {
       </form>
     </div>
   );
+};
+
+Detail.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired,
+  history: PropTypes.instanceOf(Object).isRequired
 };
 
 export default Detail;
