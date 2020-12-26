@@ -62,6 +62,7 @@ function Resgister({ history }) {
       // 이미지 API
       const { name } = e.target.files[0];
       console.log(e.target.files[0]);
+      console.log('bbbb');
       const imageFormData = new FormData();
       imageFormData.append('imgFile', e.target.files[0]);
       const { status, data: imageData } = await axios.post('/upload/event', imageFormData, {
@@ -175,16 +176,20 @@ function Resgister({ history }) {
             <div
               className="custom-file event_inage_input col-sm-6"
               style={{
-                display: 'inline-flex'
+                display: 'inline-flex',
+                height: 'auto'
               }}>
               {registerImage.imageUrl ? (
                 <>
                   <div className="mt-5 mb-5 d-flex">
                     <img src={registerImage.imageUrl} alt="" className="image" />
-                    <div className="delect_button col-xl-5 delect_button">
+                    <div className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded">
                       <button
                         type="button"
-                        className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded"
+                        className="text-white"
+                        style={{
+                          lineHeight: '24px'
+                        }}
                         onClick={resetInput}>
                         삭제
                       </button>

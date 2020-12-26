@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { Link } from 'react-router-dom';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 
 import axios from '../../../../utils/axios';
@@ -14,10 +13,11 @@ const Detail = ({ match, history }) => {
     startAt: '',
     endAt: ''
   });
-  console.log(value);
+  console.log(value.imageUrl);
 
   // 서버에 받아온 값 저장
   const [listDate, setListDate] = useState(null);
+  console.log(listDate);
 
   // 수정,취소 값 버튼
   const [modify, setModify] = useState(false);
@@ -26,7 +26,8 @@ const Detail = ({ match, history }) => {
     async function fetchData() {
       try {
         const { eventId } = match.params;
-        // console.log(eventId);
+        console.log(match.params);
+        console.log(eventId);
         const { status, data: detailData } = await axios.get(`/admin/event/${eventId}`);
         if (status === 200) {
           const { data } = detailData;
@@ -122,12 +123,6 @@ const Detail = ({ match, history }) => {
           endAt: value.endAt
         });
         setModify(!modify);
-        // console.log('수정성공');
-        if (value.startAt === value.endAt) {
-          alert('날짜를 다시 선택해주세요');
-        } else {
-          alert('오류');
-        }
       }
     } catch (err) {
       if (err && err.response) {
@@ -174,7 +169,11 @@ const Detail = ({ match, history }) => {
             <span className="text1">이벤트 이미지</span>
           </label>
           {modify ? (
-            <div className="custom-file event_inage_input col-sm-6">
+            <div
+              className="custom-file event_inage_input col-sm-6"
+              style={{
+                height: 'auto'
+              }}>
               <input
                 type="file"
                 name="registerImage"

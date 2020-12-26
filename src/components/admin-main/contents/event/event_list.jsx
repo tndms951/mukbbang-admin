@@ -15,7 +15,9 @@ import PageNation from '../pagenation/pagenation';
 import './event_list.css';
 
 const EventList = ({ eventList, onEventList, history, location }) => {
-  // 상세조회
+  console.log(eventList);
+
+  // 검색조회
   const [title, setTitle] = useState('');
 
   const [startDate, setStartDate] = useState(null);
