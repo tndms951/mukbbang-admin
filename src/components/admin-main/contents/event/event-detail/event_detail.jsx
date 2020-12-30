@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom';
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
 import CloseButton from '../../../../utils/button/close_button';
-
 import './event_detail.css';
 
 const Detail = ({ match, history }) => {
@@ -76,7 +75,7 @@ const Detail = ({ match, history }) => {
       errorhandler(err);
     }
   };
-
+  
   // 시작날짜 핸들체인지
   const startChange = (date) => {
     setValue({
@@ -84,7 +83,7 @@ const Detail = ({ match, history }) => {
       startAt: date
     });
   };
-
+  
   // 마지막날짜 핸들체인지
   const endChange = (date) => {
     setValue({
@@ -142,7 +141,6 @@ const Detail = ({ match, history }) => {
           startAt: value.startAt,
           endAt: value.endAt
         });
-
         setModify(!modify);
       }
     } catch (err) {

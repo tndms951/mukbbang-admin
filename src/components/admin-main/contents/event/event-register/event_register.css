@@ -1,4 +1,3 @@
-
 .container {
     width: 100%;
     background-color: white;
@@ -7,8 +6,6 @@
 .text1 {
     margin-right: 30px;
 }
-
-
 
 .delect_button {
     font-size: 15px;
@@ -74,6 +71,4 @@
       cursor: pointer;
   }
 
- 
 
- 

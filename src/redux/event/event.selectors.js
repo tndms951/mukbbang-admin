@@ -4,7 +4,6 @@ import { createSelector } from 'reselect'; // reselet는 부분만 렌더 (성�
 const selectEvent = (state) => state.event;
 
 export const selectEventList = createSelector([selectEvent], (event) => event.eventList);
-
 // const selectEventList = (state) => {
 //     console.log(state);
 //     return state.event;

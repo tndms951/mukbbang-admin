@@ -149,7 +149,6 @@ function Resgister({ history }) {
               />
             </div>
           </div>
-
           <div className="form-group input-group input-group-lg row justify-content-start">
             <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
               <span className="text1">이벤트 이미지</span>
