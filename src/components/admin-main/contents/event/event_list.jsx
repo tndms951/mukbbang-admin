@@ -132,7 +132,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           </div>
 
           <div className="event_table">
-            <div className="button_wrap nav justify-content-end">
+            <div className="event_button_wrap nav justify-content-end">
               <Link to="/event/event_register" className="btn btn-primary col-2 register">
                 등록하러가기
               </Link>

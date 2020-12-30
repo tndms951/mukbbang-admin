@@ -7,6 +7,7 @@ import ko from 'date-fns/locale/ko';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
+import CloseButton from '../../../../utils/button/close_button';
 
 import './event_register.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -148,6 +149,7 @@ function Resgister({ history }) {
               />
             </div>
           </div>
+
           <div className="form-group input-group input-group-lg row justify-content-start">
             <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
               <span className="text1">이벤트 이미지</span>
@@ -161,17 +163,13 @@ function Resgister({ history }) {
               {registerImage.imageUrl ? (
                 <>
                   <div className="d-flex">
-                    <img src={registerImage.imageUrl} alt="" className="image" />
-                    <div className="btn btn-secondary col-sm-2 btn-pull-right delect_button rounded">
-                      <button
-                        type="button"
-                        className="text-white"
-                        style={{
-                          lineHeight: '24px'
-                        }}
-                        onClick={resetInput}>
-                        삭제
-                      </button>
+                    <div className="image_wrap">
+                      <div className="any_image">
+                        <img src={registerImage.imageUrl} alt="" className="image2" />
+                      </div>
+                      <div className="button_wrap" onClick={resetInput}>
+                        <CloseButton />
+                      </div>
                     </div>
                   </div>
                 </>
@@ -188,7 +186,7 @@ function Resgister({ history }) {
                   />
 
                   <label
-                    className="custom-file-label image_label  event_image_label rounded"
+                    className="custom-file-label image_label  event_image_label rounded image"
                     htmlFor="inputGroupFile01">
                     {registerImage.imageName}
                   </label>

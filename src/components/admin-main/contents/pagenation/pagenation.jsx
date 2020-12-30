@@ -2,13 +2,12 @@ import React from 'react';
 
 const PageNation = ({ totalPage, currentPage }) => {
   console.log('aaa');
-
   const output = [];
   const startIndex = 0;
   const endIndex = 5;
 
-  for (let i = startIndex; i < endIndex; i += 1) {
-    output.push(i);
+  for (let i = startIndex; i <= endIndex; i += 1) {
+    // output.push(i);
   }
 
   console.log(output);

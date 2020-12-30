@@ -1,19 +1,24 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
+import CloseButton from '../../../../utils/button/close_button';
+
 import './event_detail.css';
 
 const Detail = ({ match, history }) => {
   const [value, setValue] = useState({
     title: '',
-    imageUrl: '',
     link: '',
     startAt: '',
-    endAt: ''
+    endAt: '',
+    imageName: '이미지를 첨부해주세요',
+    imageUrl: ''
   });
 
   // 서버에 받아온 값 저장
@@ -44,6 +49,7 @@ const Detail = ({ match, history }) => {
 
     setModify(!modify);
     setValue({
+      ...value,
       title: listDate.title,
       imageUrl: listDate.imageUrl,
       link: listDate.link,
@@ -87,8 +93,33 @@ const Detail = ({ match, history }) => {
     });
   };
 
+  // 이미지 핸들체인지
+  const ImagehandleChange = async (e) => {
+    try {
+      const { name } = e.target.files[0];
+      const imageFormData = new FormData();
+      imageFormData.append('imgFile', e.target.files[0]);
+      const { status, data: imageData } = await axios.post('/upload/event', imageFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      if (status === 200) {
+        const { data } = imageData;
+        setValue({
+          ...value,
+          imageName: name,
+          imageUrl: data.imageUrl
+        });
+      }
+    } catch (err) {
+      errorhandler(err);
+    }
+  };
+
   // 저장 핸들써브밋
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const { eventId: eventId3 } = match.params;
       // const { title, imageUrl, link, startAt, endAt } = value;
@@ -99,7 +130,9 @@ const Detail = ({ match, history }) => {
         startAt: moment(value.startAt).format('YYYY-MM-DD'),
         endAt: moment(value.endAt).format('YYYY-MM-DD')
       };
+
       const { status } = await axios.put(`/admin/event/${eventId3}`, putChange);
+
       if (status === 201) {
         setListDate({
           ...value,
@@ -109,11 +142,22 @@ const Detail = ({ match, history }) => {
           startAt: value.startAt,
           endAt: value.endAt
         });
+
         setModify(!modify);
       }
     } catch (err) {
       errorhandler(err);
     }
+  };
+
+  // 삭제버튼
+  const resetInput = () => {
+    setValue({
+      ...value,
+      imageName: '이미지를 첨부해주세요',
+      imageUrl: ''
+    });
+    console.log('삭제');
   };
 
   return (
@@ -149,31 +193,48 @@ const Detail = ({ match, history }) => {
           <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
             <span className="text1">이벤트 이미지</span>
           </label>
-          {modify ? (
-            <div
-              className="custom-file event_inage_input col-sm-6"
-              style={{
-                height: 'auto'
-              }}>
-              <input
-                type="file"
-                name="registerImage"
-                className="custom-file-input"
-                onChange={handleChange}
-              />
-              <label
-                className="custom-file-label image_label  event_image_label rounded"
-                htmlFor="inputGroupFile01">
-                {value.imageUrl}
-              </label>
-            </div>
-          ) : (
-            <div className="custom-file event_inage_input col-sm-6 wrap1">
-              <span className="contentName">
-                {listDate && <img src={listDate.imageUrl} alt="이벤트 이미지" className="image" />}
-              </span>
-            </div>
-          )}
+          <div
+            className="custom-file event_inage_input col-sm-6"
+            style={{
+              display: 'inline-flex',
+              height: 'auto'
+            }}>
+            {modify ? (
+              value.imageUrl ? (
+                <div className="d-flex all_wrap">
+                  <img src={value.imageUrl} alt="이벤트 이미지" className="image2" />
+                  <div className="button_wrap" onClick={resetInput}>
+                    <CloseButton />
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <input
+                    type="file"
+                    name="registerImage"
+                    className="custom-file-input"
+                    onChange={ImagehandleChange}
+                    // placeholder="" //파일에서는 placeholder가 안먹음!
+                    // value={registerImage} //이미지에서는 value값 넣으면 에러!
+                  />
+
+                  <label
+                    className="custom-file-label image_label  event_image_label rounded "
+                    htmlFor="inputGroupFile01">
+                    {value.imageName}
+                  </label>
+                </>
+              )
+            ) : (
+              <div className="custom-file event_inage_input col-sm-6 wrap1">
+                <span className="contentName">
+                  {listDate && (
+                    <img src={listDate.imageUrl} alt="이벤트 이미지" className="image" />
+                  )}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="form-group row justify-content-start">
@@ -221,7 +282,6 @@ const Detail = ({ match, history }) => {
                 className="form-control input2"
                 locale="ko"
                 selected={value.endAt}
-                // onChange={handleChange}
                 placeholderText="마지막 날짜를 입력해주세요"
                 dateFormat="yyyy-MM-dd"
                 onChange={endChange}
@@ -247,14 +307,25 @@ const Detail = ({ match, history }) => {
             </button>
           )}
           {modify ? (
-            <button type="button" className="btn btn-primary btn-sm col-1" onClick={handleSubmit}>
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm col-1 save_button"
+              onClick={handleSubmit}>
               저장
             </button>
           ) : (
-            <button type="submit" className="btn btn-primary btn-sm col-1" onClick={handleEdit}>
+            <button
+              type="submit"
+              className="btn btn-primary btn-sm col-1 modify"
+              onClick={handleEdit}>
               수정
             </button>
           )}
+        </div>
+        <div className="search nav justify-content-end home_wrap">
+          <Link to="/event" className="btn btn-primary btn-sm col-2 home">
+            목록
+          </Link>
         </div>
       </form>
     </div>
