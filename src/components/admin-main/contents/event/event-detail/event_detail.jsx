@@ -157,7 +157,6 @@ const Detail = ({ match, history }) => {
       imageName: '이미지를 첨부해주세요',
       imageUrl: ''
     });
-    console.log('삭제');
   };
 
   return (
