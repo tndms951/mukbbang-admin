@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import Xbutton from '../../../../utils/X_button';
 
 import axios from '../../../../utils/axios';
 import { sweetAlert, errorhandler, sweetAlertSuccess } from '../../../../utils/common';
+
+import './bread-boss-register.css';
 
 /**
  * @author 송지은
@@ -23,6 +26,7 @@ function BreadBossRegister({ history }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('사장 등록 !!!!!!!!!');
     console.log(value);
     console.log(profile);
     try {
@@ -95,6 +99,15 @@ function BreadBossRegister({ history }) {
     }
   };
 
+  // 이미지 삭제 핸들러
+  const resetOnClick = () => {
+    console.log('이미지 삭제 !!!!');
+    setProfile({
+      profileName: '이미지를 넣으세요',
+      profileUrl: ''
+    });
+  };
+
   return (
     <>
       <div className="col-lg-12 mb-4 mt-10">
@@ -113,6 +126,7 @@ function BreadBossRegister({ history }) {
                 }}>
                 이름
               </span>
+
               <div className="form-group col-5">
                 <input
                   type="text"
@@ -156,16 +170,28 @@ function BreadBossRegister({ history }) {
                 프로필 사진
               </span>
               <div className="form-group col-5">
-                <div className="input-group mb-3">
-                  <input
-                    type="file"
-                    className="form-control"
-                    name="profileName"
-                    // value={profileName}
-                    onChange={profileHandleChange}
-                  />
-                  <label className="input-group-text">Upload</label>
-                </div>
+                {!profile.profileUrl ? (
+                  <div className="input-group mb-3">
+                    <input
+                      type="file"
+                      className="form-control"
+                      name="profileName"
+                      // value={profileName}
+                      onChange={profileHandleChange}
+                    />
+                    <label className="input-group-text">Upload</label>
+                  </div>
+                ) : (
+                  <>
+                    <div className="image_wrap">
+                      <img className="img" src={profile.profileUrl} />
+                      <div className="button_wrap" onClick={resetOnClick}>
+                        <Xbutton />
+                      </div>
+                    </div>
+                    {/* <button type="button">삭제</button> */}
+                  </>
+                )}
               </div>
             </div>
             <div className="col mb-4 mt-5">

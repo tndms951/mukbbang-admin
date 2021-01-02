@@ -12,7 +12,7 @@ import { errorhandler } from '../../../utils/common';
 import { setBreadBossList } from '../../../../redux/bread-boss/breadBoss.actions';
 import { selectBreadBossList } from '../../../../redux/bread-boss/breadBoss.selectors';
 
-function BreadBossList({ breadBossList, onBreadBossList, location }) {
+function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
   // const [breadBossList, setBreadBossList] = useState([]);
 
   const [name, setName] = useState('');
@@ -25,11 +25,13 @@ function BreadBossList({ breadBossList, onBreadBossList, location }) {
         const query = qs.parse(location.search, {
           ignoreQueryPrefix: true
         });
-        const { status, data: bossData } = await axios.get('/admin/shop');
+        const { status, data: bossData } = await axios.get(`/admin/shop${location.search}`);
+        // console.log(location);
+
         if (status === 200) {
-          console.log('연결성공!!!!!');
-          console.log(bossData.list);
           onBreadBossList(bossData.list);
+          setName(query.name || '');
+          // setEnabled(query.enabled || '');
           // setBreadBossList(bossData.list);
         }
       } catch (err) {
@@ -38,111 +40,141 @@ function BreadBossList({ breadBossList, onBreadBossList, location }) {
     };
     console.log(breadBossList);
     bossListApiCall();
-  }, []);
+  }, [location.search]);
 
   const handleReset = () => {
     setName('');
     setEnabled(null);
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // eslint-disable-next-line object-curly-newline
+    const queryObject = {};
+    console.log(queryObject);
+
+    if (name) {
+      queryObject.name = name;
+    }
+    if (enabled) {
+      queryObject.enabled = enabled;
+    }
+    console.log(queryObject.name);
+    const queryData = qs.stringify(queryObject);
+    console.log(queryData);
+    history.push(`/bread_boss_list${queryData ? `?${queryData}` : ''}`);
+  };
+
+  const handleChange = (e) => {
+    setName(e.target.value);
+  };
+
   return (
     <>
-      <div className="col-lg-12 mb-4 mt-10">
-        <div className="card card-small mb-3 mt-5">
+      <div className="card card-small mb-3 mt-5">
+        <div className="col-lg-12 mb-4 mt-10">
           <div className="card-header border-bottom">
             <h2 className="m-0">빵집 사장 목록</h2>
           </div>
-          <div className="mr-5 ml-5 mt-5 mb-4">
-            <div className="row justify-content-start">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                이름
-              </span>
-              <div className="form-group col-5">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword4"
-                  placeholder="이름을 입력해 주세요"
-                  // value="myCoolPassword"
-                />
+          <form onSubmit={handleSubmit}>
+            <div className="mr-5 ml-5 mt-5 mb-4">
+              <div className="row justify-content-start">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  이름
+                </span>
+                <div className="form-group col-5">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword4"
+                    placeholder="이름을 입력해 주세요"
+                    onChange={handleChange}
+                    value={name}
+                    name="name"
+                  />
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                탈퇴 여부
-              </span>
-              <div className="form-group col-md-4">
-                <select className="form-control">
-                  <option readOnly>선택하세요</option>
-                  <option>사용중</option>
-                  <option>탈퇴</option>
-                </select>
+              <div className="row justify-content-start">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  탈퇴 여부
+                </span>
+                <div className="form-group col-md-4">
+                  <select className="form-control" onChange={setEnabled}>
+                    <option readOnly>선택하세요</option>
+                    <option>사용중</option>
+                    <option>탈퇴</option>
+                  </select>
+                </div>
               </div>
-            </div>
-            <div className="row mb-3 mt-5">
-              <div className="col text-right">
-                <button type="button" className="mb-2 btn btn-secondary mr-2" onClick={handleReset}>
-                  초기화
-                </button>
-                <button type="submit" className="mb-2 btn btn-primary mr-2">
-                  검색
-                </button>
-              </div>
-            </div>
-            <div className="row text-right">
-              <div className="col">
-                <Link to="/bread_boss_list/register">
-                  <button type="button" className="mb-2 btn btn-outline-primary mr-2 mt-5 mb-4">
-                    등록하기
+              <div className="row mb-3 mt-5">
+                <div className="col text-right">
+                  <button
+                    type="button"
+                    className="mb-2 btn btn-secondary mr-2"
+                    onClick={handleReset}>
+                    초기화
                   </button>
-                </Link>
+                  <button type="submit" className="mb-2 btn btn-primary mr-2">
+                    검색
+                  </button>
+                </div>
               </div>
-            </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">#</th>
-                  <th scope="col">이름</th>
-                  <th scope="col">핸드폰 번호</th>
-                  <th scope="col">프로필 이미지</th>
-                  <th scope="col">탈퇴 여부</th>
-                </tr>
-              </thead>
-              <tbody>
-                {breadBossList.map((bossData) => (
-                  <tr className="text-center" key={`breadBoss-list${bossData.id}`}>
-                    <th>{bossData.id}</th>
-                    <td>
-                      <Link to={`/bread_boss_list/bread_boss_detail/${bossData.id}`}>
-                        {bossData.name}
-                      </Link>
-                    </td>
-                    <td>{bossData.phoneNumber}</td>
-                    <td>
-                      <img
-                        src={bossData.imageUrl}
-                        alt=""
-                        style={{
-                          width: '80px'
-                        }}
-                      />
-                    </td>
-                    <td>{bossData.enabled === 'true' ? '사용중' : '탈퇴'}</td>
+              <div className="row text-right">
+                <div className="col">
+                  <Link to="/bread_boss_list/register">
+                    <button type="button" className="mb-2 btn btn-outline-primary mr-2 mt-5 mb-4">
+                      등록하기
+                    </button>
+                  </Link>
+                </div>
+              </div>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">이름</th>
+                    <th scope="col">핸드폰 번호</th>
+                    <th scope="col">프로필 이미지</th>
+                    <th scope="col">탈퇴 여부</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody>
+                  {breadBossList.map((bossData) => (
+                    <tr className="text-center" key={`breadBoss-list${bossData.id}`}>
+                      <td>{bossData.id}</td>
+                      <td>
+                        <Link to={`/bread_boss_list/bread_boss_detail/${bossData.id}`}>
+                          {bossData.name}
+                        </Link>
+                      </td>
+                      <td>{bossData.phoneNumber}</td>
+                      <td>
+                        <img
+                          src={bossData.imageUrl}
+                          alt=""
+                          style={{
+                            width: '80px'
+                          }}
+                        />
+                      </td>
+                      <td>{bossData.enabled ? '사용중' : '탈퇴'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </form>
         </div>
         <Pagenation totalPages={12} currentPage={6} />
       </div>
