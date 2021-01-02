@@ -172,7 +172,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
               </table>
             </div>
           </div>
-          <Pagination totalPage={12} currentPage={4} rangePage={2} />
+          <Pagination totalPage={12} currentPage={4} />
         </div>
       </div>
     </div>

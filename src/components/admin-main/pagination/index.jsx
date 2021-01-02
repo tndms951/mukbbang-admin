@@ -30,7 +30,7 @@ PaginationNumber.propTypes = {
   currentPage: PropTypes.number.isRequired
 };
 
-const Pagination = ({ totalPage, currentPage, rangePage }) => {
+const Pagination = ({ totalPage, currentPage, rangePage = 5 }) => {
   const newArray = [];
   const startPage = currentPage > 0 ? currentPage : 1;
   const startIndex = Math.floor((startPage - 1) / rangePage) * rangePage;
@@ -55,7 +55,11 @@ const Pagination = ({ totalPage, currentPage, rangePage }) => {
 Pagination.propTypes = {
   totalPage: PropTypes.number.isRequired,
   currentPage: PropTypes.number.isRequired,
-  rangePage: PropTypes.number.isRequired
+  rangePage: PropTypes.number
+};
+
+Pagination.defaultProps = {
+  rangePage: 5
 };
 
 export default Pagination;
