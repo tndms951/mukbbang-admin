@@ -56,6 +56,7 @@ const Detail = ({ match, history }) => {
       endAt: new Date(listDate.endAt)
     });
   };
+  console.log(value);
 
   const handleChange = (e) => {
     setValue({
@@ -75,7 +76,7 @@ const Detail = ({ match, history }) => {
       errorhandler(err);
     }
   };
-  
+
   // 시작날짜 핸들체인지
   const startChange = (date) => {
     setValue({
@@ -83,7 +84,7 @@ const Detail = ({ match, history }) => {
       startAt: date
     });
   };
-  
+
   // 마지막날짜 핸들체인지
   const endChange = (date) => {
     setValue({
@@ -152,7 +153,7 @@ const Detail = ({ match, history }) => {
   const resetInput = () => {
     setValue({
       ...value,
-      imageName: '이미지를 첨부해주세요',
+      imageName: '이미지를 첨부해주세요!!!',
       imageUrl: ''
     });
   };

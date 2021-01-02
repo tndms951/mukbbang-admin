@@ -6,7 +6,7 @@ const PageNation = ({ totalPage, currentPage }) => {
   const endIndex = 5;
 
   for (let i = startIndex; i <= endIndex; i += 1) {
-    // output.push(i);
+    output.push(i);
   }
 
   return (

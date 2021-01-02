@@ -43,6 +43,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
     fetchData();
   }, [location.search, onEventList]);
 
+  // title 핸들체인지
   const handleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -59,6 +60,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
 
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
+    console.log(queryObject);
     if (title) {
       queryObject.title = title;
     }
@@ -70,6 +72,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
     }
     const queryData = qs.stringify(queryObject);
     history.push(`/event${queryData ? `?${queryData}` : ''}`);
+    console.log(queryData);
   };
 
   return (
