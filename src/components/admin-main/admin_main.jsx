@@ -95,7 +95,7 @@ function AdminMain() {
         </div>
         <div className="promo-popup animated">
           <div className="pp-cta extra-action" />
-          <img src="/" />
+          <img src="/" alt="" />
           <div className="pp-intro-bar">
             {' '}
             Need More Templates?

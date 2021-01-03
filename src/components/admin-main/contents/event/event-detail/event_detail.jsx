@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
-import CloseButton from '../../../../utils/button/close_button';
+import CloseButton from '../../../../shared/button/close_button';
 import './event_detail.css';
 
 const Detail = ({ match, history }) => {
@@ -201,7 +201,12 @@ const Detail = ({ match, history }) => {
               value.imageUrl ? (
                 <div className="d-flex all_wrap">
                   <img src={value.imageUrl} alt="이벤트 이미지" className="image2" />
-                  <div className="button_wrap" onClick={resetInput}>
+                  <div
+                    className="button_wrap"
+                    onClick={resetInput}
+                    role="button"
+                    tabIndex={0}
+                    aria-hidden="true">
                     <CloseButton />
                   </div>
                 </div>

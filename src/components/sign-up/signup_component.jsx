@@ -5,11 +5,10 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import axios, { setAuthorization } from '../utils/axios';
 
-import { isEmailValid } from '../utils/common';
+import { errorhandler, isEmailValid, sweetAlert } from '../utils/common';
 import { setCurrentUser } from '../../redux/user/user.actions';
 
 function Signup({ onUserSet, history }) {
-  console.log(history);
   const [value, setValue] = useState({
     name: '',
     email: '',
@@ -103,11 +102,7 @@ function Signup({ onUserSet, history }) {
       onUserSet(userInfo, token);
       history.push('/');
     } catch (err) {
-      if (err && err.response) {
-        const { data } = err.response;
-        const { message } = data;
-        alert(message);
-      }
+      errorhandler(err);
     }
   };
 
@@ -116,28 +111,28 @@ function Signup({ onUserSet, history }) {
     e.preventDefault();
     const { nameRef, emailRef, passwordRef, checkpasswordRef, isCheckedRef } = valueRef;
     if (!name) {
-      alert('이름을 입력하세요');
+      sweetAlert('이름을 입력하세요');
       nameRef.current.focus();
     } else if (!email) {
-      alert('이메일을 입력하세요');
+      sweetAlert('이메일을 입력하세요');
       emailRef.current.focus();
     } else if (!password) {
-      alert('비번을 입력하세요');
+      sweetAlert('비번을 입력하세요');
       passwordRef.current.focus();
     } else if (!checkpassword) {
-      alert('재비번을 입력하세요');
+      sweetAlert('재비번을 입력하세요');
       checkpasswordRef.current.focus();
     } else if (validEmail) {
-      alert('이메일 형식을 맞춰주세요.');
+      sweetAlert('이메일 형식을 맞춰주세요.');
       emailRef.current.focus();
     } else if (validPassword) {
-      alert('비밀번호 형식을 맞춰주세요.');
+      sweetAlert('비밀번호 형식을 맞춰주세요.');
       passwordRef.current.focus();
     } else if (validRePassword) {
-      alert('비밀번호가 일치하지 않습니다.');
+      sweetAlert('비밀번호가 일치하지 않습니다.');
       checkpasswordRef.current.focus();
     } else if (!isChecked) {
-      alert('약관에 동의해 주세요');
+      sweetAlert('약관에 동의해 주세요');
       isCheckedRef.current.focus();
     } else {
       onSignup();
