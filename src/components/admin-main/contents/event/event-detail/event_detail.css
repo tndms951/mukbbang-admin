@@ -1,0 +1,49 @@
+.wrap1 {
+  line-height: 55px;
+  margin-left: 20px;
+  height: 100%;
+}
+
+.contentName {
+  height: 100%;
+  line-height: 55px;
+}
+
+.wave {
+  line-height: 50px;
+}
+
+.image {
+  width: 100%;
+}
+.image2 {
+width: 60%;
+}
+
+
+.modify{
+  margin-right: 10px;
+}
+/* .home_wrap {
+  margin-top: 10px;
+  margin-right: 10px;
+} */
+
+.home {
+  font-size: 14px;  
+}
+
+
+.all_wrap {
+  position: relative;
+}
+
+.button_wrap {
+  height: 30px;
+  z-index: 100;
+  background-color: white;
+}
+
+.save_button {
+  margin-right: 10px;
+}

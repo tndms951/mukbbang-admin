@@ -2,4 +2,5 @@ import { createSelector } from 'reselect'; // reselet는 부분만 렌더 (성�
 
 const selectNotice = (state) => state.notice;
 
-export const selectNoticeList = createSelector([selectNotice], (notice) => notice.currentList)
+// eslint-disable-next-line import/prefer-default-export
+export const selectNoticeList = createSelector([selectNotice], (notice) => notice.currentList);

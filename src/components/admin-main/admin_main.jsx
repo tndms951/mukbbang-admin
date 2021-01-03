@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Footer from './Footer/footer';
-import MainSidebar from './Sidebar/sidebar_main';
-import Header from './Header/header';
+import Footer from './footer/footer';
+import MainSidebar from './sidebar/sidebar_main';
+import Header from './header/header';
 
 import Content from './main_content';
 import BreadHouseList from './contents/bread-house-list/bread_house_list';
@@ -99,7 +99,7 @@ function AdminMain() {
         </div>
         <div className="promo-popup animated">
           <div className="pp-cta extra-action" />
-          <img src="/" />
+          <img src="/" alt="" />
           <div className="pp-intro-bar">
             {' '}
             Need More Templates?
