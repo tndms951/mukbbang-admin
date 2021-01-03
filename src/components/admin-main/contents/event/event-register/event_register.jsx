@@ -7,7 +7,7 @@ import ko from 'date-fns/locale/ko';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
-import CloseButton from '../../../../utils/button/close_button';
+import CloseButton from '../../../../shared/button/close_button';
 
 import './event_register.css';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -37,19 +37,21 @@ function Resgister({ history }) {
   // 이미지 삭제 Ref
   const imageRef = useRef(null);
 
+  const { title, link } = value;
+
   // 이미지 삭제버튼
   const resetInput = () => {
-    // const { current } = imageRef;
-    // current.value = '';
-    // files에는 input기록이 남아았어서 직접 삭제를 해줘야 기록이 없어짐 text value는 직접 설정할수있지만 file value는 설정못하기때문
-    // 이걸 없앤이유는 삼항연산자를 사용하면 value값이 사라져서 직접 초기화 할필요없어서 삭제함
+    /*
+      const { current } = imageRef;
+      current.value = '';
+      files에는 input기록이 남아았어서 직접 삭제를 해줘야 기록이 없어짐 text value는 직접 설정할수있지만 file value는 설정못하기때문
+      이걸 없앤이유는 삼항연산자를 사용하면 value값이 사라져서 직접 초기화 할필요없어서 삭제함
+    */
     setRegisterImage({
       imageName: '이미지를 첨부해주세요',
       imageUrl: ''
     });
   };
-
-  const { title, link } = value;
 
   // 핸들체인지
   const handleChange = (e) => {
@@ -88,6 +90,7 @@ function Resgister({ history }) {
   const starthandleChange = (date) => {
     setStartDate(date);
   };
+
   const endhandleChange = (date) => {
     setEndDate(date);
   };
@@ -105,7 +108,6 @@ function Resgister({ history }) {
       // 제목, 이미지, 링크, 날짜 API
       const { status } = await axios.post('/admin/event', registerObject);
       if (status === 201) {
-        // alert('나머지성공!');
         history.push('/event');
       }
     } catch (err) {
@@ -166,7 +168,12 @@ function Resgister({ history }) {
                       <div className="any_image">
                         <img src={registerImage.imageUrl} alt="" className="image2" />
                       </div>
-                      <div className="button_wrap" onClick={resetInput}>
+                      <div
+                        className="button_wrap"
+                        onClick={resetInput}
+                        role="button"
+                        tabIndex={0}
+                        aria-hidden="true">
                         <CloseButton />
                       </div>
                     </div>
