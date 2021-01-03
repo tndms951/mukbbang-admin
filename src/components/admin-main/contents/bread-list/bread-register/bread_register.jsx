@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
+import CloseButton from '../../../../utils/button/close_button';
 
 import './bread_register.css';
 
@@ -48,6 +49,9 @@ const BreadRegister = ({ history, location, match }) => {
     imageUrl: ''
   });
 
+  // 여러 이미지 담는곳
+  const [registerImageList, setRegisterImageList] = useState([]);
+
   const { title, content } = breadContent;
 
   // 빵이름 소개 핸들체인지
@@ -61,27 +65,40 @@ const BreadRegister = ({ history, location, match }) => {
   };
 
   // 이미지 핸들체인지
-  const handleImage = async (e) => {
+  const ImagehandleChange = async (e) => {
     try {
-      // const { name } = e.target.files[0];
-      console.log(e.target.files[0]);
+      const { files } = e.target;
+      console.log(files);
+      const imageLength = files.length + registerImageList.length;
+      if (imageLength > 8) {
+        alert('이미지를 초과했습니다.');
+        return;
+      }
+
       const imageFormData = new FormData();
-      imageFormData.append('imgFile', e.target.files[0]);
-      const { status, data: imageData } = await axios.post('/upload/bread/shop', imageFormData, {
+      for (let i = 0; i < files.length; i += 1) {
+        imageFormData.append('imgFile', e.target.files[i]);
+      }
+      const { status, data: imageData } = await axios.post('/upload/bread', imageFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
       if (status === 200) {
-        const { data } = imageData;
-        setBreadImage({
-          ...breadImage,
-          imageUrl: data.imageUrl
-        });
+        const { data: { imageUrl: newImageUrlList } } = imageData;
+        const newimageList = [];
         console.log('성공');
+        console.log(newImageUrlList);
+        newImageUrlList.forEach((image) => {
+          const newImage = {
+            imageUrl: image
+          };
+          newimageList.push(newImage);
+        });
       }
     } catch (err) {
       errorhandler(err);
+      // console.log(err.message);
     }
   };
 
@@ -93,18 +110,16 @@ const BreadRegister = ({ history, location, match }) => {
         content: breadContent.content,
         imageUrl: [breadImage.imageUrl]
       };
-      console.log('사라랄');
-      console.log(breadImage.imageUrl);
+      return;
+
       const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
-      console.log(status);
-      console.log('a');
       console.log(breadData);
-      console.log('b');
       if (status === 201) {
         history.push('/bread_list');
       }
     } catch (err) {
       errorhandler(err);
+      console.log(err.message);
     }
   };
   const handleRemove = () => {
@@ -116,6 +131,13 @@ const BreadRegister = ({ history, location, match }) => {
       imageUrl: ''
     });
   };
+
+  const resetInput = () => {
+    setBreadImage({
+      imageUrl: ''
+    });
+  };
+
   return (
     <>
       <div className="container event_wrap">
@@ -169,13 +191,27 @@ const BreadRegister = ({ history, location, match }) => {
                 style={{
                   display: 'none'
                 }}
-                onChange={handleImage}
+                onChange={ImagehandleChange}
                 name="breadImage"
+                multiple
               />
             </label>
           </div>
-          <div className="image_file">
-            {breadImage.imageUrl ? <img src={breadImage.imageUrl} alt="" className="image1" /> : ''}
+          <div className="image_file1">
+            <div className="image_wrap1">
+              {breadImage.imageUrl ? (
+                <>
+                  <div className="any_image">
+                    <img src={breadImage.imageUrl} alt="" className="image3" />
+                  </div>
+                  <div className="button_wrap1" onClick={resetInput}>
+                    <CloseButton />
+                  </div>
+                </>
+              ) : (
+                ''
+              )}
+            </div>
           </div>
           <div className="search nav justify-content-end row w-100">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleRemove}>

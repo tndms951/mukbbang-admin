@@ -25,8 +25,8 @@
 }
 
 
-.image1 {
-  width: 40%;
+.image3 {
+  width: 100%;
   display: block;
 }
 
@@ -35,7 +35,18 @@
   width: 100%;
   justify-content: right;
 }
-.image_file {
+.image_file1 {
   display: block;
   margin-left: 100px;
+}
+.image_wrap1{
+width: 40%;
+position: relative;
+
+
+}
+.button_wrap1 {
+position: absolute;
+top: 0;
+right: 0;
 }
