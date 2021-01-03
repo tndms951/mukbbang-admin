@@ -10,22 +10,16 @@ function BreadBossDetail({ match }) {
   const [value, setValue] = useState({
     name: '',
     phoneNumber: '',
-    profile: '',
     enabled: '',
     imageUrl: ''
   });
 
-  const { name, phoneNumber, profile, enabled } = value;
+  const { name, phoneNumber, enabled } = value;
 
   // 서버에서 받아온 값 저장
   const [boss, setBoss] = useState(null);
   console.log(boss);
   console.log(value);
-
-  // const [profile, setProfile] = useState({
-  //   profileName: '',
-  //   profileUrl: '',
-  // });
 
   // 취소, 수정 값
   const [edit, setEdit] = useState(false);
@@ -64,10 +58,9 @@ function BreadBossDetail({ match }) {
       const modifyObject = {
         name: value.name,
         phoneNumber: value.phoneNumber,
-        imageUrl: value.profile
+        imageUrl: value.imageUrl
       };
-      console.log(value.name);
-      console.log(boss.name);
+      console.log(modifyObject);
 
       const { status } = await axios.put(`/admin/shop/${bossId}`, modifyObject);
       if (status === 201) {
@@ -88,27 +81,20 @@ function BreadBossDetail({ match }) {
     }
   };
 
-  const handleSubmit2 = async (e) => {
-    e.preventDefault();
-
+  // 탈퇴 핸들써브밋
+  const handleSubmit2 = async () => {
     const { bossId } = match.params;
     try {
       const modifyObject = {
         enabled: 'true'
       };
-      console.log(value.name);
-      console.log(boss.name);
 
-      const { status } = await axios.put(`/admin/shop/${bossId}/valid`, modifyObject);
+      const { status } = await axios.patch(`/admin/shop/${bossId}/valid`, modifyObject);
       if (status === 201) {
-        console.log('수정페이지 연결 !!!!!!');
-
         setBoss({
-          ...value,
+          ...boss,
           enabled: value.enabled
         });
-
-        setEdit(!edit);
       }
     } catch (err) {
       errorhandler(err);
@@ -335,7 +321,10 @@ function BreadBossDetail({ match }) {
                     취소
                   </button>
                 ) : (
-                  <button type="button" className="mb-2 btn btn-secondary mr-2">
+                  <button
+                    type="button"
+                    className="mb-2 btn btn-secondary mr-2"
+                    onClick={handleSubmit2}>
                     탈퇴
                   </button>
                 )}

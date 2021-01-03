@@ -14,9 +14,9 @@ import { selectBreadBossList } from '../../../../redux/bread-boss/breadBoss.sele
 
 function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
   // const [breadBossList, setBreadBossList] = useState([]);
-
   const [name, setName] = useState('');
-
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
   const [enabled, setEnabled] = useState(null);
 
   useEffect(() => {
@@ -26,13 +26,12 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
           ignoreQueryPrefix: true
         });
         const { status, data: bossData } = await axios.get(`/admin/shop${location.search}`);
-        // console.log(location);
-
+        console.log(bossData);
         if (status === 200) {
+          console.log(query);
           onBreadBossList(bossData.list);
           setName(query.name || '');
-          // setEnabled(query.enabled || '');
-          // setBreadBossList(bossData.list);
+          setEnabled(query.enabled);
         }
       } catch (err) {
         errorhandler(err);
@@ -57,10 +56,10 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
     if (name) {
       queryObject.name = name;
     }
+    console.log(enabled);
     if (enabled) {
-      queryObject.enabled = enabled;
+      queryObject.valid = enabled;
     }
-    console.log(queryObject.name);
     const queryData = qs.stringify(queryObject);
     console.log(queryData);
     history.push(`/bread_boss_list${queryData ? `?${queryData}` : ''}`);
@@ -68,6 +67,11 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
 
   const handleChange = (e) => {
     setName(e.target.value);
+  };
+
+  const selectHandleChange = (e) => {
+    setEnabled(e.target.value);
+    console.log(e.target.value);
   };
 
   return (
@@ -110,10 +114,12 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
                   탈퇴 여부
                 </span>
                 <div className="form-group col-md-4">
-                  <select className="form-control" onChange={setEnabled}>
-                    <option readOnly>선택하세요</option>
-                    <option>사용중</option>
-                    <option>탈퇴</option>
+                  <select className="form-control" value={enabled} onChange={selectHandleChange}>
+                    <option value="" readOnly>
+                      선택하세요
+                    </option>
+                    <option value="true">사용중</option>
+                    <option value="false">탈퇴</option>
                   </select>
                 </div>
               </div>
