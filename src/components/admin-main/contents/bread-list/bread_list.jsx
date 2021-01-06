@@ -67,7 +67,7 @@ function BreadList({ history, location }) {
           <div className="form-group row">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span>빵이름</span>
             </label>
             <div className="col-sm-8">
@@ -80,7 +80,7 @@ function BreadList({ history, location }) {
               />
             </div>
           </div>
-          <div className="search nav justify-content-end">
+          <div className="event-search nav justify-content-end">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
               초기화
             </button>

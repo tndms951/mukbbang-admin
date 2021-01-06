@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
+import CloseButton from '../../../../shared/button/close_button';
 
 import './bread_detail.css';
 
@@ -71,6 +72,14 @@ function Detail({ match, history }) {
     }
   };
 
+  // 삭제버튼
+  const resetInput = () => {
+    setValue({
+      ...value,
+      imageUrl: ''
+    });
+  };
+
   return (
     <>
       <div className="container event_wrap">
@@ -78,7 +87,7 @@ function Detail({ match, history }) {
           <div className="form-group row justify-content-start">
             <div
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 이름</span>
               <span className="contentName"> {DataList && DataList.title} </span>
             </div>
@@ -87,18 +96,28 @@ function Detail({ match, history }) {
           <div className="form-group row justify-content-start">
             <div
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 소개</span>
               <span className="contentName"> {DataList && DataList.content} </span>
             </div>
           </div>
 
           <div className="form-group input-group input-group-lg row justify-content-start">
-            <div htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
+            <div htmlFor="colFormLabelLg" className="col-xs-2 col-form-label event-title">
               <span className="text1">빵 이미지</span>
               <span className="contentName">
                 {DataList && (
-                  <img src={DataList.images[0].imageUrl} alt="빵 이미지" className="bread_image" />
+                  <>
+                    <img src={DataList.images[0].imageUrl} alt="빵 이미지" className="bread_image" />
+                    <div
+                      className="button_wrap"
+                      onClick={resetInput}
+                      role="button"
+                      tabIndex={0}
+                      aria-hidden="true">
+                      <CloseButton />
+                    </div>
+                  </>
                 )}
               </span>
             </div>
@@ -109,7 +128,7 @@ function Detail({ match, history }) {
               }}
             />
           </div>
-          <div className="search nav justify-content-end row">
+          <div className="event-search nav justify-content-end row">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={onDelete}>
               삭제
             </button>

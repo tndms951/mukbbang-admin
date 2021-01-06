@@ -81,10 +81,10 @@ const EventList = ({ eventList, onEventList, history, location }) => {
         <h1 className="text">검색조건</h1>
 
         <form className="form_wrap" onSubmit={handleSearch}>
-          <div className="form-group row">
+          <div className="event-form-group row">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span>제목</span>
             </label>
             <div className="col-sm-8">
@@ -98,10 +98,10 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </div>
           </div>
 
-          <div className="form-group row justify-content-start align-items-center">
+          <div className="event-form-group row justify-content-start align-items-center">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span>날짜</span>
             </label>
             <div className="col-sm-10 myContainer">
@@ -125,7 +125,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </div>
           </div>
 
-          <div className="search nav justify-content-end">
+          <div className="event-search nav justify-content-end">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
               초기화
             </button>

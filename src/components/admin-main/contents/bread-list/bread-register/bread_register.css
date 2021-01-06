@@ -31,7 +31,6 @@
 }
 
 .add_file {
-
   width: 100%;
   justify-content: right;
 }
@@ -41,12 +40,24 @@
 }
 .image_wrap1{
 width: 40%;
-position: relative;
-
 
 }
-.button_wrap1 {
+.bread_image1 {
+  width: 100%;
+  
+}
+.bread_button_wrap {
 position: absolute;
 top: 0;
 right: 0;
+}
+
+.bread_image_wrap {
+  width: 100%;
+  display: flex;
+}
+
+.bread-image {
+  position: relative;
+  
 }

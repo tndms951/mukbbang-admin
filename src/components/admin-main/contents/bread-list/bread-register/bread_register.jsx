@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import queryString from 'query-string';
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
-import CloseButton from '../../../../utils/button/close_button';
+import CloseButton from '../../../../shared/button/close_button';
 
 import './bread_register.css';
 
@@ -48,9 +48,12 @@ const BreadRegister = ({ history, location, match }) => {
   const [breadImage, setBreadImage] = useState({
     imageUrl: ''
   });
+  console.log(breadImage.imageUrl);
 
   // 여러 이미지 담는곳
   const [registerImageList, setRegisterImageList] = useState([]);
+  console.log(registerImageList);
+  console.log(breadImage);
 
   const { title, content } = breadContent;
 
@@ -72,13 +75,13 @@ const BreadRegister = ({ history, location, match }) => {
       const imageLength = files.length + registerImageList.length;
       if (imageLength > 8) {
         alert('이미지를 초과했습니다.');
-        return;
       }
 
       const imageFormData = new FormData();
       for (let i = 0; i < files.length; i += 1) {
         imageFormData.append('imgFile', e.target.files[i]);
       }
+      console.log(imageFormData);
       const { status, data: imageData } = await axios.post('/upload/bread', imageFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -86,6 +89,12 @@ const BreadRegister = ({ history, location, match }) => {
       });
       if (status === 200) {
         const { data: { imageUrl: newImageUrlList } } = imageData;
+        setBreadImage({
+          ...breadImage,
+          imageUrl: newImageUrlList
+        });
+        console.log(newImageUrlList.imageUrl);
+
         const newimageList = [];
         console.log('성공');
         console.log(newImageUrlList);
@@ -95,10 +104,11 @@ const BreadRegister = ({ history, location, match }) => {
           };
           newimageList.push(newImage);
         });
+        setRegisterImageList([...registerImageList, ...newimageList]);
       }
     } catch (err) {
       errorhandler(err);
-      // console.log(err.message);
+      console.log(err.message);
     }
   };
 
@@ -110,7 +120,7 @@ const BreadRegister = ({ history, location, match }) => {
         content: breadContent.content,
         imageUrl: [breadImage.imageUrl]
       };
-      return;
+      // return;
 
       const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
       console.log(breadData);
@@ -122,6 +132,7 @@ const BreadRegister = ({ history, location, match }) => {
       console.log(err.message);
     }
   };
+
   const handleRemove = () => {
     setBreadContent({
       title: '',
@@ -132,20 +143,25 @@ const BreadRegister = ({ history, location, match }) => {
     });
   };
 
-  const resetInput = () => {
+  const resetInput = (index) => {
     setBreadImage({
       imageUrl: ''
     });
+    const deleteImageList = [...registerImageList];
+    deleteImageList.splice(index, 1);
+    setRegisterImageList(deleteImageList);
+    console.log('삭제');
   };
 
   return (
+
     <>
       <div className="container event_wrap">
         <form className="form_wrap" onSubmit={handleSubmit}>
           <div className="form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 이름</span>
             </label>
             <div className="col-sm-7">
@@ -163,7 +179,7 @@ const BreadRegister = ({ history, location, match }) => {
           <div className="form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 소개</span>
             </label>
             <div className="col-sm-7">
@@ -178,42 +194,72 @@ const BreadRegister = ({ history, location, match }) => {
             </div>
           </div>
 
-          <div className="form-group row justify-content-start">
+          <div className="form-group row justify-content-start bread_image_wrap">
             <div
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 이미지</span>
             </div>
+
             <label className="btn btn-primary btn-file col-sm-1 add_file">
               파일추가
+              {registerImageList.length !== 8 && (
               <input
                 type="file"
-                style={{
-                  display: 'none'
-                }}
                 onChange={ImagehandleChange}
                 name="breadImage"
                 multiple
-              />
-            </label>
-          </div>
-          <div className="image_file1">
-            <div className="image_wrap1">
-              {breadImage.imageUrl ? (
-                <>
-                  <div className="any_image">
-                    <img src={breadImage.imageUrl} alt="" className="image3" />
-                  </div>
-                  <div className="button_wrap1" onClick={resetInput}>
-                    <CloseButton />
-                  </div>
-                </>
-              ) : (
-                ''
+               />
               )}
+
+            </label>
+
+            <div className="image_file1">
+              <div className="image_wrap1">
+
+                {registerImageList.map((imageData, index) => (
+                  <div className="d-flex bread-image" key={`image-${index}`}>
+                    <img
+                      src={imageData.imageUrl}
+                      alt=""
+                      className="bread_image1"
+                       />
+                    <div
+                      className="bread_button_wrap"
+                      onClick={() => resetInput(index)}
+                      role="button"
+                      tabIndex={0}
+                      aria-hidden="true">
+                      <CloseButton />
+                    </div>
+
+                  </div>
+                ))}
+
+                {/* {breadImage.imageUrl ? (
+                  <>
+                    <div className="any_image">
+                      <img src={breadImage.imageUrl} alt="" className="image3" />
+                    </div>
+                    <div
+                      className="button_wrap1"
+                      onClick={resetInput}
+                      role="button"
+                      tabIndex={0}
+                      aria-hidden="true">
+                      <CloseButton />
+                    </div>
+
+                  </>
+                ) : (
+                  ''
+
+                )} */}
+              </div>
             </div>
           </div>
-          <div className="search nav justify-content-end row w-100">
+
+          <div className="event-search nav justify-content-end row w-100">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleRemove}>
               취소
             </button>
@@ -222,7 +268,7 @@ const BreadRegister = ({ history, location, match }) => {
               저장
             </button>
           </div>
-          <div className="search nav justify-content-end row w-100">
+          <div className="event-search nav justify-content-end row w-100">
             <Link to="/bread_list" className="btn btn-primary btn-sm col-2 text3">
               목록
             </Link>
