@@ -1,11 +1,7 @@
 import React from 'react';
 
-const breadHouseList = () => {
-  return (
-    <>
-        <h2>빵집 목록 페이지!!!!!!!!!!!!!</h2>
-    </>
-  )
+function BreadHouseList() {
+  return <div>빵집 리스트 페이지 !!!!!!!!!!!!!!!</div>;
 }
 
-export default breadHouseList;
+export default BreadHouseList;

@@ -6,13 +6,13 @@
     width: 90%;
     margin: 0 auto;
 }
-.form-group:first-of-type {
+/* .form-group:first-of-type {
     margin-bottom: 10px;
-}
+} */
 h1 {
     margin-bottom: 3%;
 }
-.form-row>.col {
+.form-row > .col {
     padding-right: 30px;
 }
 .cancle {

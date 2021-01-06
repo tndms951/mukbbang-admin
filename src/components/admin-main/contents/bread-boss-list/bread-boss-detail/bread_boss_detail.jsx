@@ -1,3 +1,5 @@
+/* eslint-disable no-shadow */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
@@ -18,30 +20,19 @@ function BreadBossDetail({ match }) {
 
   // 서버에서 받아온 값 저장
   const [boss, setBoss] = useState(null);
-  console.log(boss);
-  console.log(value);
 
   // 취소, 수정 값
   const [edit, setEdit] = useState(false);
 
-  // Xbutton
-  // const [xbutton, setXbutton] = useState(false);
-
   useEffect(() => {
-    console.log(match.params);
     const { bossId } = match.params;
 
     const fetchData = async () => {
       try {
         const { status, data: bossData } = await axios.get(`/admin/shop/${bossId}`);
-        // console.log(bossData);
         if (status === 200) {
-          console.log('디테일 페이지 연결 !!!!!!!!!');
           const { data } = bossData;
-          // console.log(data);
           setBoss(data);
-          // console.log(value);
-          // setBoss(data.imageUrl);
         }
       } catch (err) {
         errorhandler(err);
@@ -60,12 +51,9 @@ function BreadBossDetail({ match }) {
         phoneNumber: value.phoneNumber,
         imageUrl: value.imageUrl
       };
-      console.log(modifyObject);
 
       const { status } = await axios.put(`/admin/shop/${bossId}`, modifyObject);
       if (status === 201) {
-        console.log('수정페이지 연결 !!!!!!');
-
         setBoss({
           ...boss,
           name: value.name,
@@ -102,7 +90,6 @@ function BreadBossDetail({ match }) {
   };
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setValue({
       ...value,
       [e.target.name]: e.target.value
@@ -119,11 +106,7 @@ function BreadBossDetail({ match }) {
       imageUrl: boss.imageUrl,
       enabled: boss.enabled
     });
-    console.log(value);
-    console.log(boss);
   };
-
-  console.log(boss);
 
   //   const profileHandleChange = async () => {
   //     const { bossId } = match.params;
@@ -141,7 +124,6 @@ function BreadBossDetail({ match }) {
 
   // 이미지 삭제 핸들러
   const resetOnClick = () => {
-    console.log('이미지 삭제 !!!!');
     setValue({
       ...value,
       imageUrl: ''
@@ -169,7 +151,6 @@ function BreadBossDetail({ match }) {
           imageUrl: data.imageUrl
         });
       }
-      console.log('사진넣어야되');
     } catch (err) {
       errorhandler(err);
     }
@@ -192,13 +173,11 @@ function BreadBossDetail({ match }) {
                 }}>
                 이름
               </span>
-              {/* <div className="form-group col-5" /> */}
               {edit ? (
                 <div className="form-group col-5">
                   <input
                     type="text"
                     className="form-control"
-                    // id="inputPassword4"
                     placeholder="이름을 입력해 주세요"
                     onChange={handleChange}
                     value={name}
@@ -262,7 +241,11 @@ function BreadBossDetail({ match }) {
                       }}
                       value="true"
                     />
-                    <div className="button_wrap" onClick={resetOnClick}>
+                    <div
+                      role="button"
+                      aria-hidden="true"
+                      className="button_wrap"
+                      onClick={resetOnClick}>
                       <Xbutton />
                     </div>
                   </div>
@@ -272,10 +255,8 @@ function BreadBossDetail({ match }) {
                       type="file"
                       className="form-control"
                       name="profileName"
-                      // value={profileName}
                       onChange={profileHandleChange}
                     />
-                    {/* <label className="input-group-text">Upload</label> */}
                   </div>
                 )
               ) : (
@@ -306,7 +287,6 @@ function BreadBossDetail({ match }) {
               </span>
 
               <div className="form-group col-5">
-                {/* <span>{boss ? '성공' : '탈퇴'}</span> */}
                 <span>{boss?.enabled ? '사용중' : '탈퇴'}</span>
               </div>
             </div>
