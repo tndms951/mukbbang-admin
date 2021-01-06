@@ -6,7 +6,7 @@ import MainSidebar from './sidebar/sidebar_main';
 import Header from './header/header';
 
 import Content from './main_content';
-import BreadHouseList from './contents/bread-house-list/bread_house_list';
+import BreadHouseList from './contents/bread-house-list/bread_house_router';
 // import BreadListRouter from './contents/bread-list/bread_router';
 import YoutubeList from './contents/youtube/youtube';
 import EventRouter from './contents/event/event_router';

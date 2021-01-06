@@ -78,7 +78,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
         <h1 className="text">검색조건</h1>
 
         <form className="form_wrap" onSubmit={handleSearch}>
-          <div className="form-group row">
+          <div className="event-form-group row">
             <label
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg title">
@@ -95,7 +95,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </div>
           </div>
 
-          <div className="form-group row justify-content-start align-items-center">
+          <div className="event-form-group row justify-content-start align-items-center">
             <label
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg title">
