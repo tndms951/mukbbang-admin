@@ -1,0 +1,148 @@
+.filebox label { 
+  display: inline-block; 
+  padding: .5em .75em; 
+  color: #999; font-size: inherit; 
+  line-height: normal; 
+  vertical-align: middle; 
+  background-color: #fdfdfd; 
+  cursor: pointer; 
+  border: 1px solid #ebebeb; 
+  border-bottom-color: #e2e2e2; 
+  border-radius: .25em; 
+} 
+.filebox input[type="file"] { 
+  /* 파일 필드 숨기기 */ 
+  position: absolute; 
+  width: 1px; 
+  height: 1px; 
+  padding: 0; 
+  margin: -1px; 
+  overflow: hidden; 
+  clip:rect(0,0,0,0); 
+  border: 0; 
+}
+
+.filebox label {
+  color: #fff;
+  background-color: #3480d1;
+  border-color: #2e6da4;
+}
+
+.adressbox button {
+  color: #fff;
+  background-color: #3480d1;
+  border-color: #2e6da4;
+  border-radius: .25em;
+  font-size: inherit;  
+}
+
+.date select { 
+  width: 130px; 
+  padding: .4em .5em; 
+  font-family: inherit; 
+  border: 1px solid #ced4da; 
+  border-radius: .25rem; 
+  color: #495057; 
+  /* -webkit-appearance: none;  
+  -moz-appearance: none; appearance: none; */
+  font-size: .8125rem; 
+}
+
+.date option {
+  color: #495057;
+  font-size: .8125rem;
+}
+
+.checkbox label {
+  margin-right: 11%;
+  font-weight: 600;
+  color: #495057;
+}
+
+.checkbox label:nth-child(6), .checkbox label:nth-child(7) {
+  color: red;
+}
+/* 
+.bread_search {
+  position: relative;
+} */
+
+.bread_image_box {
+  background-color: #e2e2e2;
+  max-width: 700px;
+  height: 100px;
+  overflow: auto;
+  padding: 20px;
+  outline: 1px solid red;
+}
+
+/* 모달창 */
+.Modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.16);
+  z-index: 100;
+}
+.Modal {
+  position: fixed;
+  top: 50%;
+  left: 55%;
+  transform: translate(-50%, -50%);
+  /* width: 320px; */
+  border-radius: 10px;
+  background-color: white;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  z-index: 100;
+}
+.Modal > * {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+.Modal > *:first-child {
+  margin-top: 16px;
+}
+.Modal p.title {
+  font-size: 16pt;
+  font-weight: bold;
+  color: #333;
+}
+.Modal .content {
+  border-top: 1px solid #bebebe;
+  margin-top: 16px;
+}
+.Modal .content ul {
+  padding: 8px;
+  font-size: 12pt;
+  color: #999;
+}
+.Modal .content ul li {
+  list-style: none;
+}
+.Modal .button-wrap {
+  margin: 0;
+  margin-top: 8px;
+}
+.Modal .button-wrap button {
+  width: 100%;
+  padding: 12px 0;
+  border-radius: 0 0 10px 10px;
+  background-color: #3480d1;;
+  font-size: 13pt;
+  color: white;
+  border: 0;
+  cursor: pointer;
+}
+.Modal .button-wrap button:hover {
+  background-color: #3480d1;
+}
+.Modal .button-wrap button:active {
+  background-color: #3480d1;
+}
+
+.Modal_Overflow {
+  overflow: hidden;
+}
+
