@@ -14,20 +14,30 @@ function Detail({ match, history }) {
     content: '',
     imageUrl: ''
   });
+
   // 서버에 받아온값 저장
-  const [DataList, setDataList] = useState(null);
-  console.log(DataList);
+  const [dataList, setDataList] = useState(null);
+  console.log(dataList);
+
+  // 이미지 값 저장 (이거추가)
+  const [breadImageList, setBreadImageList] = useState([]);
+  console.log(breadImageList);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const { breadId } = match.params;
         console.log(breadId);
+
         const { status, data: detailData } = await axios.get(`/admin/bread/${breadId}`);
         console.log(detailData);
+        console.log(detailData.data.images);
+        console.log(detailData.data.id);
+
         if (status === 200) {
           const { data } = detailData;
           setDataList(data);
+          setBreadImageList(data.images); // 이거추가
         }
       } catch (err) {
         errorhandler(err);
@@ -89,7 +99,7 @@ function Detail({ match, history }) {
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 이름</span>
-              <span className="contentName"> {DataList && DataList.title} </span>
+              <span className="contentName"> {dataList && dataList.title} </span>
             </div>
           </div>
 
@@ -98,7 +108,7 @@ function Detail({ match, history }) {
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">빵 소개</span>
-              <span className="contentName"> {DataList && DataList.content} </span>
+              <span className="contentName"> {dataList && dataList.content} </span>
             </div>
           </div>
 
@@ -106,19 +116,26 @@ function Detail({ match, history }) {
             <div htmlFor="colFormLabelLg" className="col-xs-2 col-form-label event-title">
               <span className="text1">빵 이미지</span>
               <span className="contentName">
-                {DataList && (
-                  <>
-                    <img src={DataList.images[0].imageUrl} alt="빵 이미지" className="bread_image" />
+                <div className="image_wrap">
+                  
+                  
+                    {dataList?.images.map((imageData, index) => (
+                      <div className="d-flex bread-image" key={`image-${index}`}>
+                        <img src={imageData.imageUrl} alt="빵 이미지" className="bread_image1" />
+                      </div>
+                    ))}
+
+                    {/*
+                    <img src={dataList && dataList.images} alt="빵 이미지" className="bread_image" />
                     <div
-                      className="button_wrap"
-                      onClick={resetInput}
-                      role="button"
-                      tabIndex={0}
-                      aria-hidden="true">
-                      <CloseButton />
-                    </div>
-                  </>
-                )}
+                    className="button_wrap"
+                    onClick={resetInput}
+                    role="button"
+                    tabIndex={0}
+                    aria-hidden="true">
+                    <CloseButton />
+                    </div> */}
+                </div>
               </span>
             </div>
             <div
@@ -136,9 +153,8 @@ function Detail({ match, history }) {
             <div className="row">
               <div className=" nav justify-content-end">
                 <Link
-                  to="/bread_list/bread_register"
-                  className="btn btn-primary modify"
-                  onClick={handleSubmit}>
+                  to={`/bread_list/bread_register?breadId=${dataList?.id}`}
+                  className="btn btn-primary modify">
                   수정
                 </Link>
               </div>

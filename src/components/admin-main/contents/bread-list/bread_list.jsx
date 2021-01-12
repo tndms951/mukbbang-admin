@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import qs from 'qs';
 
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import axios from '../../../utils/axios';
 import { errorhandler } from '../../../utils/common';
 
@@ -10,7 +11,6 @@ import './bread_list.css';
 function BreadList({ history, location }) {
   // 리스트 받아온 값
   const [mapList, setMapList] = useState([]);
-  // console.log(mapList);
 
   // 검색조회
   const [title, setTitle] = useState('');
@@ -22,7 +22,7 @@ function BreadList({ history, location }) {
           ignoreQueryPrefix: true
         });
         const { status, data: breadData } = await axios.get(`/admin/bread${location.search}`);
-        console.log(breadData);
+        // console.log(breadData);
         if (status === 200) {
           setMapList(breadData.list);
           setTitle(query.title || '');
@@ -44,13 +44,13 @@ function BreadList({ history, location }) {
     e.preventDefault();
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
-    console.log(queryObject);
+
     if (title) {
       queryObject.title = title;
     }
     const queryData = qs.stringify(queryObject);
     history.push(`/bread_list${queryData ? `?${queryData}` : ''}`);
-    console.log(queryData);
+    // console.log(queryData);
   };
 
   // 초기화 핸들체인지
@@ -64,7 +64,7 @@ function BreadList({ history, location }) {
         <h1 className="text">검색조건</h1>
 
         <form className="form_wrap" onSubmit={handleSearch}>
-          <div className="form-group row">
+          <div className="form-group row mt-4">
             <label
               htmlFor="colFormLabelLg"
               className="col-xs-2 col-form-label col-form-label-lg event-title">
@@ -80,7 +80,7 @@ function BreadList({ history, location }) {
               />
             </div>
           </div>
-          <div className="event-search nav justify-content-end">
+          <div className="bread-search nav justify-content-end">
             <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
               초기화
             </button>
@@ -97,7 +97,7 @@ function BreadList({ history, location }) {
             </div>
           </div>
         </form>
-        <div className="row">
+        <div className="row w-100">
           <div className="col mr-5 ml-5">
             <div className="card card-small mb-4">
               <div className="card-header border-bottom">
@@ -150,5 +150,10 @@ function BreadList({ history, location }) {
     </>
   );
 }
+
+BreadList.propTypes = {
+  history: PropTypes.instanceOf(Array).isRequired,
+  location: PropTypes.instanceOf(Array).isRequired
+};
 
 export default BreadList;

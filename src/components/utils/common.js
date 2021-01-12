@@ -10,10 +10,14 @@ export const isEmailValid = (value) => {
 };
 
 export const sweetAlert = (title, icon = 'error') => {
-  MySwal.fire({
-    icon,
-    title
-  });
+  console.log(title);
+  console.log(icon);
+  return (
+    MySwal.fire({
+      title,
+      icon
+    })
+  );
 };
 
 export const errorhandler = (err) => {

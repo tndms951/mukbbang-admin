@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
-import queryString from 'query-string';
+import qs from 'qs';
+import PropTypes from 'prop-types';
+
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
 import CloseButton from '../../../../shared/button/close_button';
@@ -12,48 +14,52 @@ import './bread_register.css';
  * @author song-jisu /빵(등록하러가기)
  */
 
-const BreadRegister = ({ history, location, match }) => {
-  // const [aaa, setAaa] = useState(null);
-
-  // 만들어보기
-  // useEffect(() => {
-  //   async function fetchData() {
-  //     const { breadId } = match.params;
-  //     console.log(breadId);
-  //     const query = queryString.parse(location.search);
-  //     // return query;
-  //     console.log(location);
-  //     console.dir(match);
-  //     const { status, data: registerData } = await axios.get(`/admin/bread/${breadId}`);
-  //     try {
-  //       if (status === 200) {
-  //         const { data } = registerData;
-  //         setAaa(data);
-  //         alert('성공');
-  //       }
-  //     } catch (err) {
-  //       alert('오류');
-  //     }
-  //   }
-  //   fetchData();
-  // }, []);
-
+const BreadRegister = ({ history, location }) => {
   // 빵이름 소개
   const [breadContent, setBreadContent] = useState({
     title: '',
     content: ''
   });
 
-  // 빵 이미지
-  const [breadImage, setBreadImage] = useState({
-    imageUrl: ''
-  });
-  console.log(breadImage.imageUrl);
-
   // 여러 이미지 담는곳
   const [registerImageList, setRegisterImageList] = useState([]);
-  console.log(registerImageList);
-  console.log(breadImage);
+  // console.log(registerImageList);
+
+  // 페이지 이동시
+  const [breadId, setBreadId] = useState(-1);
+  // console.log(breadId);
+
+  // 만들어보기
+  useEffect(() => {
+    const query = qs.parse(location.search, {
+      ignoreQueryPrefix: true
+    });
+    // console.log(query);
+
+    async function fetchData(breadqueryId) {
+      // console.log(breadqueryId); // 매개변수사용해서 아래 query가 필요없음 아래처럼 뺄수 있고 매개변수로사용할수있고 2가지 방법있음!
+
+      // const { breadId } = query;
+      // console.log(breadId);
+      const { status, data: registerData } = await axios.get(`/admin/bread/${breadqueryId}`);
+      try {
+        if (status === 200) {
+          const { data } = registerData;
+          setBreadContent({
+            title: data.title,
+            content: data.content
+          });
+          setRegisterImageList(data.images);
+        }
+      } catch (err) {
+        errorhandler(err);
+      }
+    }
+    if (query.breadId) {
+      fetchData(query.breadId);
+      setBreadId(query.breadId);
+    }
+  }, [location.search]);
 
   const { title, content } = breadContent;
 
@@ -63,15 +69,15 @@ const BreadRegister = ({ history, location, match }) => {
       ...breadContent,
       [e.target.name]: e.target.value
     });
-    console.log(e.target);
-    console.log(breadContent);
+
+    // console.log(breadContent);
   };
 
   // 이미지 핸들체인지
   const ImagehandleChange = async (e) => {
     try {
       const { files } = e.target;
-      console.log(files);
+      // console.log(files);
       const imageLength = files.length + registerImageList.length;
       if (imageLength > 8) {
         alert('이미지를 초과했습니다.');
@@ -81,7 +87,9 @@ const BreadRegister = ({ history, location, match }) => {
       for (let i = 0; i < files.length; i += 1) {
         imageFormData.append('imgFile', e.target.files[i]);
       }
-      console.log(imageFormData);
+
+      // console.log(imageFormData);
+
       const { status, data: imageData } = await axios.post('/upload/bread', imageFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -89,15 +97,10 @@ const BreadRegister = ({ history, location, match }) => {
       });
       if (status === 200) {
         const { data: { imageUrl: newImageUrlList } } = imageData;
-        setBreadImage({
-          ...breadImage,
-          imageUrl: newImageUrlList
-        });
-        console.log(newImageUrlList.imageUrl);
+        // console.log(newImageUrlList);
+        // console.log(imageData);
 
         const newimageList = [];
-        console.log('성공');
-        console.log(newImageUrlList);
         newImageUrlList.forEach((image) => {
           const newImage = {
             imageUrl: image
@@ -108,49 +111,53 @@ const BreadRegister = ({ history, location, match }) => {
       }
     } catch (err) {
       errorhandler(err);
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
+  // 저장했을때
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      const arr = [];
+      for (let i = 0; i < registerImageList.length; i += 1) {
+        arr.push(registerImageList[i].imageUrl);
+      }
+
       const breadObject = {
         title: breadContent.title,
         content: breadContent.content,
-        imageUrl: [breadImage.imageUrl]
+        imageUrl: arr
       };
-      // return;
+      // console.log(breadObject);
 
-      const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
-      console.log(breadData);
+      if (breadId === -1) {
+        const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
+        console.log(breadData);
+        if (status === 201) {
+          history.push('/bread_list');
+        }
+        return;
+      }
+
+      const { status } = await axios.put(`/admin/bread/${breadId}`, breadObject);
       if (status === 201) {
-        history.push('/bread_list');
+        history.push(`/bread_list/detail/${breadId}`);
       }
     } catch (err) {
       errorhandler(err);
-      console.log(err.message);
+      // console.log(err.message);
     }
   };
 
-  const handleRemove = () => {
-    setBreadContent({
-      title: '',
-      content: ''
-    });
-    setBreadImage({
-      imageUrl: ''
-    });
+  const goback = () => {
+    history.goBack();
   };
 
   const resetInput = (index) => {
-    setBreadImage({
-      imageUrl: ''
-    });
     const deleteImageList = [...registerImageList];
     deleteImageList.splice(index, 1);
     setRegisterImageList(deleteImageList);
-    console.log('삭제');
   };
 
   return (
@@ -172,7 +179,7 @@ const BreadRegister = ({ history, location, match }) => {
                 name="title"
                 onChange={handleChange}
                 value={title}
-              />
+                />
             </div>
           </div>
 
@@ -217,13 +224,13 @@ const BreadRegister = ({ history, location, match }) => {
             <div className="image_file1">
               <div className="image_wrap1">
 
-                {registerImageList.map((imageData, index) => (
+                {registerImageList.map((imageDataA, index) => (
                   <div className="d-flex bread-image" key={`image-${index}`}>
                     <img
-                      src={imageData.imageUrl}
+                      src={imageDataA.imageUrl}
                       alt=""
                       className="bread_image1"
-                       />
+                         />
                     <div
                       className="bread_button_wrap"
                       onClick={() => resetInput(index)}
@@ -235,37 +242,17 @@ const BreadRegister = ({ history, location, match }) => {
 
                   </div>
                 ))}
-
-                {/* {breadImage.imageUrl ? (
-                  <>
-                    <div className="any_image">
-                      <img src={breadImage.imageUrl} alt="" className="image3" />
-                    </div>
-                    <div
-                      className="button_wrap1"
-                      onClick={resetInput}
-                      role="button"
-                      tabIndex={0}
-                      aria-hidden="true">
-                      <CloseButton />
-                    </div>
-
-                  </>
-                ) : (
-                  ''
-
-                )} */}
               </div>
             </div>
           </div>
 
           <div className="event-search nav justify-content-end row w-100">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleRemove}>
+            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={goback}>
               취소
             </button>
 
             <button type="submit" className="btn btn-primary btn-sm col-1">
-              저장
+              {breadId === -1 ? '저장' : '수정'}
             </button>
           </div>
           <div className="event-search nav justify-content-end row w-100">
@@ -278,4 +265,10 @@ const BreadRegister = ({ history, location, match }) => {
     </>
   );
 };
+
+BreadRegister.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Array).isRequired
+};
+
 export default BreadRegister;
