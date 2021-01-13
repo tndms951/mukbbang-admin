@@ -10,17 +10,17 @@ function BreadHoustList() {
     console.log('렌더링 후 !!!!!');
   }, []);
 
-  const format = 'HH:mm';
+  // const format = 'HH:mm';
 
   // 모달
   const el = useRef();
   const [modalOpen, setModalOpen] = useState(false);
 
   // 오픈 모달
-  const opneModal = () => {
-    document.body.classList.add('Modal_Overflow');
-    setModalOpen(true);
-  };
+  // const opneModal = () => {
+  //   document.body.classList.add('Modal_Overflow');
+  //   setModalOpen(true);
+  // };
 
   // 클로짓 모달
   const closeModal = () => {
@@ -147,8 +147,8 @@ function BreadHoustList() {
                 영업시간
               </span>
               <div className="form-group col-5 date">
-                {/* <select defaultValue="DEFAULT">
-                  <option selected value="시작시간">
+                {/* <select defaultValue="시작시간">
+                  <option value="시작시간">
                     시작시간
                   </option>
                   <option value="00:00">00:00</option>
@@ -183,7 +183,7 @@ function BreadHoustList() {
                 <span className="col-sm-8"> 23:00 </span>
 
                 {/* <select defaultValue="마감시간">
-                  <option selected value="마감시간">
+                  <option value="마감시간">
                     마감시간
                   </option>
                   <option value="00:00">00:00</option>
@@ -322,48 +322,48 @@ function BreadHoustList() {
               </div>
             </div>
 
-            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box col-7">
+            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box">
               {/* <span className="col-2"> </span> */}
 
               <div
-                className="d-block card col-5 mb-3 mt-3 bread_container"
+                className="card col-5 mb-3 mt-3 bread_container"
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={arrowDown} alt="Card image cap" />
+                <img className="card-img-top" src={arrowDown} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
               </div>
 
               <div
-                className="d-block card col-5 mb-3 mt-3 bread_container"
+                className="card col-5 mb-3 mt-3 bread_container"
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={ReactImage} alt="Card image cap" />
+                <img className="card-img-top" src={ReactImage} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
               </div>
 
               <div
-                className="d-block card col-5 mb-3 mt-3 bread_container"
+                className="card col-5 mb-3 mt-3 bread_container"
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={arrowDown} alt="Card image cap" />
+                <img className="card-img-top" src={arrowDown} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
               </div>
 
               <div
-                className="d-block card col-5 mb-3 mt-3 bread_container"
+                className="card col-5 mb-3 mt-3 bread_container"
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={ReactImage} alt="Card image cap" />
+                <img className="card-img-top" src={ReactImage} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>

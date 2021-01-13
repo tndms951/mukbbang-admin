@@ -70,10 +70,23 @@
 .bread_image_box {
   background-color: #e2e2e2;
   max-width: 700px;
-  height: 100px;
+  height: 450px;
   overflow: auto;
   padding: 20px;
-  outline: 1px solid red;
+  /* outline: 1px solid red; */
+}
+.bread_image_box::-webkit-scrollbar {
+  width: 10px;
+  background-color: black;
+}
+.bread_image_box::-webkit-scrollbar-thumb {
+  background-color: #838383;
+  border-radius: 10px;
+}
+.bread_image_box::-webkit-scrollbar-track {
+  background-color: #e9e9e9;
+  border-radius: 10px;
+  box-shadow: inset 0px 0px 5px white;
 }
 
 /* 모달창 */

@@ -1,22 +1,57 @@
 /* eslint-disable react/button-has-type */
 import React, { useState, useRef, useEffect } from 'react';
-
-// import ReactDOM from 'react-dom';
-import 'antd/dist/antd.css';
-// import './index.css';
-import { TimePicker } from 'antd';
-import moment from 'moment';
+import axios from '../../../../utils/axios';
+import { errorhandler } from '../../../../utils/common';
 
 import './bread_house_register.css';
 import arrowDown from '../../../../../images/arrow.png';
 import ReactImage from '../../../../../images/react.png';
 
 function BreadHoustList() {
+  const [breadRegister, setBreadRegister] = useState({
+    name: '',
+    adress: '',
+    number: '',
+    opentime: '',
+    closetime: '',
+    homepage: '',
+    holiday: '',
+    picture: '',
+    menuPicture: '',
+    choosebread: '',
+    bossaccount: ''
+  });
+
+  const { name, number, homepage, choosebread, bossaccount } = breadRegister;
+
+  // 영업시간 리스트
+  const [timeList, setTimeList] = useState([]);
+  // console.log(timeList);
+
   useEffect(() => {
-    console.log('렌더링 후 !!!!!');
+    const newTime = [];
+    for (let i = 0; i < 24; i += 1) {
+      newTime.push(i);
+      // console.log(newTime);
+    }
+    setTimeList(newTime);
   }, []);
 
-  const format = 'HH:mm';
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(breadRegister);
+  };
+
+  const handleChange = (e) => {
+    // setBreadRegister(e.currentTarget.value);
+    setBreadRegister({
+      ...breadRegister,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  // console.log(timeList);
+  // const format = 'HH:mm';
 
   // 모달
   const el = useRef();
@@ -26,6 +61,22 @@ function BreadHoustList() {
   const opneModal = () => {
     document.body.classList.add('Modal_Overflow');
     setModalOpen(true);
+
+    // 주소 api 받아옴
+    const breadHouseAdressAipCall = async () => {
+      try {
+        console.log('try문 진입');
+        const { status, data: aaa } = await axios.get('/util/address');
+        console.log(aaa);
+
+        if (status === 200) {
+          console.log();
+        }
+      } catch (err) {
+        errorhandler(err);
+      }
+    };
+    breadHouseAdressAipCall();
   };
 
   // 클로짓 모달
@@ -37,7 +88,7 @@ function BreadHoustList() {
   return (
     <>
       <div className="col-lg-12 mb-4 mt-10">
-        <form>
+        <form onSubmit={handleSubmit}>
           <div
             className="card card-small mb-5 mt-5"
             style={{
@@ -57,9 +108,10 @@ function BreadHoustList() {
                 <input
                   type="text"
                   className="form-control"
-                  id="inputPassword4"
                   placeholder="내용을 입력해 주세요"
                   name="name"
+                  value={name}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -136,7 +188,9 @@ function BreadHoustList() {
                   className="form-control"
                   id="inputPassword4"
                   placeholder="핸드폰 번호를 입력해 주세요"
-                  name="phoneNumber"
+                  name="number"
+                  value={number}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -160,8 +214,8 @@ function BreadHoustList() {
                   id="timepicker"
                   value="00:00"
                 /> */}
-                <select defaultValue="DEFAULT">
-                  <option selected value="시작시간">
+                <select defaultValue="시작시간">
+                  <option value="시작시간" disabled>
                     시작시간
                   </option>
                   <option value="00:00">00:00</option>
@@ -194,7 +248,7 @@ function BreadHoustList() {
                 <span className="col-3"> ~ </span>
 
                 <select defaultValue="마감시간">
-                  <option selected value="마감시간">
+                  <option value="마감시간" disabled>
                     마감시간
                   </option>
                   <option value="00:00">00:00</option>
@@ -250,7 +304,9 @@ function BreadHoustList() {
                   className="form-control"
                   id="inputPassword4"
                   placeholder="내용을 입력해 주세요"
-                  name="name"
+                  name="homepage"
+                  value={homepage}
+                  onChange={handleChange}
                 />
               </div>
             </div>
@@ -360,7 +416,9 @@ function BreadHoustList() {
                   className="form-control mr-2"
                   id="inputPassword4"
                   placeholder="내용을 입력해 주세요"
-                  name="name"
+                  name="choosebread"
+                  value={choosebread}
+                  onChange={handleChange}
                 />
                 <button type="submit" className="btn btn-primary">
                   검색
@@ -368,7 +426,7 @@ function BreadHoustList() {
               </div>
             </div>
 
-            <div className="d-flex justify-content-between rounded row mb-3 bread_image_box">
+            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box">
               {/* <span className="col-2"> </span> */}
 
               <div
@@ -376,7 +434,7 @@ function BreadHoustList() {
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={arrowDown} alt="Card image cap" />
+                <img className="card-img-top" src={arrowDown} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
@@ -387,7 +445,7 @@ function BreadHoustList() {
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={ReactImage} alt="Card image cap" />
+                <img className="card-img-top" src={ReactImage} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
@@ -398,7 +456,7 @@ function BreadHoustList() {
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={arrowDown} alt="Card image cap" />
+                <img className="card-img-top" src={arrowDown} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
@@ -409,7 +467,7 @@ function BreadHoustList() {
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={ReactImage} alt="Card image cap" />
+                <img className="card-img-top" src={ReactImage} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
@@ -420,7 +478,7 @@ function BreadHoustList() {
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={arrowDown} alt="Card image cap" />
+                <img className="card-img-top" src={arrowDown} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
                 </div>
@@ -430,9 +488,54 @@ function BreadHoustList() {
                 style={{
                   maxWidth: '13rem'
                 }}>
-                <img className="card-img-top" src={ReactImage} alt="Card image cap" />
+                <img className="card-img-top" src={ReactImage} alt="사진" />
                 <div className="card-body">
                   <p className="card-text">This is Pizza bread.</p>
+                </div>
+              </div>
+            </div>
+            <div className="rounded row mb-3 ml-5 bread_image_box">
+              <h4
+                className="col-5 "
+                style={{
+                  outline: '1px solid red'
+                }}>
+                선택한 빵
+              </h4>
+              <div
+                className="d-flex justify-content-between"
+                style={{
+                  width: '100%'
+                }}>
+                <div
+                  className="card col-5 mb-3 mt-3 bread_container"
+                  style={{
+                    maxWidth: '13rem'
+                  }}>
+                  <img className="card-img-top" src={ReactImage} alt="사진" />
+                  <div className="card-body">
+                    <p className="card-text">This is Pizza bread.</p>
+                  </div>
+                </div>
+                <div
+                  className="card col-5 mb-3 mt-3 bread_container"
+                  style={{
+                    maxWidth: '13rem'
+                  }}>
+                  <img className="card-img-top" src={ReactImage} alt="사진" />
+                  <div className="card-body">
+                    <p className="card-text">This is Pizza bread.</p>
+                  </div>
+                </div>
+                <div
+                  className="card col-5 mb-3 mt-3 bread_container"
+                  style={{
+                    maxWidth: '13rem'
+                  }}>
+                  <img className="card-img-top" src={ReactImage} alt="사진" />
+                  <div className="card-body">
+                    <p className="card-text">This is Pizza bread.</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -452,7 +555,9 @@ function BreadHoustList() {
                   className="form-control mr-2"
                   id="inputPassword4"
                   placeholder="내용을 입력해 주세요"
-                  name="name"
+                  name="bossaccount"
+                  value={bossaccount}
+                  onChange={handleChange}
                 />
                 <button type="submit" className="btn btn-primary">
                   검색

@@ -89,9 +89,9 @@ function breadHouseList() {
                 <tbody>
                   <tr className="text-center">
                     <td>무야</td>
-                    <Link to="/bread_house_list/bread_house_detail">
-                      <td>힝무</td>
-                    </Link>
+                    <td>
+                      <Link to="/bread_house_list/bread_house_detail">힝무</Link>
+                    </td>
                     <td>이야아앙</td>
                     <td>난나</td>
                     <td>웅</td>
