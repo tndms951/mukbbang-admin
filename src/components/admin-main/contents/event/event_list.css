@@ -29,9 +29,9 @@
     margin-top: 25px;
 }
 
-.event-search button:first-child {
-    margin-right:10px;
-   
+
+.button_init {
+    margin-right: 10px;
 }
 
 .event-search button {

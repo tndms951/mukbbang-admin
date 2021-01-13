@@ -246,7 +246,7 @@ function Resgister({ history }) {
             </div>
           </div>
           <div className="event-search nav justify-content-end row">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleRemove}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleRemove}>
               취소
             </button>
 

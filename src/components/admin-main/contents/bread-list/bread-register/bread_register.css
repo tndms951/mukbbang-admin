@@ -1,6 +1,3 @@
-/* .input_file {
-  display: none;
-} */
 
 .btn-file{
   position: relative;
@@ -63,5 +60,9 @@ right: 0;
 .bread_image_wrap {
   width: 100%;
   display: flex;
+}
+
+.button_init {
+  margin-right: 10px;
 }
 

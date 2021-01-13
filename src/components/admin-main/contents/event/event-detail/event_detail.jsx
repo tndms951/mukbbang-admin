@@ -121,7 +121,7 @@ const Detail = ({ match, history }) => {
     e.preventDefault();
     try {
       const { eventId: eventId3 } = match.params;
-
+      // const { title, imageUrl, link, startAt, endAt } = value;
       const putChange = {
         title: value.title,
         imageUrl: value.imageUrl,
@@ -300,7 +300,7 @@ const Detail = ({ match, history }) => {
 
         <div className="event-search nav justify-content-end row">
           {modify ? (
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleEdit}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleEdit}>
               취소
             </button>
           ) : (

@@ -17,17 +17,17 @@
   width: 100%;
 }
 .image2 {
-width: 60%;
+  width: 60%;
 }
 
+.button_init {
+  margin-right: 10px;
+}
 
 .modify{
   margin-right: 10px;
 }
-/* .home_wrap {
-  margin-top: 10px;
-  margin-right: 10px;
-} */
+
 
 .home {
   font-size: 14px;  

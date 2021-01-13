@@ -97,7 +97,7 @@ function Detail({ match, history }) {
             />
           </div>
           <div className="event-search nav justify-content-end row">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={onDelete}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={onDelete}>
               삭제
             </button>
 

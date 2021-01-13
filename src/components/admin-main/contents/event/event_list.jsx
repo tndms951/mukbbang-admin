@@ -125,7 +125,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           </div>
 
           <div className="event-search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">
@@ -133,7 +133,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </button>
           </div>
 
-          <div className="event_table">
+          <div className="event_register">
             <div className="event_button_wrap nav justify-content-end">
               <Link to="/event/event_register" className="btn btn-primary col-2 register">
                 등록하러가기
@@ -200,8 +200,8 @@ const EventList = ({ eventList, onEventList, history, location }) => {
 EventList.propTypes = {
   eventList: PropTypes.instanceOf(Array).isRequired,
   onEventList: PropTypes.func.isRequired,
-  history: PropTypes.instanceOf(Array).isRequired,
-  location: PropTypes.instanceOf(Array).isRequired
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired
 };
 
 const mapStateToProps = createStructuredSelector({

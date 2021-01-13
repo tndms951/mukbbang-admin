@@ -236,7 +236,7 @@ const BreadRegister = ({ history, location }) => {
           </div>
 
           <div className="event-search nav justify-content-end row w-100">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={goback}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={goback}>
               취소
             </button>
 
