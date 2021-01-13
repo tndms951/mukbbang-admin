@@ -16,7 +16,7 @@ function BreadBossDetail({ match }) {
     imageUrl: ''
   });
 
-  const { name, phoneNumber, enabled } = value;
+  const { name, phoneNumber } = value;
 
   // 서버에서 받아온 값 저장
   const [boss, setBoss] = useState(null);
@@ -107,20 +107,6 @@ function BreadBossDetail({ match }) {
       enabled: boss.enabled
     });
   };
-
-  //   const profileHandleChange = async () => {
-  //     const { bossId } = match.params;
-  //     try {
-  //       const imageObject = {
-  // };
-  //       const { status, data: profileData } = await axios.put(`/upload/shop/${bossId}`, imageObject);
-  //       if (status === 201) {
-  //         console.log('이미지 수정 성공');
-  //       }
-  //     } catch (err) {
-  //       errorhandler(err);
-  //     }
-  //   };
 
   // 이미지 삭제 핸들러
   const resetOnClick = () => {

@@ -26,9 +26,7 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
           ignoreQueryPrefix: true
         });
         const { status, data: bossData } = await axios.get(`/admin/shop${location.search}`);
-        console.log(bossData);
         if (status === 200) {
-          console.log(query);
           onBreadBossList(bossData.list);
           setName(query.name || '');
           setEnabled(query.enabled);
@@ -37,7 +35,6 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
         errorhandler(err);
       }
     };
-    console.log(breadBossList);
     bossListApiCall();
   }, [location.search]);
 
@@ -51,17 +48,14 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
 
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
-    console.log(queryObject);
 
     if (name) {
       queryObject.name = name;
     }
-    console.log(enabled);
     if (enabled) {
       queryObject.valid = enabled;
     }
     const queryData = qs.stringify(queryObject);
-    console.log(queryData);
     history.push(`/bread_boss_list${queryData ? `?${queryData}` : ''}`);
   };
 
@@ -71,7 +65,6 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
 
   const selectHandleChange = (e) => {
     setEnabled(e.target.value);
-    console.log(e.target.value);
   };
 
   return (
