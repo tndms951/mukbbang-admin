@@ -52,8 +52,13 @@
       font-size: 14px;
   }
 
+.bread_image1 {
+    width: 100%;
+}
 
-
+.button_init {
+    margin-right: 10px;
+}
 
 
   /* x삭제버튼 */
@@ -61,7 +66,7 @@
       position: relative;
   }
   
-  .button_wrap {
+  .event-button_wrap {
       position: absolute;
       top: 0;
       right: 0;

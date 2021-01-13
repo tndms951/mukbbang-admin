@@ -43,6 +43,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
     fetchData();
   }, [location.search, onEventList]);
 
+  // title 핸들체인지
   const handleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -59,6 +60,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
 
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
+
     if (title) {
       queryObject.title = title;
     }
@@ -81,7 +83,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           <div className="event-form-group row">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span>제목</span>
             </label>
             <div className="col-sm-8">
@@ -98,7 +100,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           <div className="event-form-group row justify-content-start align-items-center">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span>날짜</span>
             </label>
             <div className="col-sm-10 myContainer">
@@ -122,8 +124,8 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </div>
           </div>
 
-          <div className="search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
+          <div className="event-search nav justify-content-end">
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">
@@ -131,7 +133,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
             </button>
           </div>
 
-          <div className="event_table">
+          <div className="event_register">
             <div className="event_button_wrap nav justify-content-end">
               <Link to="/event/event_register" className="btn btn-primary col-2 register">
                 등록하러가기
@@ -198,8 +200,8 @@ const EventList = ({ eventList, onEventList, history, location }) => {
 EventList.propTypes = {
   eventList: PropTypes.instanceOf(Array).isRequired,
   onEventList: PropTypes.func.isRequired,
-  history: PropTypes.instanceOf(Array).isRequired,
-  location: PropTypes.instanceOf(Array).isRequired
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired
 };
 
 const mapStateToProps = createStructuredSelector({

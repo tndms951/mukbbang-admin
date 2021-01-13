@@ -134,10 +134,10 @@ function Resgister({ history }) {
     <>
       <div className="container event_wrap">
         <form className="form_wrap" onSubmit={handleSubmit}>
-          <div className="form-group row justify-content-start">
+          <div className="event-form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">이벤트 제목</span>
             </label>
             <div className="col-sm-7">
@@ -151,8 +151,8 @@ function Resgister({ history }) {
               />
             </div>
           </div>
-          <div className="form-group input-group input-group-lg row justify-content-start">
-            <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
+          <div className="event-form-group input-group input-group-lg row justify-content-start">
+            <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label event-title">
               <span className="text1">이벤트 이미지</span>
             </label>
             <div
@@ -169,7 +169,7 @@ function Resgister({ history }) {
                         <img src={registerImage.imageUrl} alt="" className="image2" />
                       </div>
                       <div
-                        className="button_wrap"
+                        className="event-button_wrap"
                         onClick={resetInput}
                         role="button"
                         tabIndex={0}
@@ -201,10 +201,10 @@ function Resgister({ history }) {
             </div>
           </div>
 
-          <div className="form-group row justify-content-start">
+          <div className="event-form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">이벤트 링크</span>
             </label>
             <div className="col-sm-7">
@@ -219,10 +219,10 @@ function Resgister({ history }) {
             </div>
           </div>
 
-          <div className="form-group row justify-content-start align-items-center">
+          <div className="event-form-group row justify-content-start align-items-center">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg title">
+              className="col-xs-2 col-form-label col-form-label-lg event-title">
               <span className="text1">이벤트 날짜</span>
             </label>
             <div className="col-sm-5 myContainer">
@@ -245,8 +245,8 @@ function Resgister({ history }) {
               />
             </div>
           </div>
-          <div className="search nav justify-content-end row">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleRemove}>
+          <div className="event-search nav justify-content-end row">
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleRemove}>
               취소
             </button>
 
@@ -254,7 +254,7 @@ function Resgister({ history }) {
               저장
             </button>
           </div>
-          <div className="search nav justify-content-end row">
+          <div className="event-search nav justify-content-end row">
             <Link to="/event" className="btn btn-primary btn-sm col-2 text3">
               목록
             </Link>

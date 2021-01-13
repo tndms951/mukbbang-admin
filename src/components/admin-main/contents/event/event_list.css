@@ -13,7 +13,7 @@
     margin-top: 30px;
 }
 
-.title span{
+.event-title span{
     font-size: 20px;
     margin-left: 30px;
     font-weight: bold;
@@ -22,16 +22,17 @@
     font-size: 20px;
     line-height: 40px;
 }
-.search {
+
+.event-search {
     margin-top: 25px;
 }
 
-.search button:first-child {
-    margin-right:10px;
-   
+
+.button_init {
+    margin-right: 10px;
 }
 
-.search button {
+.event-search button {
     height:40px;
     font-size: 15px;
 }

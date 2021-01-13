@@ -9,12 +9,12 @@ export const isEmailValid = (value) => {
   return !regExp.test(value);
 };
 
-export const sweetAlert = (title, icon = 'error') => {
+export const sweetAlert = (title, icon = 'error') => (
   MySwal.fire({
-    icon,
-    title
-  });
-};
+    title,
+    icon
+  })
+);
 
 export const sweetAlertSuccess = (title, icon = 'success') => {
   MySwal.fire({
