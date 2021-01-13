@@ -23,24 +23,20 @@ const BreadRegister = ({ history, location }) => {
 
   // 여러 이미지 담는곳
   const [registerImageList, setRegisterImageList] = useState([]);
-  // console.log(registerImageList);
 
   // 페이지 이동시
   const [breadId, setBreadId] = useState(-1);
-  // console.log(breadId);
 
   // 만들어보기
   useEffect(() => {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true
     });
-    // console.log(query);
 
     async function fetchData(breadqueryId) {
       // console.log(breadqueryId); // 매개변수사용해서 아래 query가 필요없음 아래처럼 뺄수 있고 매개변수로사용할수있고 2가지 방법있음!
-
       // const { breadId } = query;
-      // console.log(breadId);
+
       const { status, data: registerData } = await axios.get(`/admin/bread/${breadqueryId}`);
       try {
         if (status === 200) {
@@ -69,15 +65,13 @@ const BreadRegister = ({ history, location }) => {
       ...breadContent,
       [e.target.name]: e.target.value
     });
-
-    // console.log(breadContent);
   };
 
   // 이미지 핸들체인지
   const ImagehandleChange = async (e) => {
     try {
       const { files } = e.target;
-      // console.log(files);
+
       const imageLength = files.length + registerImageList.length;
       if (imageLength > 8) {
         alert('이미지를 초과했습니다.');
@@ -88,8 +82,6 @@ const BreadRegister = ({ history, location }) => {
         imageFormData.append('imgFile', e.target.files[i]);
       }
 
-      // console.log(imageFormData);
-
       const { status, data: imageData } = await axios.post('/upload/bread', imageFormData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -97,8 +89,6 @@ const BreadRegister = ({ history, location }) => {
       });
       if (status === 200) {
         const { data: { imageUrl: newImageUrlList } } = imageData;
-        // console.log(newImageUrlList);
-        // console.log(imageData);
 
         const newimageList = [];
         newImageUrlList.forEach((image) => {
@@ -111,7 +101,6 @@ const BreadRegister = ({ history, location }) => {
       }
     } catch (err) {
       errorhandler(err);
-      // console.log(err.message);
     }
   };
 
@@ -129,11 +118,10 @@ const BreadRegister = ({ history, location }) => {
         content: breadContent.content,
         imageUrl: arr
       };
-      // console.log(breadObject);
 
       if (breadId === -1) {
         const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
-        // console.log(breadData);
+
         if (status === 201) {
           history.push('/bread_list');
         }
@@ -146,7 +134,6 @@ const BreadRegister = ({ history, location }) => {
       }
     } catch (err) {
       errorhandler(err);
-      // console.log(err.message);
     }
   };
 

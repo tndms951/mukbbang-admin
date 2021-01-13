@@ -12,27 +12,26 @@ function Detail({ match, history }) {
 
   // 서버에 받아온값 저장
   const [dataList, setDataList] = useState(null);
-  // console.log(dataList);
+  
 
-  // 이미지 값 저장 (이거추가)
+  // 이미지 값 저장
   const [breadImageList, setBreadImageList] = useState([]);
-  // console.log(breadImageList);
+  
 
   useEffect(() => {
     async function fetchData() {
       try {
         const { breadId } = match.params;
-        // console.log(breadId);
+        
 
         const { status, data: detailData } = await axios.get(`/admin/bread/${breadId}`);
-        // console.log(detailData);
-        // console.log(detailData.data.images);
+        
         
 
         if (status === 200) {
           const { data } = detailData;
           setDataList(data);
-          setBreadImageList(data.images); // 이거추가
+          setBreadImageList(data.images); 
         }
       } catch (err) {
         errorhandler(err);

@@ -22,7 +22,7 @@ function BreadList({ history, location }) {
           ignoreQueryPrefix: true
         });
         const { status, data: breadData } = await axios.get(`/admin/bread${location.search}`);
-        // console.log(breadData);
+
         if (status === 200) {
           setMapList(breadData.list);
           setTitle(query.title || '');
@@ -50,7 +50,6 @@ function BreadList({ history, location }) {
     }
     const queryData = qs.stringify(queryObject);
     history.push(`/bread_list${queryData ? `?${queryData}` : ''}`);
-    // console.log(queryData);
   };
 
   // 초기화 핸들체인지
