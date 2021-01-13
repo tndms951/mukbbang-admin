@@ -5,9 +5,6 @@
     "linebreak-style": 0,
     "react/jsx-filename-extension": 0,
     "react/jsx-one-expression-per-line": 0,
-    "prettier/prettier": ["error",{
-      "endOfLine": "auto"}
-    ],
     "comma-dangle": ["error", "never"],
     "import/no-unresolved": "off",
     "object-curly-newline": ["error", {
@@ -17,7 +14,8 @@
       "ExportDeclaration": { "multiline": true, "minProperties": 3 }
     }],
     "react/jsx-closing-bracket-location": 0,
-    "jsx-a11y/label-has-associated-control": "off"
+    "jsx-a11y/label-has-associated-control": "off",
+    "prettier/prettier": 0
   }
   
 }
