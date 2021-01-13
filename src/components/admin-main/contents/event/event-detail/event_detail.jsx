@@ -22,7 +22,7 @@ const Detail = ({ match, history }) => {
 
   // 서버에 받아온 값 저장
   const [listDate, setListDate] = useState(null);
-  console.log(listDate);
+  // console.log(listDate);
 
   // 수정,취소 값 버튼
   const [modify, setModify] = useState(false);
@@ -57,7 +57,7 @@ const Detail = ({ match, history }) => {
       endAt: new Date(listDate.endAt)
     });
   };
-  console.log(value);
+  // console.log(value);
 
   const handleChange = (e) => {
     setValue({
