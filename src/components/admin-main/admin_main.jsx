@@ -6,14 +6,9 @@ import MainSidebar from './sidebar/sidebar_main';
 import Header from './header/header';
 
 import Content from './main_content';
-<<<<<<< HEAD
 import BreadHouseList from './contents/bread-house-list/bread_bouse_list';
 import BreadList from './contents/bread-list/bread_list';
 import BreadBossRouter from './contents/bread-boss-list/bread_boss_router';
-=======
-import BreadHouseList from './contents/bread-house-list/bread_house_list';
-import BreadListRouter from './contents/bread-list/bread_router';
->>>>>>> master
 import YoutubeList from './contents/youtube/youtube';
 import NoticeRouter from './contents/notice/notice_router';
 import Event from './contents/event/event_list';
