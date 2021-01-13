@@ -133,7 +133,7 @@ const BreadRegister = ({ history, location }) => {
 
       if (breadId === -1) {
         const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
-        console.log(breadData);
+        // console.log(breadData);
         if (status === 201) {
           history.push('/bread_list');
         }

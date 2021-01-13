@@ -9,7 +9,7 @@ import CloseButton from '../../../../shared/button/close_button';
 import './bread_detail.css';
 
 function Detail({ match, history }) {
- console.log(history)
+
   // 서버에 받아온값 저장
   const [dataList, setDataList] = useState(null);
   // console.log(dataList);
