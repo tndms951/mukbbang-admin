@@ -4,8 +4,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import { setAuthorization } from '../utils/axios';
-import { isEmailValid } from '../utils/common';
+import { errorhandler, isEmailValid, sweetAlert } from '../utils/common';
 import { setCurrentUser } from '../../redux/user/user.actions';
 
 function Signin({ onUserSet, history }) {
@@ -37,12 +38,12 @@ function Signin({ onUserSet, history }) {
 
       const { emailRef, passwordRef } = valueRef;
       if (!email) {
-        alert('이메일을 입력해주세요.');
+        sweetAlert('이메일을 입력해주세요.');
         emailRef.current.focus();
       } else if (errorMessageEmail) {
-        alert('이메일을 형식을 맞춰주세요.');
+        sweetAlert('이메일을 형식을 맞춰주세요.');
       } else if (!password) {
-        alert('비밀번호를 입력해주세요.');
+        sweetAlert('비밀번호를 입력해주세요.');
         passwordRef.current.focus();
       } else {
         setSubmitStatus(true);
@@ -51,16 +52,12 @@ function Signin({ onUserSet, history }) {
       const { token } = data.data;
       // console.log(token);
       setAuthorization(token);
-      const { data: currentData } = await axios.get('/admin/current');
+      const { data: currentData } = await axios.get('/admin/current'); //
       const { data: userInfo } = currentData;
       onUserSet(userInfo, token);
       history.push('/');
     } catch (err) {
-      if (err && err.response) {
-        const { data } = err.response;
-        const { message } = data;
-        alert(message);
-      }
+      errorhandler(err);
     } finally {
       setSubmitStatus(false);
     }
