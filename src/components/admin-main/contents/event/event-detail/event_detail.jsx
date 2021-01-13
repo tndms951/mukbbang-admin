@@ -152,7 +152,7 @@ const Detail = ({ match, history }) => {
   const resetInput = () => {
     setValue({
       ...value,
-      imageName: '이미지를 첨부해주세요',
+      imageName: '이미지를 첨부해주세요!!!',
       imageUrl: ''
     });
   };
@@ -160,10 +160,10 @@ const Detail = ({ match, history }) => {
   return (
     <div className="container event_wrap">
       <form className="form_wrap">
-        <div className="form-group row justify-content-start">
+        <div className="event-form-group row justify-content-start">
           <label
             htmlFor="colFormLabelLg"
-            className="col-xs-2 col-form-label col-form-label-lg title">
+            className="col-xs-2 col-form-label col-form-label-lg event-title">
             <span className="text1">이벤트 제목</span>
           </label>
           {modify ? (
@@ -186,8 +186,8 @@ const Detail = ({ match, history }) => {
           )}
         </div>
 
-        <div className="form-group input-group input-group-lg row justify-content-start">
-          <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label title">
+        <div className="event-form-group input-group input-group-lg row justify-content-start">
+          <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label event-title">
             <span className="text1">이벤트 이미지</span>
           </label>
           <div
@@ -239,10 +239,10 @@ const Detail = ({ match, history }) => {
           </div>
         </div>
 
-        <div className="form-group row justify-content-start">
+        <div className="event-form-group row justify-content-start">
           <label
             htmlFor="colFormLabelLg"
-            className="col-xs-2 col-form-label col-form-label-lg title">
+            className="col-xs-2 col-form-label col-form-label-lg event-title">
             <span className="text1">이벤트 링크</span>
           </label>
           {modify ? (
@@ -263,10 +263,10 @@ const Detail = ({ match, history }) => {
           )}
         </div>
 
-        <div className="form-group row justify-content-start align-items-center">
+        <div className="event-form-group row justify-content-start align-items-center">
           <label
             htmlFor="colFormLabelLg"
-            className="col-xs-2 col-form-label col-form-label-lg title">
+            className="col-xs-2 col-form-label col-form-label-lg event-title">
             <span className="text1">이벤트 날짜</span>
           </label>
           {modify ? (
@@ -298,9 +298,9 @@ const Detail = ({ match, history }) => {
           )}
         </div>
 
-        <div className="search nav justify-content-end row">
+        <div className="event-search nav justify-content-end row">
           {modify ? (
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleEdit}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleEdit}>
               취소
             </button>
           ) : (
@@ -324,7 +324,7 @@ const Detail = ({ match, history }) => {
             </button>
           )}
         </div>
-        <div className="search nav justify-content-end home_wrap">
+        <div className="event-search nav justify-content-end home_wrap">
           <Link to="/event" className="btn btn-primary btn-sm col-2 home">
             목록
           </Link>
