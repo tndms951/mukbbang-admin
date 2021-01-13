@@ -208,18 +208,20 @@ const BreadRegister = ({ history, location }) => {
               <span className="text1">빵 이미지</span>
             </div>
 
-            <label className="btn btn-primary btn-file col-sm-1 add_file">
-              파일추가
-              {registerImageList.length !== 8 && (
-              <input
-                type="file"
-                onChange={ImagehandleChange}
-                name="breadImage"
-                multiple
+            <div className="register_file_wrap">
+              <label className="btn btn-primary btn-file col-xs-1 add_file">
+                파일추가
+                {registerImageList.length !== 8 && (
+                <input
+                  type="file"
+                  onChange={ImagehandleChange}
+                  name="breadImage"
+                  multiple
                />
-              )}
+                )}
 
-            </label>
+              </label>
+            </div>
 
             <div className="image_file1">
               <div className="image_wrap1">
@@ -268,7 +270,7 @@ const BreadRegister = ({ history, location }) => {
 
 BreadRegister.propTypes = {
   history: PropTypes.instanceOf(Object).isRequired,
-  location: PropTypes.instanceOf(Array).isRequired
+  location: PropTypes.instanceOf(Object).isRequired
 };
 
 export default BreadRegister;

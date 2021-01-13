@@ -152,8 +152,8 @@ function BreadList({ history, location }) {
 }
 
 BreadList.propTypes = {
-  history: PropTypes.instanceOf(Array).isRequired,
-  location: PropTypes.instanceOf(Array).isRequired
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired
 };
 
 export default BreadList;
