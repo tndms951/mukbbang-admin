@@ -70,8 +70,8 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
 
   return (
     <>
-      <div className="card card-small mb-3 mt-5">
-        <div className="col-lg-12 mb-4 mt-10">
+      <div className="col-lg-11 card mb-5 mt-5 mr-auto ml-auto">
+        <div className="mb-4 mt-10">
           <div className="card-header border-bottom">
             <h2 className="m-0">빵집 사장 목록</h2>
           </div>
