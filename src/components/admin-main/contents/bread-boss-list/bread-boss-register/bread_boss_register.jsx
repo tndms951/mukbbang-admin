@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-shadow */
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import Xbutton from '../../../../utils/X_button';
 
 import axios from '../../../../utils/axios';
@@ -127,7 +128,6 @@ function BreadBossRegister({ history }) {
                 <input
                   type="text"
                   className="form-control"
-                  id="inputPassword4"
                   placeholder="이름을 입력해 주세요"
                   name="name"
                   value={name}
@@ -148,7 +148,6 @@ function BreadBossRegister({ history }) {
                 <input
                   type="number"
                   className="form-control"
-                  id="inputPassword4"
                   placeholder="핸드폰 번호를 입력해 주세요"
                   name="phoneNumber"
                   value={phoneNumber}
@@ -171,7 +170,6 @@ function BreadBossRegister({ history }) {
                     <input
                       type="file"
                       className="form-control"
-                      id="profileName"
                       name="profileName"
                       onChange={profileHandleChange}
                     />
@@ -211,5 +209,9 @@ function BreadBossRegister({ history }) {
     </>
   );
 }
+
+BreadBossRegister.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired
+};
 
 export default BreadBossRegister;

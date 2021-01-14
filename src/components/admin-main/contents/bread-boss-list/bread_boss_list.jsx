@@ -12,11 +12,12 @@ import { errorhandler } from '../../../utils/common';
 import { setBreadBossList } from '../../../../redux/bread-boss/breadBoss.actions';
 import { selectBreadBossList } from '../../../../redux/bread-boss/breadBoss.selectors';
 
+/**
+ * @author 송지은
+ * */
+
 function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
-  // const [breadBossList, setBreadBossList] = useState([]);
   const [name, setName] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
   const [enabled, setEnabled] = useState(null);
 
   useEffect(() => {
@@ -89,7 +90,6 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
                   <input
                     type="text"
                     className="form-control"
-                    id="inputPassword4"
                     placeholder="이름을 입력해 주세요"
                     onChange={handleChange}
                     value={name}
@@ -107,8 +107,8 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
                   탈퇴 여부
                 </span>
                 <div className="form-group col-md-4">
-                  <select className="form-control" value={enabled} onChange={selectHandleChange}>
-                    <option value="" readOnly>
+                  <select className="form-control" defaultValue={enabled} onChange={selectHandleChange}>
+                    <option value="enabled" readOnly>
                       선택하세요
                     </option>
                     <option value="true">사용중</option>

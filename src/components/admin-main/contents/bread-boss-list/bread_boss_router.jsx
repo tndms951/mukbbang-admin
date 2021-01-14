@@ -7,7 +7,6 @@ import BreadBossRegister from './bread-boss-register/bread_boss_register';
 import BreadBossDetail from './bread-boss-detail/bread_boss_detail';
 
 function BreadBossRouter({ match }) {
-  // console.log(match);
   return (
     <Switch>
       <Route path={`${match.path}/register`} component={BreadBossRegister} />

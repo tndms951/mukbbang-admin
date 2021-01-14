@@ -8,6 +8,10 @@ import { errorhandler } from '../../../../utils/common';
 import axios from '../../../../utils/axios';
 import Xbutton from '../../../../utils/X_button';
 
+/**
+ * @author 송지은
+ * */
+
 function BreadBossDetail({ match }) {
   const [value, setValue] = useState({
     name: '',
