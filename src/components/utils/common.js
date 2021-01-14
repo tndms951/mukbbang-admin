@@ -16,6 +16,13 @@ export const sweetAlert = (title, icon = 'error') => (
   })
 );
 
+export const sweetAlertSuccess = (title, icon = 'success') => {
+  MySwal.fire({
+    icon,
+    title
+  });
+};
+
 export const errorhandler = (err) => {
   if (err && err.response) {
     const { data } = err.response;

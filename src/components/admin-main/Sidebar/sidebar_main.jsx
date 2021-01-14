@@ -68,7 +68,7 @@ const MainSidebar = () => (
             </Link>
           </li>
           <li className="nav-item">
-            <Link to="/main_event_list" className="nav-link">
+            <Link to="/bread_boss_list" className="nav-link">
               <i className="material-icons">date_range</i>
               <span>빵집 사장 목록</span>
             </Link>

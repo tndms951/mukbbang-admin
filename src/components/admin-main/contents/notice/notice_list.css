@@ -1,19 +1,18 @@
 .wrap_template {
     width: 90%;
     margin: 4% auto;
-    /* outline: 1px solid blue; */
 }
 .form_wrap {
     width: 90%;
     margin: 0 auto;
 }
-.form-group:first-of-type {
+/* .form-group:first-of-type {
     margin-bottom: 10px;
-}
+} */
 h1 {
     margin-bottom: 3%;
 }
-.form-row>.col {
+.form-row > .col {
     padding-right: 30px;
 }
 .cancle {
