@@ -37,7 +37,7 @@ function BreadBossList({ breadBossList, onBreadBossList, location, history }) {
       }
     };
     bossListApiCall();
-  }, [location.search]);
+  }, [location.search, onBreadBossList]);
 
   const handleReset = () => {
     setName('');
@@ -197,5 +197,3 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BreadBossList);
-
-// export default BreadBossList;

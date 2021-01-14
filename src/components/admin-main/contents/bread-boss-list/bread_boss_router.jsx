@@ -1,6 +1,6 @@
-/* eslint-disable react/prop-types */
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import BreadBossList from './bread_boss_list';
 import BreadBossRegister from './bread-boss-register/bread_boss_register';
@@ -15,5 +15,9 @@ function BreadBossRouter({ match }) {
     </Switch>
   );
 }
+
+BreadBossRouter.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired
+};
 
 export default BreadBossRouter;

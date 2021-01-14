@@ -1,8 +1,8 @@
-/* eslint-disable no-shadow */
-/* eslint-disable react/prop-types */
 /* eslint-disable no-nested-ternary */
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { errorhandler } from '../../../../utils/common';
 import axios from '../../../../utils/axios';
@@ -123,7 +123,6 @@ function BreadBossDetail({ match }) {
   // 이미지 핸들체인지
   const profileHandleChange = async (e) => {
     try {
-      const { name } = e.target.files[0];
       const profileFormData = new FormData();
       profileFormData.append('imgFile', e.target.files[0]);
 
@@ -286,14 +285,14 @@ function BreadBossDetail({ match }) {
                 {edit ? (
                   <button
                     type="button"
-                    className="mb-2 btn btn-secondary mr-2"
+                    className="mb-2 btn btn-danger mr-2"
                     onClick={modifyHandleSubmit}>
                     취소
                   </button>
                 ) : (
                   <button
                     type="button"
-                    className="mb-2 btn btn-secondary mr-2"
+                    className="mb-2 btn btn-danger mr-2"
                     onClick={handleSubmit2}>
                     탈퇴
                   </button>
@@ -330,5 +329,9 @@ function BreadBossDetail({ match }) {
     </>
   );
 }
+
+BreadBossDetail.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired
+};
 
 export default BreadBossDetail;

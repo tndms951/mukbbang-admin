@@ -1,4 +1,3 @@
-/* eslint-disable no-shadow */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Xbutton from '../../../../utils/X_button';
@@ -63,7 +62,6 @@ function BreadBossRegister({ history }) {
   // 프로필 핸들체인지
   const profileHandleChange = async (e) => {
     try {
-      const { name } = e.target.files[0];
       const profileFormData = new FormData();
       profileFormData.append('imgFile', e.target.files[0]);
 
