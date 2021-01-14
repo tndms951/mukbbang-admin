@@ -2,7 +2,6 @@ import React from 'react';
 import './X_button.css';
 
 function Button() {
-  console.log('엑스');
   return (
     <>
       <div id="menu">
