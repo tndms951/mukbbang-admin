@@ -66,7 +66,7 @@ function BreadList({ history, location }) {
           <div className="form-group row mt-4">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg event-title">
+              className="col-xs-2 col-form-label col-form-label-lg bread-title">
               <span>빵이름</span>
             </label>
             <div className="col-sm-8">
@@ -88,7 +88,7 @@ function BreadList({ history, location }) {
             </button>
           </div>
 
-          <div className="event_table">
+          <div className="bread_table">
             <div className="event_button_wrap nav justify-content-end ">
               <Link to="/bread_list/bread_register" className="btn btn-primary col-2 register">
                 등록하러가기

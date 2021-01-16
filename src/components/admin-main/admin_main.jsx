@@ -8,7 +8,7 @@ import Header from './header/header';
 import Content from './main_content';
 import BreadHouseList from './contents/bread-house-list/bread_house_list';
 import BreadListRouter from './contents/bread-list/bread_router';
-import YoutubeList from './contents/youtube/youtube';
+import YoutubeList from './contents/youtube/youtube_list';
 import EventRouter from './contents/event/event_router';
 import Notice from './contents/notice/notice_router';
 
