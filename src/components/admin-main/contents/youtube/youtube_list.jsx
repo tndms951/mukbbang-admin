@@ -1,5 +1,7 @@
 import React from 'react';
 
+import './youtube_list.css';
+
 const youtubeList = () => (
   <>
     <div className="all_wrap">
@@ -7,7 +9,7 @@ const youtubeList = () => (
 
       <form className="form_wrap">
         <div className="form-group row mt-4">
-          <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label col-form-label-lg ">
+          <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label col-form-label-lg youtube-title">
             <span>빵이름</span>
           </label>
           <div className="col-sm-8">

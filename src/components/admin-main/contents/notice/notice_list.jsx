@@ -73,8 +73,10 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
   };
 
   return (
-    <div className="wrap_template container">
-      <h1 className="row justify-content-md-start">검색조건</h1>
+    <div className="wrap_template card-header">
+      <div className="border-bottom mb-5">
+        <h2 className="row justify-content-md-start m-3">검색조건</h2>
+      </div>
       <form className="form_wrap" onSubmit={handleSubmit}>
         <div className="row">
           <label htmlFor="inputEmail3" className="h3 col-sm-1 col-form-label">
@@ -95,9 +97,9 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
           <label htmlFor="inputPassword3" className="h3 col-sm-1">
             날짜
           </label>
-          <div className="input-group col-sm-11 mb-3">
+          <div className="input-group col-sm-11">
             <DatePicker
-              className="form-control"
+              className="form-control col"
               selected={startDate}
               onChange={setStartDate} // value 값이 바뀔때
               locale="ko" // 달력 한글화
@@ -123,7 +125,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
             marginTop: '5%'
           }}>
           <Link to="/notice/notice_register">
-            <button type="submit" className="submit mb-2 btn btn-primary mr-1">
+            <button type="button" className="mb-2 btn btn-outline-primary mr-1">
               등록하기
             </button>
           </Link>
@@ -131,11 +133,11 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
       </form>
       <div className="row">
         <div className="col">
-          <div className="card card-small mb-4">
+          <div className="mb-4">
             <div className="card-header border-bottom">
               <h6 className="m-0">검색 결과</h6>
             </div>
-            <div className="card-body p-0 pb-3 text-center">
+            <div className="p-0 pb-3 text-center">
               <table className="table mb-0">
                 <thead className="bg-light">
                   <tr>
@@ -156,7 +158,7 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
                 <tbody>
                   {noticeList.map((noticeData) => (
                     <tr key={`notice-list${noticeData.id}`}>
-                      <td>{noticeData.id}</td>
+                      <th>{noticeData.id}</th>
                       <td>
                         {/* <Link to={noticeData.link}>{noticeData.link}</Link> */}
                         <Link to={`/notice/notice_detail/${noticeData.id}`}>
@@ -169,6 +171,41 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
                   ))}
                 </tbody>
               </table>
+              <nav
+                aria-label="Page navigation example "
+                style={{
+                  // outline: '1px solid red',
+                  width: '18%',
+                  margin: '8% auto 0 auto'
+                }}>
+                <ul className="pagination">
+                  <li className="page-item">
+                    <a className="page-link" href="#" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      1
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      2
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#">
+                      3
+                    </a>
+                  </li>
+                  <li className="page-item">
+                    <a className="page-link" href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
