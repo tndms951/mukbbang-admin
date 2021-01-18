@@ -1,0 +1,13 @@
+.address {
+  height: 300px;
+  width: 500px;
+  overflow: auto;
+}
+.adresslist {
+  cursor: pointer;
+}
+.adresslist:hover {
+  color: black;
+  background-color: rgba(167, 167, 167, 0.5);
+  transition: all ease 0.5s;
+}

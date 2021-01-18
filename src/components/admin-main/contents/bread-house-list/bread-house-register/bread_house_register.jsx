@@ -3,9 +3,12 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
 
-import './bread_house_register.css';
+import Modal from '../../../../utils/Modal/adress';
+
 import arrowDown from '../../../../../images/arrow.png';
 import ReactImage from '../../../../../images/react.png';
+
+import './bread_house_register.css';
 
 function BreadHoustList() {
   const [breadRegister, setBreadRegister] = useState({
@@ -59,34 +62,17 @@ function BreadHoustList() {
 
   // 오픈 모달
   const opneModal = () => {
-    document.body.classList.add('Modal_Overflow');
     setModalOpen(true);
-
-    // 주소 api 받아옴
-    const breadHouseAdressAipCall = async () => {
-      try {
-        console.log('try문 진입');
-        const { status, data: aaa } = await axios.get('/util/address');
-        console.log(aaa);
-
-        if (status === 200) {
-          console.log();
-        }
-      } catch (err) {
-        errorhandler(err);
-      }
-    };
-    breadHouseAdressAipCall();
   };
 
   // 클로짓 모달
   const closeModal = () => {
-    document.body.classList.remove('Modal_Overflow');
     setModalOpen(false);
   };
 
   return (
     <>
+      {modalOpen && <Modal closeModal={closeModal} el={el} />}
       <div className="col-lg-12 mb-4 mt-10">
         <form onSubmit={handleSubmit}>
           <div
@@ -131,47 +117,6 @@ function BreadHoustList() {
                   주소검색
                 </button>
               </div>
-              {modalOpen && (
-                <>
-                  <div className="Modal-overlay" ref={el} onClick={closeModal} />
-                  <div className="Modal">
-                    <div className="d-flex">
-                      <input
-                        type="text"
-                        className="form-control title col-9 mr-2"
-                        id="inputPassword4"
-                        placeholder="내용을 입력해 주세요"
-                        name="name"
-                      />
-                      <button type="submit" className="btn btn-primary">
-                        검색
-                      </button>
-                      <button type="button" onClick={closeModal}>
-                        X
-                      </button>
-                    </div>
-                    <div className="content">
-                      <ul>
-                        <li>
-                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel tempora
-                          nulla, non molestiae dicta ducimus. Et unde laborum eveniet ex quod
-                          doloribus quae, aliquam beatae atque, vero assumenda rem quo?
-                        </li>
-                      </ul>
-                      <ul className="content">
-                        <li>
-                          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel tempora
-                          nulla, non molestiae dicta ducimus. Et unde laborum eveniet ex quod
-                          doloribus quae, aliquam beatae atque, vero assumenda rem quo?
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="button-wrap">
-                      <button> Confirm </button>
-                    </div>
-                  </div>
-                </>
-              )}
             </div>
             <div className="row justify-content-start mb-3">
               <span
