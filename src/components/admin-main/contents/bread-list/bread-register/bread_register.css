@@ -1,4 +1,4 @@
-
+/* 파일추가 css */
 .btn-file{
   position: relative;
   overflow: hidden;
@@ -22,24 +22,13 @@
 }
 
 
-.image3 {
-  width: 100%;
-  display: block;
+/* 빵 이름 부터 css */
+
+.bread-title span{
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.add_file {
-  width: 100%;
-  justify-content: right;
-}
-.image_file1 {
-  margin-top: 30px;
-  display: block;
-  width: 100%;
-}
-.image_wrap1{
-width: 40%;
-
-}
 .bread-image {
   margin-top: 30px;
   margin-left: 100px;
@@ -51,6 +40,7 @@ width: 40%;
   width: 100%;
   
 }
+
 .bread_button_wrap {
 position: absolute;
 top: 0;
@@ -62,7 +52,8 @@ right: 0;
   display: flex;
 }
 
-.button_init {
-  margin-right: 10px;
+.bread-search button {
+  font-size: 15px;
 }
+
 

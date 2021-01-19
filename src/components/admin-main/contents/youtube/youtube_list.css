@@ -1,5 +1,11 @@
+
 .youtube-title span{
   font-size: 20px;
-  margin-left: 30px;
   font-weight: bold;
 }
+
+.youtube-search button {
+  height:40px;
+  font-size: 15px;
+}
+

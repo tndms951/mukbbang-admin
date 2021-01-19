@@ -7,11 +7,11 @@ import Header from './header/header';
 
 import Content from './main_content';
 import BreadHouseList from './contents/bread-house-list/bread_house_list';
-import BreadList from './contents/bread-list/bread_list';
+import BreadRouter from './contents/bread-list/bread_router';
 import BreadBossRouter from './contents/bread-boss-list/bread_boss_router';
-import YoutubeList from './contents/youtube/youtube_list';
+import YoutubeRouter from './contents/youtube/youtube_router';
 import NoticeRouter from './contents/notice/notice_router';
-import Event from './contents/event/event_list';
+import EventRouter from './contents/event/event_router';
 
 function AdminMain() {
   return (
@@ -87,10 +87,10 @@ function AdminMain() {
               <Switch>
                 <Route exact path="/" component={Content} />
                 <Route path="/bread_house_list" component={BreadHouseList} />
-                <Route path="/bread_list" component={BreadList} />
+                <Route path="/bread_list" component={BreadRouter} />
                 <Route path="/bread_boss_list" component={BreadBossRouter} />
-                <Route path="/youtube_list" component={YoutubeList} />
-                <Route path="/event" component={Event} />
+                <Route path="/youtube_list" component={YoutubeRouter} />
+                <Route path="/event" component={EventRouter} />
                 <Route path="/notice" component={NoticeRouter} />
               </Switch>
               <Footer />

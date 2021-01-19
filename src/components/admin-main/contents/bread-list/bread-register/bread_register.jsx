@@ -150,13 +150,13 @@ const BreadRegister = ({ history, location }) => {
   return (
 
     <>
-      <div className="container event_wrap">
+      <div className="container p-5 bg-light">
         <form className="form_wrap" onSubmit={handleSubmit}>
           <div className="form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg event-title">
-              <span className="text1">빵 이름</span>
+              className="col-xs-2 col-form-label col-form-label-lg ml-3 bread-title">
+              <span className="text1 ml-30">빵 이름</span>
             </label>
             <div className="col-sm-7">
               <input
@@ -173,7 +173,7 @@ const BreadRegister = ({ history, location }) => {
           <div className="form-group row justify-content-start">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg event-title">
+              className="col-xs-2 col-form-label col-form-label-lg ml-3 bread-title">
               <span className="text1">빵 소개</span>
             </label>
             <div className="col-sm-7">
@@ -191,12 +191,16 @@ const BreadRegister = ({ history, location }) => {
           <div className="form-group row justify-content-start bread_image_wrap">
             <div
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg event-title">
+              className="col-xs-2 col-form-label col-form-label-lg ml-3 bread-title">
               <span className="text1">빵 이미지</span>
             </div>
 
-            <div className="register_file_wrap">
-              <label className="btn btn-primary btn-file col-xs-1 add_file">
+            <div
+              className="register_file_wrap"
+             >
+              <label
+                className="btn btn-primary btn-file col-xs-1"
+               >
                 파일추가
                 {registerImageList.length !== 8 && (
                 <input
@@ -210,8 +214,8 @@ const BreadRegister = ({ history, location }) => {
               </label>
             </div>
 
-            <div className="image_file1">
-              <div className="image_wrap1">
+            <div className="image_file1 w-100 mt-30">
+              <div className="image_wrap1 w-50">
 
                 {registerImageList.map((imageDataA, index) => (
                   <div className="d-flex bread-image" key={`image-${index}`}>
@@ -235,8 +239,8 @@ const BreadRegister = ({ history, location }) => {
             </div>
           </div>
 
-          <div className="event-search nav justify-content-end row w-100">
-            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={goback}>
+          <div className="bread-search nav justify-content-end row w-100 mr-2 mb-3">
+            <button type="button" className="btn btn-secondary btn-sm col-1 mr-1 h-50" onClick={goback}>
               취소
             </button>
 
@@ -244,7 +248,7 @@ const BreadRegister = ({ history, location }) => {
               {breadId === -1 ? '저장' : '수정'}
             </button>
           </div>
-          <div className="event-search nav justify-content-end row w-100">
+          <div className="bread-search nav justify-content-end row w-100 mt-30 mr-2">
             <Link to="/bread_list" className="btn btn-primary btn-sm col-2 text3">
               목록
             </Link>

@@ -80,7 +80,7 @@ function BreadList({ history, location }) {
             </div>
           </div>
           <div className="bread-search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
+            <button type="button" className="btn btn-secondary btn-sm col-1 mr-2" onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">
@@ -96,6 +96,7 @@ function BreadList({ history, location }) {
             </div>
           </div>
         </form>
+
         <div className="row w-100">
           <div className="col mr-5 ml-5">
             <div className="card card-small mb-4">
@@ -132,7 +133,6 @@ function BreadList({ history, location }) {
                           <td>
                             <Link to={`/bread_list/detail/${breadData.id}`}>{breadData.title}</Link>
                           </td>
-
                           <td>&#160;</td>
                           <td>&#160;</td>
                           <td>&#160;</td>
