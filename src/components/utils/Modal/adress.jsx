@@ -4,13 +4,20 @@ import axios from '../axios';
 
 import { errorhandler } from '../common';
 
-import './adress.css';
-import { array } from 'prop-types';
+import './address.css';
 
-function Modal({ closeModal, el }) {
+/**
+ * @author 송지은
+ * */
+
+function Modal({ closeModal, el, handleAddress }) {
   const [name, setName] = useState('');
-  const [adress, setAdress] = useState([]);
-  console.log(adress);
+  const [address, setAddress] = useState([]);
+  const [isEnd, setIsEnd] = useState(false);
+  const [page, setPage] = useState(0);
+
+  // console.log(address);
+  // console.log(isEnd);
 
   useEffect(() => {
     document.body.classList.add('Modal_Overflow');
@@ -23,44 +30,60 @@ function Modal({ closeModal, el }) {
     setName(e.target.value);
   };
 
-  const adressApiCall = async (addressName) => {
+  const addressApiCall = async (addressName, currentPage) => {
+    const limit = 20;
     try {
       const queryObject = {
         name: addressName,
-        page: 1,
-        limit: 20
+        page: currentPage,
+        limit
       };
+      console.log(queryObject);
       const query = qs.stringify(queryObject);
       console.log(`/util/address?${query}`);
 
       const { status, data: addressData } = await axios.get(`/util/address?${query}`);
-      // console.log(data);
+      console.log(addressData);
+      const { data } = addressData;
       if (status === 200) {
-        setAdress(addressData.data.list);
-        console.log(addressData.data.list);
+        setAddress(currentPage === 1 ? data.list : [...address, ...data.list]);
+        setPage(currentPage);
+        setIsEnd(data.pagination.isEnd);
       }
     } catch (err) {
-      console.log(err);
       errorhandler(err);
     }
   };
 
+  const loadMoreHandler = () => {
+    // const newlistArr = [...address, ...visiable];
+    // console.log(visiable);
+    // console.log(newlistArr);
+    // setVisiable((preValue) => preValue + 20);
+    // setIsEnd(!isEnd);
+    //   try {
+    //     console.log('가능 합니다 !!!!!');
+    //     if (page === 2) {
+    //       console.log('2장이야');
+    //     }
+    //   } catch (err) {
+    //     console.log('불가능 !!!!!!');
+    //   }
+    console.log('더보기 입니다');
+    addressApiCall(name, page + 1);
+    console.log(name);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    adressApiCall(name);
+    // addressApiCall(name, page + 1);
+    addressApiCall(name, 1);
   };
 
-  const onClick = () => {
-    console.log(adress);
-    console.log(
-      {
-        ...adress
-      },
-      adress[2]
-    );
-
-    console.log('뭔데');
-  };
+  // const onClick = () => {
+  //   console.log(address.index);
+  //   console.log('뭔데');
+  // };
 
   return (
     <>
@@ -80,7 +103,7 @@ function Modal({ closeModal, el }) {
             <button type="submit" className="btn btn-primary">
               검색
             </button>
-            <button type="button" onClick={closeModal}>
+            <button className="xbutton" type="button" onClick={closeModal}>
               X
             </button>
           </form>
@@ -101,15 +124,27 @@ function Modal({ closeModal, el }) {
             </li>
           </ul> */}
           <ul className="address">
-            {adress.map((addressData, index) => {
-              console.log(addressData);
+            {address.map((addressData, index) => (
+              // console.log(addressData);
               // eslint-disable-next-line react/no-array-index-key
-              return (
-                <li className="adresslist" key={`address-list${index}`} onClick={onClick}>
-                  {addressData.roadAddress.addressName}
-                </li>
-              );
-            })}
+              <li
+                className="addresslist"
+                key={`address-list${index}`}
+                onClick={() => handleAddress(addressData.roadAddress)}>
+                {addressData.roadAddress.addressName}
+              </li>
+            ))}
+            <div
+              className="addresslist"
+              style={{
+                textAlign: 'center'
+              }}>
+              {address.length && !isEnd ? (
+                <button type="button" onClick={loadMoreHandler}>
+                  더보기
+                </button>
+              ) : null}
+            </div>
           </ul>
         </div>
         <div className="button-wrap">

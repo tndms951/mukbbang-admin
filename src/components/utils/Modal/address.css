@@ -3,11 +3,17 @@
   width: 500px;
   overflow: auto;
 }
-.adresslist {
+.addresslist {
   cursor: pointer;
 }
-.adresslist:hover {
+.addresslist:hover {
   color: black;
   background-color: rgba(167, 167, 167, 0.5);
   transition: all ease 0.5s;
+}
+.xbutton {
+  font-size: 30px;
+  font-weight: 600;
+  color: gray;
+  margin-left: 30px;
 }

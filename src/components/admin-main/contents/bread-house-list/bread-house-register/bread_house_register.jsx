@@ -1,7 +1,7 @@
 /* eslint-disable react/button-has-type */
 import React, { useState, useRef, useEffect } from 'react';
-import axios from '../../../../utils/axios';
-import { errorhandler } from '../../../../utils/common';
+// import axios from '../../../../utils/axios';
+// import { errorhandler } from '../../../../utils/common';
 
 import Modal from '../../../../utils/Modal/adress';
 
@@ -10,10 +10,17 @@ import ReactImage from '../../../../../images/react.png';
 
 import './bread_house_register.css';
 
+/**
+ * @author 송지은
+ * */
+
 function BreadHoustList() {
   const [breadRegister, setBreadRegister] = useState({
     name: '',
-    adress: '',
+    addressName: '',
+    addressLat: '',
+    addressLon: '',
+    detailAddress: '',
     number: '',
     opentime: '',
     closetime: '',
@@ -24,37 +31,81 @@ function BreadHoustList() {
     choosebread: '',
     bossaccount: ''
   });
+  console.log(breadRegister.opentime);
+  console.log(breadRegister.closetime);
 
-  const { name, number, homepage, choosebread, bossaccount } = breadRegister;
+  const {
+    name,
+    number,
+    homepage,
+    choosebread,
+    bossaccount,
+    detailAddress,
+    addressName,
+    opentime,
+    closetime
+  } = breadRegister;
 
   // 영업시간 리스트
-  const [timeList, setTimeList] = useState([]);
-  // console.log(timeList);
+  const [openTimeList, setOpneTimeList] = useState([]);
+  const [closeTimeList, setCloseTimeList] = useState([]);
+  // console.log(openTimeList);
+  // console.log(closeTimeList);
 
   useEffect(() => {
     const newTime = [];
     for (let i = 0; i < 24; i += 1) {
-      newTime.push(i);
-      // console.log(newTime);
+      if (i < 10) {
+        newTime.push(`0${i}:00`);
+      } else {
+        newTime.push(`${i}:00`);
+      }
     }
-    setTimeList(newTime);
+
+    const closeTime = [];
+    for (let i = 0; i < 24; i += 1) {
+      if (i < 10) {
+        closeTime.push(`0${i}:00`);
+      } else {
+        closeTime.push(`${i}:00`);
+      }
+    }
+    setOpneTimeList(newTime);
+    setCloseTimeList(closeTime);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     console.log(breadRegister);
   };
 
+  // 인풋 핸들체인지
   const handleChange = (e) => {
-    // setBreadRegister(e.currentTarget.value);
     setBreadRegister({
       ...breadRegister,
       [e.target.name]: e.target.value
     });
   };
 
-  // console.log(timeList);
-  // const format = 'HH:mm';
+  // 오픈시간 핸들 체인지
+  const selectOpenHandleChange = (e) => {
+    // openTimeList(e.target.value);
+    // closeTimeList(e.target.value);
+    // console.log(openTimeList);
+    setBreadRegister({
+      ...breadRegister,
+      opentime: e.target.value
+    });
+  };
+
+  // 마감시간 핸들 체인지
+  const selectCloseHandleChange = (e) => {
+    setBreadRegister({
+      ...breadRegister,
+      closetime: e.target.value
+    });
+  };
 
   // 모달
   const el = useRef();
@@ -70,9 +121,21 @@ function BreadHoustList() {
     setModalOpen(false);
   };
 
+  const handleAddress = (addressData) => {
+    console.log(addressData);
+    setBreadRegister({
+      ...breadRegister,
+      addressLat: addressData.addressLat,
+      addressLon: addressData.addressLon,
+      addressName: addressData.addressName,
+      address: ''
+    });
+    closeModal();
+  };
+
   return (
     <>
-      {modalOpen && <Modal closeModal={closeModal} el={el} />}
+      {modalOpen && <Modal closeModal={closeModal} el={el} handleAddress={handleAddress} />}
       <div className="col-lg-12 mb-4 mt-10">
         <form onSubmit={handleSubmit}>
           <div
@@ -112,10 +175,26 @@ function BreadHoustList() {
                 빵집주소
               </span>
 
-              <div className="form-group col-5 adressbox">
+              <div className="form-group col-5 addressbox">
+                {addressName ? (
+                  <span className="mr-3">{breadRegister.addressName}</span>
+                ) : (
+                  <span>{breadRegister.addressName}</span>
+                )}
+
                 <button type="button" className="btn" onClick={opneModal}>
                   주소검색
                 </button>
+                {addressName && (
+                  <input
+                    type="text"
+                    className="form-control mt-3"
+                    placeholder="상세주소를 입력해 주세요"
+                    name="detailAddress"
+                    value={detailAddress}
+                    onChange={handleChange}
+                  />
+                )}
               </div>
             </div>
             <div className="row justify-content-start mb-3">
@@ -159,67 +238,30 @@ function BreadHoustList() {
                   id="timepicker"
                   value="00:00"
                 /> */}
-                <select defaultValue="시작시간">
+
+                <select value={opentime} onChange={selectOpenHandleChange}>
                   <option value="시작시간" disabled>
                     시작시간
                   </option>
-                  <option value="00:00">00:00</option>
-                  <option value="01:00">01:00</option>
-                  <option value="02:00">02:00</option>
-                  <option value="03:00">03:00</option>
-                  <option value="04:00">04:00</option>
-                  <option value="05:00">05:00</option>
-                  <option value="06:00">06:00</option>
-                  <option value="07:00">07:00</option>
-                  <option value="08:00">08:00</option>
-                  <option value="09:00">09:00</option>
-                  <option value="10:00">10:00</option>
-                  <option value="11:00">11:00</option>
-                  <option value="12:00">12:00</option>
-                  <option value="13:00">13:00</option>
-                  <option value="14:00">14:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="16:00">16:00</option>
-                  <option value="17:00">17:00</option>
-                  <option value="18:00">18:00</option>
-                  <option value="19:00">19:00</option>
-                  <option value="20:00">20:00</option>
-                  <option value="21:00">21:00</option>
-                  <option value="22:00">22:00</option>
-                  <option value="23:00">23:00</option>
+                  {openTimeList.map((list, index) => (
+                    <option value={list} key={`time-list${index}`} name={list}>
+                      {list}
+                    </option>
+                  ))}
                 </select>
                 {/* <img className="arrow_image" src={arrowDown} alt="화살표" /> */}
 
                 <span className="col-3"> ~ </span>
 
-                <select defaultValue="마감시간">
+                <select value={closetime} onChange={selectCloseHandleChange}>
                   <option value="마감시간" disabled>
                     마감시간
                   </option>
-                  <option value="00:00">00:00</option>
-                  <option value="01:00">01:00</option>
-                  <option value="02:00">02:00</option>
-                  <option value="03:00">03:00</option>
-                  <option value="04:00">04:00</option>
-                  <option value="05:00">05:00</option>
-                  <option value="06:00">06:00</option>
-                  <option value="07:00">07:00</option>
-                  <option value="08:00">08:00</option>
-                  <option value="09:00">09:00</option>
-                  <option value="10:00">10:00</option>
-                  <option value="11:00">11:00</option>
-                  <option value="12:00">12:00</option>
-                  <option value="13:00">13:00</option>
-                  <option value="14:00">14:00</option>
-                  <option value="15:00">15:00</option>
-                  <option value="16:00">16:00</option>
-                  <option value="17:00">17:00</option>
-                  <option value="18:00">18:00</option>
-                  <option value="19:00">19:00</option>
-                  <option value="20:00">20:00</option>
-                  <option value="21:00">21:00</option>
-                  <option value="22:00">22:00</option>
-                  <option value="23:00">23:00</option>
+                  {closeTimeList.map((lista, index) => (
+                    <option value={lista} key={`time-list${index}`}>
+                      {lista}
+                    </option>
+                  ))}
                 </select>
                 {/* <input
                   type="time"
@@ -245,7 +287,7 @@ function BreadHoustList() {
 
               <div className="form-group col-5">
                 <input
-                  type="text"
+                  type="url"
                   className="form-control"
                   id="inputPassword4"
                   placeholder="내용을 입력해 주세요"
