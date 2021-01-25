@@ -22,12 +22,10 @@ function Detail({ match, history }) {
     async function fetchData() {
       try {
         const { breadId } = match.params;
-        
+        console.log(breadId);
 
         const { status, data: detailData } = await axios.get(`/admin/bread/${breadId}`);
         
-        
-
         if (status === 200) {
           const { data } = detailData;
           setDataList(data);
@@ -102,7 +100,7 @@ function Detail({ match, history }) {
             </button>
 
             <div className="row">
-              <div className=" nav justify-content-end">
+              <div className="nav justify-content-end">
                 <Link
                   to={`/bread_list/bread_register?breadId=${dataList?.id}`}
                   className="btn btn-primary modify">

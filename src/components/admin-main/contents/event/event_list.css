@@ -23,13 +23,13 @@
     line-height: 40px;
 }
 
-.event-search {
-    margin-top: 25px;
-}
-
 
 .button_init {
     margin-right: 10px;
+}
+
+.event-search {
+    margin-top: 25px;
 }
 
 .event-search button {

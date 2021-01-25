@@ -5,14 +5,15 @@ import YoutubeRegister from './youtube-register/youtube_register';
 import YoutubeList from './youtube_list';
 import YoutubeDetail from './youtube-detail/youtube_detail';
 
-function YoutubeRouter() {
+function YoutubeRouter({ match }) {
   console.log('라우터');
+  console.log(match);
 
   return (
     <Switch>
-      <Route path="/youtube_list/youtube_register" component={YoutubeRegister} />
-      <Route path="/youtube_list/youtube_detail" component={YoutubeDetail} />
-      <Route exact component={YoutubeList} />
+      <Route path={`${match.path}/youtube_register`} component={YoutubeRegister} />
+      <Route path={`${match.path}/youtube_detail/:youtubeId`} component={YoutubeDetail} />
+      <Route exact path={match.path} component={YoutubeList} />
     </Switch>
   );
 }

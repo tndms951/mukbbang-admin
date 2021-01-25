@@ -26,8 +26,9 @@ const BreadRegister = ({ history, location }) => {
 
   // 페이지 이동시
   const [breadId, setBreadId] = useState(-1);
+  console.log(breadId);
 
-  // 만들어보기
+  // 수정기능
   useEffect(() => {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true
@@ -52,6 +53,8 @@ const BreadRegister = ({ history, location }) => {
       }
     }
     if (query.breadId) {
+      console.log(query.breadId);
+      console.log(query);
       fetchData(query.breadId);
       setBreadId(query.breadId);
     }
@@ -120,7 +123,7 @@ const BreadRegister = ({ history, location }) => {
       };
 
       if (breadId === -1) {
-        const { status, data: breadData } = await axios.post('/admin/bread', breadObject);
+        const { status } = await axios.post('/admin/bread', breadObject);
 
         if (status === 201) {
           history.push('/bread_list');

@@ -55,6 +55,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
     setEndDate(null);
   };
 
+  // 검색조회
   const handleSearch = (e) => {
     e.preventDefault();
 
