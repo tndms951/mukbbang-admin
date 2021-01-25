@@ -9,13 +9,23 @@ export const isEmailValid = (value) => {
   return !regExp.test(value);
 };
 
-export const sweetAlert = (title, icon = 'error') => {
+// alert창 라이브러리
+export const sweetAlert = (title, icon = 'error') => (
+  MySwal.fire({
+    title,
+    icon
+  })
+);
+
+// 성공시 alert창
+export const sweetAlertSuccess = (title, icon = 'success') => {
   MySwal.fire({
     icon,
     title
   });
 };
 
+// 에러 핸들러
 export const errorhandler = (err) => {
   if (err && err.response) {
     const { data } = err.response;
@@ -26,17 +36,18 @@ export const errorhandler = (err) => {
   }
 };
 
-// eslint-disable-next-line arrow-body-style
-export const sweetAlertConfirm = async (title) => {
-  return new Promise((resolve) => {
-    Swal.fire({
-      title,
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '예',
-      cancelButtonText: '아니요'
-    }).then((result) => resolve(result.isConfirmed));
-  });
-};
+// alert 확인창
+export const sweetAlertConfirm = async (title) => new Promise((resolve) => {
+  Swal.fire({
+    title,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: '예',
+    cancelButtonText: '아니요'
+  }).then((result) => resolve(result.isConfirmed));
+});
+
+// 날짜 체크박스
+export const daysList = ['월', '화', '수', '목', '금', '토', '일'];

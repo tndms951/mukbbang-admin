@@ -1,9 +1,9 @@
-/* eslint-disable react/button-has-type */
 import React, { useState, useRef, useEffect } from 'react';
 // import axios from '../../../../utils/axios';
 // import { errorhandler } from '../../../../utils/common';
 
 import Modal from '../../../../utils/Modal/adress';
+import { daysList } from '../../../../utils/common';
 
 import arrowDown from '../../../../../images/arrow.png';
 import ReactImage from '../../../../../images/react.png';
@@ -26,13 +26,13 @@ function BreadHoustList() {
     closetime: '',
     homepage: '',
     holiday: '',
+    checked: {
+    },
     picture: '',
     menuPicture: '',
     choosebread: '',
     bossaccount: ''
   });
-  console.log(breadRegister.opentime);
-  console.log(breadRegister.closetime);
 
   const {
     name,
@@ -43,14 +43,13 @@ function BreadHoustList() {
     detailAddress,
     addressName,
     opentime,
-    closetime
+    closetime,
+    checked
   } = breadRegister;
 
   // 영업시간 리스트
   const [openTimeList, setOpneTimeList] = useState([]);
   const [closeTimeList, setCloseTimeList] = useState([]);
-  // console.log(openTimeList);
-  // console.log(closeTimeList);
 
   useEffect(() => {
     const newTime = [];
@@ -76,6 +75,9 @@ function BreadHoustList() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // setBreadRegister({
+    //   holiday:
+    // });
 
     console.log(breadRegister);
   };
@@ -107,6 +109,15 @@ function BreadHoustList() {
     });
   };
 
+  // 휴일 핸들 체인지
+  const holidayHandleChange = (e) => {
+    checked[e.target.value] = e.target.checked;
+    setBreadRegister({
+      ...breadRegister,
+      checked
+    });
+  };
+
   // 모달
   const el = useRef();
   const [modalOpen, setModalOpen] = useState(false);
@@ -127,8 +138,8 @@ function BreadHoustList() {
       ...breadRegister,
       addressLat: addressData.addressLat,
       addressLon: addressData.addressLon,
-      addressName: addressData.addressName,
-      address: ''
+      addressName: addressData.addressName
+      // address: ''
     });
     closeModal();
   };
@@ -308,27 +319,11 @@ function BreadHoustList() {
               </span>
 
               <div className="form-group col-5 checkbox">
-                <label>
-                  <input type="checkbox" name="date" value="월" /> 월
-                </label>
-                <label>
-                  <input type="checkbox" name="date" value="화" /> 화
-                </label>
-                <label>
-                  <input type="checkbox" name="date" value="수" /> 수
-                </label>
-                <label>
-                  <input type="checkbox" name="date" value="목" /> 목
-                </label>
-                <label>
-                  <input type="checkbox" name="date" value="금" /> 금
-                </label>
-                <label>
-                  <input type="checkbox" name="date" value="토" /> 토
-                </label>
-                <label>
-                  <input type="checkbox" name="date" value="일" /> 일
-                </label>
+                {daysList.map((days, index) => (
+                  <label key={`holiday-list${index}`}>
+                    <input type="checkbox" name="date" value={days} onChange={holidayHandleChange} checked={!!checked[days]} />{days}
+                  </label>
+                ))}
               </div>
             </div>
             {/* <div className="row justify-content-start mb-3">
@@ -369,6 +364,63 @@ function BreadHoustList() {
                 <input type="file" id="ex_file" />
               </div>
             </div>
+            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box">
+
+              <div
+                className="card col-5 mb-3 mt-3 bread_container"
+                style={{
+                  maxWidth: '13rem'
+                }}>
+                <img className="card-img-top" src={ReactImage} alt="사진" />
+                <div className="card-body">
+                  <p className="card-text">This is Pizza bread.</p>
+                </div>
+              </div>
+
+              <div
+                className="card col-5 mb-3 mt-3 bread_container"
+                style={{
+                  maxWidth: '13rem'
+                }}>
+                <img className="card-img-top" src={arrowDown} alt="사진" />
+                <div className="card-body">
+                  <p className="card-text">This is Pizza bread.</p>
+                </div>
+              </div>
+
+              <div
+                className="card col-5 mb-3 mt-3 bread_container"
+                style={{
+                  maxWidth: '13rem'
+                }}>
+                <img className="card-img-top" src={ReactImage} alt="사진" />
+                <div className="card-body">
+                  <p className="card-text">This is Pizza bread.</p>
+                </div>
+              </div>
+
+              <div
+                className="card col-5 mb-3 mt-3 bread_container"
+                style={{
+                  maxWidth: '13rem'
+                }}>
+                <img className="card-img-top" src={arrowDown} alt="사진" />
+                <div className="card-body">
+                  <p className="card-text">This is Pizza bread.</p>
+                </div>
+              </div>
+              <div
+                className="card col-5 mb-3 mt-3 bread_container"
+                style={{
+                  maxWidth: '13rem'
+                }}>
+                <img className="card-img-top" src={ReactImage} alt="사진" />
+                <div className="card-body">
+                  <p className="card-text">This is Pizza bread.</p>
+                </div>
+              </div>
+            </div>
+
             <div className="row justify-content-start mb-3">
               <span
                 className="col-2"

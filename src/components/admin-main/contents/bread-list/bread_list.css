@@ -1,0 +1,24 @@
+.register_box button {
+  font-size: 14px;
+}
+
+.bread-search {
+  margin-top: 25px;
+  margin-right: 20px;
+}
+
+.event_table {
+margin-right: 20px;
+}
+
+.bread-search button:first-child {
+  margin-right:10px;
+ 
+}
+
+.bread-search button {
+  height:40px;
+  font-size: 15px;
+}
+
+

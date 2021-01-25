@@ -12,6 +12,7 @@ import './address.css';
 
 function Modal({ closeModal, el, handleAddress }) {
   const [name, setName] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const [address, setAddress] = useState([]);
   const [isEnd, setIsEnd] = useState(false);
   const [page, setPage] = useState(0);
@@ -33,6 +34,7 @@ function Modal({ closeModal, el, handleAddress }) {
   const addressApiCall = async (addressName, currentPage) => {
     const limit = 20;
     try {
+      setIsLoading(true);
       const queryObject = {
         name: addressName,
         page: currentPage,
@@ -45,12 +47,14 @@ function Modal({ closeModal, el, handleAddress }) {
       const { status, data: addressData } = await axios.get(`/util/address?${query}`);
       console.log(addressData);
       const { data } = addressData;
+      setIsLoading(false);
       if (status === 200) {
         setAddress(currentPage === 1 ? data.list : [...address, ...data.list]);
         setPage(currentPage);
         setIsEnd(data.pagination.isEnd);
       }
     } catch (err) {
+      setIsLoading(false);
       errorhandler(err);
     }
   };
@@ -70,14 +74,18 @@ function Modal({ closeModal, el, handleAddress }) {
     //     console.log('불가능 !!!!!!');
     //   }
     console.log('더보기 입니다');
-    addressApiCall(name, page + 1);
+    if (!isLoading) {
+      addressApiCall(name, page + 1);
+    }
     console.log(name);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     // addressApiCall(name, page + 1);
-    addressApiCall(name, 1);
+    if (!isLoading) {
+      addressApiCall(name, 1);
+    }
   };
 
   // const onClick = () => {
@@ -135,12 +143,13 @@ function Modal({ closeModal, el, handleAddress }) {
               </li>
             ))}
             <div
-              className="addresslist"
+              className={`addresslist ${isLoading ? 'text-danger' : ''}`}
               style={{
                 textAlign: 'center'
-              }}>
+              }}
+              onClick={loadMoreHandler}>
               {address.length && !isEnd ? (
-                <button type="button" onClick={loadMoreHandler}>
+                <button type="button" disabled={isLoading}>
                   더보기
                 </button>
               ) : null}
