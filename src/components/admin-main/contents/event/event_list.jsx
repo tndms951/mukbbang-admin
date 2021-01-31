@@ -16,6 +16,7 @@ import { errorhandler } from '../../../utils/common';
 import './event_list.css';
 
 const EventList = ({ eventList, onEventList, history, location }) => {
+  console.log(location);
   // 검색조회
   const [title, setTitle] = useState('');
 
@@ -29,6 +30,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
         const query = qs.parse(location.search, {
           ignoreQueryPrefix: true
         });
+        console.log(query);
         const { status, data: eventData } = await axios.get(`/admin/event${location.search}`);
         if (status === 200) {
           onEventList(eventData.list);
@@ -72,6 +74,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
       queryObject.endDate = moment(endDate).format('YYYY-MM-DD');
     }
     const queryData = qs.stringify(queryObject);
+    console.log(queryData);
     history.push(`/event${queryData ? `?${queryData}` : ''}`);
   };
 

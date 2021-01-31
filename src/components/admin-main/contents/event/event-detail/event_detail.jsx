@@ -25,7 +25,6 @@ const Detail = ({ match, history }) => {
 
   // 수정,취소 값 버튼
   const [modify, setModify] = useState(false);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -94,6 +93,7 @@ const Detail = ({ match, history }) => {
 
   // 이미지 핸들체인지
   const ImagehandleChange = async (e) => {
+    console.log('aasdf');
     try {
       const { name } = e.target.files[0];
       const imageFormData = new FormData();

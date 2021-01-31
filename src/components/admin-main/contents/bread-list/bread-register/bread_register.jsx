@@ -23,6 +23,7 @@ const BreadRegister = ({ history, location }) => {
 
   // 여러 이미지 담는곳
   const [registerImageList, setRegisterImageList] = useState([]);
+  console.log(registerImageList);
 
   // 페이지 이동시
   const [breadId, setBreadId] = useState(-1);
@@ -39,6 +40,8 @@ const BreadRegister = ({ history, location }) => {
       // const { breadId } = query;
 
       const { status, data: registerData } = await axios.get(`/admin/bread/${breadqueryId}`);
+      console.log(registerData);
+      console.log('aaa');
       try {
         if (status === 200) {
           const { data } = registerData;
@@ -93,6 +96,8 @@ const BreadRegister = ({ history, location }) => {
       if (status === 200) {
         const { data: { imageUrl: newImageUrlList } } = imageData;
 
+        console.log(newImageUrlList);
+        console.log(imageData);
         const newimageList = [];
         newImageUrlList.forEach((image) => {
           const newImage = {

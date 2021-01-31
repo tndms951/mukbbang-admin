@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
-import CloseButton from '../../../../shared/button/close_button';
 
 import './bread_detail.css';
 
@@ -16,7 +15,7 @@ function Detail({ match, history }) {
 
   // 이미지 값 저장
   const [breadImageList, setBreadImageList] = useState([]);
-  
+  console.log(breadImageList);
 
   useEffect(() => {
     async function fetchData() {
@@ -30,6 +29,7 @@ function Detail({ match, history }) {
           const { data } = detailData;
           setDataList(data);
           setBreadImageList(data.images); 
+          console.log(data)
         }
       } catch (err) {
         errorhandler(err);
@@ -80,10 +80,16 @@ function Detail({ match, history }) {
               <span className="contentName">
                 <div className="image_wrap">
                     {dataList?.images.map((imageData, index) => (
+                 
                       <div className="d-flex bread-image" key={`image-${index}`}>
                         <img src={imageData.imageUrl} alt="빵 이미지" className="bread_image1" />
                       </div>
                     ))}
+                    {(
+                      
+                      console.log(dataList)
+                    )}
+                    
                 </div>
               </span>
             </div>

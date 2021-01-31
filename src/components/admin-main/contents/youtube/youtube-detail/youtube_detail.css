@@ -8,8 +8,10 @@
   font-weight: bold;
 }
 
-
-
 .youtube_search button {
   font-size: 15px;
+}
+
+.information_img {
+  display: flex;
 }

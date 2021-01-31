@@ -21,9 +21,12 @@ const YoutubeList = ({ history, location }) => {
         const query = qs.parse(location.search, {
           ignoreQueryPrefix: true
         });
-
+        console.log(query);
+        console.log(location);
         const { status, data: youtubeData } = await axios.get(`/admin/youtube${location.search}`);
         console.log(youtubeData);
+
+        console.log('ㅇㅇ');
         if (status === 200) {
           setMapList(youtubeData.list);
           setTitle(query.title || '');
@@ -46,7 +49,7 @@ const YoutubeList = ({ history, location }) => {
     e.preventDefault();
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
-
+    console.log(queryObject);
     if (title) {
       queryObject.title = title;
     }
@@ -127,7 +130,9 @@ const YoutubeList = ({ history, location }) => {
                   <tbody>
 
                     {mapList.map((youtubeData) => (
+                      // console.log(youtubeData.id)
                       <tr key={`youtubeData-${youtubeData.id}`}>
+
                         <th>{youtubeData.id}</th>
                         <td>
                           <Link to={`/youtube_list/youtube_detail/${youtubeData.id}`}>{youtubeData.title}</Link>
@@ -148,7 +153,6 @@ const YoutubeList = ({ history, location }) => {
             </div>
           </div>
         </div>
-
       </div>
     </>
   );

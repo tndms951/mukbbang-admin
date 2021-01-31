@@ -7,10 +7,6 @@ import axios from '../../../../utils/axios';
 import './youtube_detail.css';
 
 function YoutubeDetail({ match, history }) {
-  // console.log(match);
-  // const { youtubeId } = match.params;
-  // console.log(youtubeId);
-
   // 서버에 받아온값 저장
   const [dataList, setDataList] = useState(null);
   console.log(dataList);
@@ -22,6 +18,7 @@ function YoutubeDetail({ match, history }) {
 
         const { status, data: detailData } = await axios.get(`/admin/youtube/${youtubeId}`);
         console.log(detailData);
+
         if (status === 200) {
           const { data } = detailData;
           setDataList(data);
@@ -93,8 +90,8 @@ function YoutubeDetail({ match, history }) {
               <span className="text1">
                 빵집 정보 &nbsp;&nbsp;
               </span>
-              <span className="contentName">
-                {dataList && dataList.breadId}
+              <span className="contentName information_img ml-5">
+                <img src={dataList && dataList.breadShop.imageUrl} className=" w-50 mt-4" />
               </span>
             </div>
           </div>

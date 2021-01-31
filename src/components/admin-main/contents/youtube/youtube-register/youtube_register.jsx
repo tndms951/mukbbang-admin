@@ -4,24 +4,35 @@ import { Link } from 'react-router-dom';
 import qs from 'qs';
 
 import axios from '../../../../utils/axios';
-import { errorhandler } from '../../../../utils/common';
+import { errorhandler, sweetAlert } from '../../../../utils/common';
 
 import './youtube_register.css';
 
 function YoutubeRegister({ history, location }) {
+  console.log(location.search);
+  console.log(history);
+
   const [youtubeValue, setYoutubeValue] = useState({
     title: '',
     content: '',
     link: '',
-    information: ''
+    information: '',
+    breadShopId: '' // 추가
   });
+  console.log(youtubeValue.information);
+  console.log(youtubeValue.breadShopId);
+
+  const { title, content, link, information, breadShopId } = youtubeValue;
+  console.log(information);
   console.log(youtubeValue);
 
-  // 페이지 이동시
-  const [youtubeIdd, setYoutubeIdd] = useState(-1);
+  // 페이지 이동시(queryId)
+  const [youtubeIdd, setYoutubeIdd] = useState(0);
+  console.log(youtubeIdd);
 
   // 리스트 값 저장(빵집 정보)
   const [breadShopList, setBreadShopList] = useState([]);
+  console.log(breadShopList);
 
   // 수정기능
   useEffect(() => {
@@ -32,7 +43,7 @@ function YoutubeRegister({ history, location }) {
     async function fetchData(youtubequeryId) {
       console.log(youtubequeryId);
       const { status, data: youtubeData } = await axios.get(`/admin/youtube/${youtubequeryId}`);
-      console.log(youtubeData);
+      console.log('aaa');
       try {
         if (status === 200) {
           const { data } = youtubeData;
@@ -41,7 +52,7 @@ function YoutubeRegister({ history, location }) {
             title: data.title,
             content: data.content,
             link: data.link,
-            information: data.breadId
+            information: data.breadShop.id
           });
         }
       } catch (err) {
@@ -55,28 +66,26 @@ function YoutubeRegister({ history, location }) {
     }
   }, [location.search]);
 
-  const { title, content, link, information } = youtubeValue;
-
-  // 인풋체인지
-  const handleChange = (e) => {
-    setYoutubeValue({
-      ...youtubeValue,
-      [e.target.name]: e.target.value
-    });
-  };
-
   // 저장했을때
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const youtubeObject = {
-        title: youtubeValue.title,
-        content: youtubeValue.content,
-        link: youtubeValue.link,
-        breadId: youtubeValue.information
+        title,
+        content,
+        link,
+        breadShopId
       };
+      if (youtubeIdd === 0) {
+        const { status } = await axios.post('/admin/youtube', youtubeObject);
+        if (status === 201) {
+          history.push('/youtube_list');
+        }
+        return;
+      }
 
-      const { status } = await axios.post('/admin/youtube', youtubeObject);
+      // 수정 put
+      const { status } = await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject);
       if (status === 201) {
         history.push('/youtube_list');
       }
@@ -86,16 +95,26 @@ function YoutubeRegister({ history, location }) {
     }
   };
 
-  const [youtubeInput, setYoutubeInput] = useState(false);
+  // 빵집정보(사진) 인풋창
+  const [youtubeInput, setYoutubeInput] = useState(null);
+  console.log(youtubeInput);
 
-  // input창 나오게하기
-  const openInput = () => {
+  // 인풋체인지
+  const handleChange = (e) => {
+    setYoutubeValue({
+      ...youtubeValue,
+      [e.target.name]: e.target.value
+    });
     setYoutubeInput(true);
   };
 
   // 검색버튼
   const onSearch = async () => {
     try {
+      if (!information) {
+        sweetAlert('값없음');
+        return;
+      }
       const { status, data: searchData } = await axios.get(`/admin/bread/shop?title=${information}`);
       console.log(searchData);
       if (status === 200) {
@@ -116,10 +135,12 @@ function YoutubeRegister({ history, location }) {
 
   // 사진 클릭시
   const breadOnClick = (breadShop) => {
+    console.log(breadShop);
     setYoutubeValue({
       ...youtubeValue,
-      information: breadShop.id
+      breadShopId: breadShop.id
     });
+    console.log(breadShop);
   };
 
   return (
@@ -194,20 +215,25 @@ function YoutubeRegister({ history, location }) {
               autoComplete="off" // 인풋클릭시 아래박스 안뜨게
               value={information}
               onChange={handleChange}
-              onClick={openInput}
               />
             {breadShopList.length ? (
-              <ul className="youtube_input">
-                {breadShopList.map((breadShop) => (
-                  <li
-                    key={`breadShop-${breadShop.id}`}
-                    className="search_list search_list_click"
-                    onClick={() => breadOnClick(breadShop)}>
-                    <img src={breadShop.imageUrl} className="bread_list_img" />
-                    <h4>{breadShop.title}</h4>
-                  </li>
-                ))}
-              </ul>
+
+              <div className="youtube_infor">
+                <ul className="youtube_input">
+                  {breadShopList.map((breadShop) => (
+
+                    <li
+                      key={`breadShop-${breadShop.id}`}
+                      className={`search_list ${breadShop.id === breadShopId ? 'active' : ''}`}
+                      onClick={() => breadOnClick(breadShop)}>
+                      <img src={breadShop.imageUrl} className="bread_list_img" />
+                      <h4>{breadShop.title}</h4>
+                      {breadShop.id === breadShopId && <div className="backgroundCover" />}
+                    </li>
+
+                  ))}
+                </ul>
+              </div>
             ) : null}
 
           </div>
@@ -222,11 +248,11 @@ function YoutubeRegister({ history, location }) {
           </button>
 
           <button type="submit" className="btn btn-primary btn-sm col-1">
-            {youtubeIdd === -1 ? '저장' : '수정'}
+            {!youtubeIdd ? '저장' : '수정'}
           </button>
         </div>
         <div className="event-search nav justify-content-end row w-100">
-          <Link to="/bread_list" className="btn btn-primary btn-sm col-2 text3">
+          <Link to="/youtube_list" className="btn btn-primary btn-sm col-2 text3">
             목록
           </Link>
         </div>

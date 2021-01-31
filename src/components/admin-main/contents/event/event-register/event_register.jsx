@@ -33,6 +33,7 @@ function Resgister({ history }) {
     imageName: '이미지를 첨부해주세요',
     imageUrl: ''
   });
+  console.log(registerImage);
 
   // 이미지 삭제 Ref
   const imageRef = useRef(null);
@@ -75,6 +76,7 @@ function Resgister({ history }) {
       });
       if (status === 200) {
         const { data } = imageData;
+        console.log(data);
         setRegisterImage({
           ...registerImage,
           imageName: name,
