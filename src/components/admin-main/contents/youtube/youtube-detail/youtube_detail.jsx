@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { errorhandler } from '../../../../utils/common';
 import axios from '../../../../utils/axios';
@@ -9,15 +10,12 @@ import './youtube_detail.css';
 function YoutubeDetail({ match, history }) {
   // 서버에 받아온값 저장
   const [dataList, setDataList] = useState(null);
-  console.log(dataList);
-
   useEffect(() => {
     async function fetchData() {
       try {
         const { youtubeId } = match.params;
 
         const { status, data: detailData } = await axios.get(`/admin/youtube/${youtubeId}`);
-        console.log(detailData);
 
         if (status === 200) {
           const { data } = detailData;
@@ -116,5 +114,10 @@ function YoutubeDetail({ match, history }) {
     </>
   );
 }
+
+YoutubeDetail.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
+  match: PropTypes.instanceOf(Object).isRequired
+};
 
 export default YoutubeDetail;

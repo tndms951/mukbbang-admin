@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 import qs from 'qs';
+import PropTypes from 'prop-types';
 
 import axios from '../../../../utils/axios';
 import { errorhandler, sweetAlert } from '../../../../utils/common';
@@ -9,9 +10,6 @@ import { errorhandler, sweetAlert } from '../../../../utils/common';
 import './youtube_register.css';
 
 function YoutubeRegister({ history, location }) {
-  console.log(location.search);
-  console.log(history);
-
   const [youtubeValue, setYoutubeValue] = useState({
     title: '',
     content: '',
@@ -19,20 +17,14 @@ function YoutubeRegister({ history, location }) {
     information: '',
     breadShopId: '' // 추가
   });
-  console.log(youtubeValue.information);
-  console.log(youtubeValue.breadShopId);
 
   const { title, content, link, information, breadShopId } = youtubeValue;
-  console.log(information);
-  console.log(youtubeValue);
 
   // 페이지 이동시(queryId)
   const [youtubeIdd, setYoutubeIdd] = useState(0);
-  console.log(youtubeIdd);
 
   // 리스트 값 저장(빵집 정보)
   const [breadShopList, setBreadShopList] = useState([]);
-  console.log(breadShopList);
 
   // 수정기능
   useEffect(() => {
@@ -41,13 +33,10 @@ function YoutubeRegister({ history, location }) {
     });
 
     async function fetchData(youtubequeryId) {
-      console.log(youtubequeryId);
       const { status, data: youtubeData } = await axios.get(`/admin/youtube/${youtubequeryId}`);
-      console.log('aaa');
       try {
         if (status === 200) {
           const { data } = youtubeData;
-          console.log(data);
           setYoutubeValue({
             title: data.title,
             content: data.content,
@@ -60,7 +49,6 @@ function YoutubeRegister({ history, location }) {
       }
     }
     if (query.youtubeId) {
-      console.log(query);
       fetchData(query.youtubeId);
       setYoutubeIdd(query.youtubeId);
     }
@@ -87,50 +75,20 @@ function YoutubeRegister({ history, location }) {
           link,
           breadShopId
         };
-        if (youtubeIdd === 0) {
-          const { status } = youtubeIdd ? await axios.post('/admin/youtube', youtubeObject) : await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject);
-          if (status === 201) {
-            history.push(youtubeIdd ? '/youtube_list' : `/youtube/${youtubeIdd}`);
-          }
+
+        const { status } = youtubeIdd ? await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject)
+          : await axios.post('/admin/youtube', youtubeObject);
+        if (status === 201) {
+          history.push(youtubeIdd ? `/youtube_list/youtube_detail/${youtubeIdd}` : '/youtube_list');
         }
-        // const { status } = youtubeIdd ? (await axios.post('/admin/youtube', youtubeObject))
-        //   : (await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject));
-        // if (youtubeIdd === 0) {
-        //   if (status === 201) {
-        //     history.push(youtubeIdd ? '/youtube_list' : `youtube/${youtubeIdd}`);
-        //   }
-        // }
       }
-
-      // const youtubeObject = {
-      //   title,
-      //   content,
-      //   link,
-      //   breadShopId
-      // };
-
-      // if (youtubeIdd === 0) {
-      //   const { status } = await axios.post('/admin/youtube', youtubeObject);
-      //   if (status === 201) {
-      //     history.push('/youtube_list');
-      //   }
-      //   return;
-      // }
-
-      // 수정 put
-      // const { status } = await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject);
-      // if (status === 201) {
-      //   history.push('/youtube_list');
-      // }
     } catch (err) {
       errorhandler(err);
-      console.log(err.message);
     }
   };
 
   // 빵집정보(사진) 인풋창
   const [youtubeInput, setYoutubeInput] = useState(null);
-  console.log(youtubeInput);
 
   // 인풋체인지
   const handleChange = (e) => {
@@ -149,14 +107,12 @@ function YoutubeRegister({ history, location }) {
         return;
       }
       const { status, data: searchData } = await axios.get(`/admin/bread/shop?title=${information}`);
-      console.log(searchData);
+
       if (status === 200) {
         const { list } = searchData;
         setBreadShopList(list);
-        console.log(list);
       }
     } catch (err) {
-      console.log(err);
       errorhandler(err);
     }
   };
@@ -168,12 +124,10 @@ function YoutubeRegister({ history, location }) {
 
   // 사진 클릭시
   const breadOnClick = (breadShop) => {
-    console.log(breadShop);
     setYoutubeValue({
       ...youtubeValue,
       breadShopId: breadShop.id
     });
-    console.log(breadShop);
   };
 
   // 엔터로 등록하기
@@ -302,5 +256,10 @@ function YoutubeRegister({ history, location }) {
     </div>
   );
 }
+
+YoutubeRegister.propTypes = {
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired
+};
 
 export default YoutubeRegister;

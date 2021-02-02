@@ -6,9 +6,6 @@ import YoutubeList from './youtube_list';
 import YoutubeDetail from './youtube-detail/youtube_detail';
 
 function YoutubeRouter({ match }) {
-  console.log('라우터');
-  console.log(match);
-
   return (
     <Switch>
       <Route path={`${match.path}/youtube_register`} component={YoutubeRegister} />

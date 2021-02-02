@@ -11,11 +11,9 @@ import { errorhandler } from '../../../utils/common';
 import './youtube_list.css';
 
 const YoutubeList = ({ history, location }) => {
-  console.log(location);
   // 리스트 값
   const [mapList, setMapList] = useState([]);
 
-  console.log(mapList);
   // 검색조회
   const [title, setTitle] = useState('');
 
@@ -39,10 +37,9 @@ const YoutubeList = ({ history, location }) => {
         const query = qs.parse(location.search, {
           ignoreQueryPrefix: true
         });
-        console.log(query);
-        console.log(location);
+
         const { status, data: youtubeData } = await axios.get(`/admin/youtube${location.search}`);
-        console.log(youtubeData);
+
         if (status === 200) {
           setMapList(youtubeData.list);
           setTitle(query.title || '');
@@ -57,7 +54,6 @@ const YoutubeList = ({ history, location }) => {
   // 제목 핸들러
   const handleChange = (e) => {
     setTitle(e.target.value);
-    console.log(e.target.value);
   };
 
   // 검색조회
@@ -65,12 +61,10 @@ const YoutubeList = ({ history, location }) => {
     e.preventDefault();
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
-    console.log(queryObject);
+
     if (title) {
       queryObject.title = title;
     }
-    console.log(title);
-    console.log(queryObject);
 
     const queryData = qs.stringify(queryObject);
     history.push(`/youtube_list${queryData ? `?${queryData}` : ''}`);
