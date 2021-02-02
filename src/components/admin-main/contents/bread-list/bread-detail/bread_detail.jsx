@@ -15,13 +15,11 @@ function Detail({ match, history }) {
 
   // 이미지 값 저장
   const [breadImageList, setBreadImageList] = useState([]);
-  console.log(breadImageList);
-
   useEffect(() => {
     async function fetchData() {
       try {
         const { breadId } = match.params;
-        console.log(breadId);
+        
 
         const { status, data: detailData } = await axios.get(`/admin/bread/${breadId}`);
         
@@ -29,7 +27,7 @@ function Detail({ match, history }) {
           const { data } = detailData;
           setDataList(data);
           setBreadImageList(data.images); 
-          console.log(data)
+          
         }
       } catch (err) {
         errorhandler(err);
@@ -85,10 +83,7 @@ function Detail({ match, history }) {
                         <img src={imageData.imageUrl} alt="빵 이미지" className="bread_image1" />
                       </div>
                     ))}
-                    {(
-                      
-                      console.log(dataList)
-                    )}
+                    
                     
                 </div>
               </span>

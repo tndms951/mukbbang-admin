@@ -93,7 +93,6 @@ const Detail = ({ match, history }) => {
 
   // 이미지 핸들체인지
   const ImagehandleChange = async (e) => {
-    console.log('aasdf');
     try {
       const { name } = e.target.files[0];
       const imageFormData = new FormData();

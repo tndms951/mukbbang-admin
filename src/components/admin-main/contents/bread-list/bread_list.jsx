@@ -44,7 +44,6 @@ function BreadList({ history, location }) {
     e.preventDefault();
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
-    console.log(queryObject);
     if (title) {
       queryObject.title = title;
     }

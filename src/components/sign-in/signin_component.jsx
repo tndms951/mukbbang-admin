@@ -18,7 +18,6 @@ function Signin({ onUserSet, history }) {
 
   const [errorMessageEmail, setErrorMessageEmail] = useState('');
   const [submitStatus, setSubmitStatus] = useState(false);
-  console.log(submitStatus);
   const { email, password, remember } = inputs;
 
   const valueRef = {
@@ -50,7 +49,6 @@ function Signin({ onUserSet, history }) {
       }
       const { data } = await axios.post('/admin/signin', signinObject);
       const { token } = data.data;
-      // console.log(token);
       setAuthorization(token);
       const { data: currentData } = await axios.get('/admin/current'); //
       const { data: userInfo } = currentData;
