@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import qs from 'qs';
 import PropTypes from 'prop-types';
+import YouTube from 'react-youtube';
+import Moment from 'react-moment';
 
 import axios from '../../../utils/axios';
 import { errorhandler } from '../../../utils/common';
@@ -9,11 +11,27 @@ import { errorhandler } from '../../../utils/common';
 import './youtube_list.css';
 
 const YoutubeList = ({ history, location }) => {
+  console.log(location);
   // 리스트 값
   const [mapList, setMapList] = useState([]);
 
+  console.log(mapList);
   // 검색조회
   const [title, setTitle] = useState('');
+
+  // youtube video
+  const opts = {
+    height: '240',
+    width: '440'
+    // playerVars: {
+    //   autoplay: 1
+    // }
+  };
+
+  // youtube video
+  const _onReady = (event) => {
+    event.target.pauseVideo();
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -25,8 +43,6 @@ const YoutubeList = ({ history, location }) => {
         console.log(location);
         const { status, data: youtubeData } = await axios.get(`/admin/youtube${location.search}`);
         console.log(youtubeData);
-
-        console.log('ㅇㅇ');
         if (status === 200) {
           setMapList(youtubeData.list);
           setTitle(query.title || '');
@@ -130,7 +146,6 @@ const YoutubeList = ({ history, location }) => {
                   <tbody>
 
                     {mapList.map((youtubeData) => (
-                      // console.log(youtubeData.id)
                       <tr key={`youtubeData-${youtubeData.id}`}>
 
                         <th>{youtubeData.id}</th>
@@ -139,12 +154,12 @@ const YoutubeList = ({ history, location }) => {
                         </td>
                         <td>
                           <a href={youtubeData.link} target="_blank" rel="noopener noreferrer">
-                            {youtubeData.link}
+                            <YouTube videoId={youtubeData.link.replace('https://www.youtube.com/embed/', '')} opts={opts} onReady={_onReady} />
                           </a>
                         </td>
 
-                        <td>&#160;</td>
-                        <td>&#160;</td>
+                        <td><Moment format="YYYY/MM/DD">{youtubeData.createdAt}</Moment></td>
+
                       </tr>
                     ))}
                   </tbody>

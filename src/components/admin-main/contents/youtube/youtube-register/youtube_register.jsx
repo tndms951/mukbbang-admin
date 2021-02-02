@@ -70,25 +70,58 @@ function YoutubeRegister({ history, location }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const youtubeObject = {
-        title,
-        content,
-        link,
-        breadShopId
-      };
-      if (youtubeIdd === 0) {
-        const { status } = await axios.post('/admin/youtube', youtubeObject);
-        if (status === 201) {
-          history.push('/youtube_list');
+      if (!title) {
+        sweetAlert('제목을 입력해주세요!');
+      } else if (!content) {
+        sweetAlert('내용을 입력해주세요!');
+      } else if (!link) {
+        sweetAlert('링크를 입력해주세요!');
+      } else if (link.indexOf('https://www.youtube.com/embed/') === -1) {
+        sweetAlert('유튜브 링크 주소를 확인해주세요!');
+      } else if (!breadShopId) {
+        sweetAlert('빵집 정보를 입력해주세요!');
+      } else {
+        const youtubeObject = {
+          title,
+          content,
+          link,
+          breadShopId
+        };
+        if (youtubeIdd === 0) {
+          const { status } = youtubeIdd ? await axios.post('/admin/youtube', youtubeObject) : await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject);
+          if (status === 201) {
+            history.push(youtubeIdd ? '/youtube_list' : `/youtube/${youtubeIdd}`);
+          }
         }
-        return;
+        // const { status } = youtubeIdd ? (await axios.post('/admin/youtube', youtubeObject))
+        //   : (await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject));
+        // if (youtubeIdd === 0) {
+        //   if (status === 201) {
+        //     history.push(youtubeIdd ? '/youtube_list' : `youtube/${youtubeIdd}`);
+        //   }
+        // }
       }
 
+      // const youtubeObject = {
+      //   title,
+      //   content,
+      //   link,
+      //   breadShopId
+      // };
+
+      // if (youtubeIdd === 0) {
+      //   const { status } = await axios.post('/admin/youtube', youtubeObject);
+      //   if (status === 201) {
+      //     history.push('/youtube_list');
+      //   }
+      //   return;
+      // }
+
       // 수정 put
-      const { status } = await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject);
-      if (status === 201) {
-        history.push('/youtube_list');
-      }
+      // const { status } = await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject);
+      // if (status === 201) {
+      //   history.push('/youtube_list');
+      // }
     } catch (err) {
       errorhandler(err);
       console.log(err.message);
@@ -141,6 +174,14 @@ function YoutubeRegister({ history, location }) {
       breadShopId: breadShop.id
     });
     console.log(breadShop);
+  };
+
+  // 엔터로 등록하기
+  const handleKeyPress = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      onSearch();
+    }
   };
 
   return (
@@ -215,6 +256,7 @@ function YoutubeRegister({ history, location }) {
               autoComplete="off" // 인풋클릭시 아래박스 안뜨게
               value={information}
               onChange={handleChange}
+              onKeyDown={handleKeyPress}
               />
             {breadShopList.length ? (
 

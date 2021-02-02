@@ -43,7 +43,7 @@ ul {
   text-align: center;
   width: 80%;
   margin: 0 auto;
-  
+  cursor: pointer;
 }
 
 /*  hover값 삭제 */
