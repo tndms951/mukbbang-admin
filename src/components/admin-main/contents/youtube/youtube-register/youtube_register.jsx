@@ -15,14 +15,14 @@ function YoutubeRegister({ history, location }) {
     content: '',
     link: '',
     information: '',
-    breadShopId: '' // 추가
+    breadShopId: ''
   });
 
   const { title, content, link, information, breadShopId } = youtubeValue;
 
   // 페이지 이동시(queryId)
   const [youtubeIdd, setYoutubeIdd] = useState(0);
-
+  // console.log(youtubeIdd);
   // 리스트 값 저장(빵집 정보)
   const [breadShopList, setBreadShopList] = useState([]);
 
@@ -31,9 +31,9 @@ function YoutubeRegister({ history, location }) {
     const query = qs.parse(location.search, {
       ignoreQueryPrefix: true
     });
-
     async function fetchData(youtubequeryId) {
       const { status, data: youtubeData } = await axios.get(`/admin/youtube/${youtubequeryId}`);
+      console.log(youtubeData);
       try {
         if (status === 200) {
           const { data } = youtubeData;
@@ -41,7 +41,8 @@ function YoutubeRegister({ history, location }) {
             title: data.title,
             content: data.content,
             link: data.link,
-            information: data.breadShop.id
+            information: data.breadShop.id,
+            breadShopId: data.breadShop.id
           });
         }
       } catch (err) {

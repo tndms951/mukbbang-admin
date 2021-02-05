@@ -1,18 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import qs from 'qs';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
 import PropTypes from 'prop-types';
 import YouTube from 'react-youtube';
 import Moment from 'react-moment';
 
+import { selectYoutubeList } from '../../../../redux/youtube/youtube.selectors';
+import { setCurrentYoutube } from '../../../../redux/youtube/youtube.actions';
 import axios from '../../../utils/axios';
 import { errorhandler } from '../../../utils/common';
 
 import './youtube_list.css';
 
-const YoutubeList = ({ history, location }) => {
+const YoutubeList = ({ youtubeList, onYoutubeList, history, location }) => {
   // 리스트 값
-  const [mapList, setMapList] = useState([]);
+  // const [mapList, setMapList] = useState([]);
 
   // 검색조회
   const [title, setTitle] = useState('');
@@ -41,7 +45,7 @@ const YoutubeList = ({ history, location }) => {
         const { status, data: youtubeData } = await axios.get(`/admin/youtube${location.search}`);
 
         if (status === 200) {
-          setMapList(youtubeData.list);
+          onYoutubeList(youtubeData.list);
           setTitle(query.title || '');
         }
       } catch (err) {
@@ -49,7 +53,7 @@ const YoutubeList = ({ history, location }) => {
       }
     }
     fetchData();
-  }, [location.search]);
+  }, [location.search, onYoutubeList]);
 
   // 제목 핸들러
   const handleChange = (e) => {
@@ -139,7 +143,7 @@ const YoutubeList = ({ history, location }) => {
                   </thead>
                   <tbody>
 
-                    {mapList.map((youtubeData) => (
+                    {youtubeList.map((youtubeData) => (
                       <tr key={`youtubeData-${youtubeData.id}`}>
 
                         <th>{youtubeData.id}</th>
@@ -168,8 +172,18 @@ const YoutubeList = ({ history, location }) => {
 };
 
 YoutubeList.propTypes = {
+  youtubeList: PropTypes.instanceOf(Array).isRequired,
+  onYoutubeList: PropTypes.func.isRequired,
   history: PropTypes.instanceOf(Object).isRequired,
   location: PropTypes.instanceOf(Object).isRequired
 };
 
-export default YoutubeList;
+const mapStateToProps = createStructuredSelector({
+  youtubeList: selectYoutubeList
+});
+
+const mapDispathchToProps = (dispatch) => ({
+  onYoutubeList: (list) => dispatch(setCurrentYoutube(list))
+});
+
+export default connect(mapStateToProps, mapDispathchToProps)(YoutubeList);
