@@ -1,14 +1,42 @@
 /* eslint-disable react/button-has-type */
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import axios from '../../../../utils/axios';
+import { errorhandler } from '../../../../utils/common';
 
 import '../bread-house-register/bread_house_register.css';
 import arrowDown from '../../../../../images/arrow.png';
-import ReactImage from '../../../../../images/react.png';
 
-function BreadHoustList() {
+// import ReactImage from '../../../../../images/react.png';
+
+/**
+ * @author 송지은
+ * */
+
+function BreadHoustList({ match }) {
+  // 서버에서 받아온 값 저장
+  const [houseDetail, setHouseDetail] = useState([]);
+
+  console.log(houseDetail);
+
   useEffect(() => {
-    console.log('렌더링 후 !!!!!');
-  }, []);
+    const { houseId } = match.params;
+
+    const BreadHouseDetailApiCall = async () => {
+      try {
+        const { status, data: houseData } = await axios.get(`/admin/bread/shop/${houseId}`);
+        if (status === 200) {
+          console.log(' 200 연결 성공');
+          setHouseDetail(houseData.data);
+        }
+      } catch (err) {
+        errorhandler(err);
+      }
+    };
+    BreadHouseDetailApiCall();
+  }, [match.params]);
 
   // const format = 'HH:mm';
 
@@ -30,52 +58,57 @@ function BreadHoustList() {
 
   return (
     <>
-      <div className="col-lg-12 mb-4 mt-10">
+      <div
+        className="col-lg-12 mb-4 mt-10"
+        style={{
+          width: '90%', margin: '0 auto'
+        }}>
         <form>
           <div
             className="card card-small mb-5 mt-5"
             style={{
               padding: '5%'
             }}>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집이름
-              </span>
+            <div className="form-wrap">
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집이름
+                </span>
 
-              <div className="form-group col-5">
-                {/* <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="name"
+                <div className="form-group col-5">
+                  {/* <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="name"
                 /> */}
-                <span className="col-sm-8"> 내용이다 </span>
+                  <span className="col-sm-8"> {houseDetail.title} </span>
+                </div>
               </div>
-            </div>
 
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집주소
-              </span>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집주소
+                </span>
 
-              <div className="form-group col-5 adressbox">
-                {/* <button type="button" className="btn" onClick={opneModal}>
+                <div className="form-group col-5 adressbox">
+                  {/* <button type="button" className="btn" onClick={opneModal}>
                   주소검색
                 </button> */}
-                <span className="col-sm-8"> 경기도 광명시 양지로 </span>
-              </div>
-              {modalOpen && (
+                  <span className="col-sm-8">sss</span>
+                </div>
+                {/* {modalOpen && (
                 <>
                   <div className="Modal-overlay" ref={el} onClick={closeModal} />
                   <div className="Modal">
@@ -115,39 +148,39 @@ function BreadHoustList() {
                     </div>
                   </div>
                 </>
-              )}
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집 전화번호
-              </span>
-              <div className="form-group col-5">
-                {/* <input
+              )} */}
+              </div>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집 전화번호
+                </span>
+                <div className="form-group col-5">
+                  {/* <input
                   type="number"
                   className="form-control"
                   id="inputPassword4"
                   placeholder="핸드폰 번호를 입력해 주세요"
                   name="phoneNumber"
                 /> */}
-                <span className="col-sm-8"> 010.9239.3349 </span>
+                  <span className="col-sm-8"> 01029385829498</span>
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                영업시간
-              </span>
-              <div className="form-group col-5 date">
-                {/* <select defaultValue="시작시간">
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  영업시간
+                </span>
+                <div className="form-group col-7 date">
+                  {/* <select defaultValue="시작시간">
                   <option value="시작시간">
                     시작시간
                   </option>
@@ -176,13 +209,13 @@ function BreadHoustList() {
                   <option value="22:00">22:00</option>
                   <option value="23:00">23:00</option>
                 </select> */}
-                <span className="col-sm-8"> 10:00 </span>
+                  <span className="col-sm-8"> {houseDetail.openTime} </span>
 
-                <span className="col-3"> ~ </span>
+                  <span className="col-3"> ~ </span>
 
-                <span className="col-sm-8"> 23:00 </span>
+                  <span className="col-sm-8"> {houseDetail.closeTime} </span>
 
-                {/* <select defaultValue="마감시간">
+                  {/* <select defaultValue="마감시간">
                   <option value="마감시간">
                     마감시간
                   </option>
@@ -211,41 +244,41 @@ function BreadHoustList() {
                   <option value="22:00">22:00</option>
                   <option value="23:00">23:00</option>
                 </select> */}
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                홈페이지
-              </span>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  홈페이지
+                </span>
 
-              <div className="form-group col-5">
-                {/* <input
+                <div className="form-group col-5">
+                  {/* <input
                   type="text"
                   className="form-control"
                   id="inputPassword4"
                   placeholder="내용을 입력해 주세요"
                   name="name"
                 /> */}
-                <span className="col-sm-8"> www.naver.com </span>
+                  <span className="col-sm-8"> {houseDetail.link} </span>
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                휴일
-              </span>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  휴일
+                </span>
 
-              <div className="form-group col-5 checkbox">
-                <label>
+                <div className="form-group col-5 checkbox">
+                  {/* <label>
                   <input type="checkbox" name="date" value="월" /> 월
                 </label>
                 <label>
@@ -265,156 +298,136 @@ function BreadHoustList() {
                 </label>
                 <label>
                   <input type="checkbox" name="date" value="일" /> 일
-                </label>
+                </label> */}
+                  <span className="col-sm-8">
+                    {houseDetail.holidays}
+                  </span>
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                사진
-              </span>
-
-              <div className="form-group col-5 filebox">
-                <label htmlFor="ex_file">사진 업로드</label>
-                <input type="file" id="ex_file" />
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  내부사진
+                </span>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                메뉴사진
-              </span>
-
-              <div className="form-group col-5 filebox">
-                <label htmlFor="ex_file">사진 업로드</label>
-                <input type="file" id="ex_file" />
+              {/* <div className="form-group col-5 filebox">
+                  <label htmlFor="ex_file">사진 업로드</label>
+                  <input type="file" id="ex_file" />
+                </div> */}
+              <div className="d-flex row">
+                <div className="col-2" />
+                <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
+                  <div
+                    className="card col-5 mb-3 mt-3 bread_interior rounded">
+                    <img
+                      className="card-img-top"
+                      src={houseDetail.images}
+                      alt="사진"
+                      style={{
+                        marginTop: '10px'
+                      }} />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵 선택
-              </span>
 
-              <div className="form-group col-7 d-flex bread_search">
-                <input
-                  type="text"
-                  className="form-control mr-2"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="name"
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  메뉴사진
+                </span>
+              </div>
+              {/* <div className="form-group col-5 filebox">
+                  <label htmlFor="ex_file">사진 업로드</label>
+                  <input type="file" id="ex_file" />
+                </div> */}
+              <div className="d-flex row">
+                <div className="col-2" />
+                <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
+                  <div
+                    className="card col-5 mb-3 mt-3 bread_interior rounded">
+                    <img
+                      className="card-img-top"
+                      src={arrowDown}
+                      alt="사진"
+                      style={{
+                        marginTop: '10px'
+                      }} />
+                  </div>
+                </div>
+              </div>
+
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵 선택
+                </span>
+              </div>
+              {/*
+                <div className="form-group col-7 d-flex bread_search">
+                  <input
+                    type="text"
+                    className="form-control mr-2"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="name"
                 />
-                <button type="submit" className="btn btn-primary">
-                  검색
-                </button>
-              </div>
-            </div>
+                  <button type="submit" className="btn btn-primary">
+                    검색
+                  </button>
+                </div> */}
 
-            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box">
-              {/* <span className="col-2"> </span> */}
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
+              <div className="d-flex row">
+                <div className="col-2" />
+                <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
+                  <div
+                    className="card col-5 mb-3 mt-3 bread_interior rounded">
+                    <img
+                      className="card-img-top"
+                      src={arrowDown}
+                      alt="사진"
+                      style={{
+                        marginTop: '10px'
+                      }} />
+                  </div>
                 </div>
               </div>
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-
-              {/* <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="Card image cap" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="Card image cap" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div> */}
-            </div>
-            <h3>선택한 빵</h3>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집 사장 계정
-              </span>
-
-              <div className="form-group col-5 d-flex">
-                <input
-                  type="text"
-                  className="form-control mr-2"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="name"
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집 사장 계정
+                </span>
+                {/*
+                <div className="form-group col-5 d-flex">
+                  <input
+                    type="text"
+                    className="form-control mr-2"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="name"
                 />
-                <button type="submit" className="btn btn-primary">
-                  검색
-                </button>
+                  <button type="submit" className="btn btn-primary">
+                    검색
+                  </button>
+                </div> */}
+                <span className="col-sm-8"> 43</span>
               </div>
-            </div>
-            {/* <div className="row justify-content-start">
+              {/* <div className="row justify-content-start">
               <span
                 className="col-2"
                 style={{
@@ -436,14 +449,26 @@ function BreadHoustList() {
                 </div>
               </div>
             </div> */}
-            <div className="col mb-4 mt-5">
-              <div className="col text-right">
-                <button type="button" className="mb-2 btn btn-secondary mr-2">
-                  취소
-                </button>
-                <button type="submit" className="mb-2 btn btn-primary mr-2">
-                  등록
-                </button>
+              <div className="col mb-4 mt-5">
+                <div className="col text-right">
+                  <button type="button" className="mb-2 btn btn-secondary mr-2">
+                    취소
+                  </button>
+                  <button type="submit" className="mb-2 btn btn-primary mr-2">
+                    등록
+                  </button>
+                </div>
+                <div className="col text-right mt-3">
+                  <Link to="/bread_house_list">
+                    <div
+                      className="mb-2 btn btn-secondary mr-2"
+                      style={{
+                        color: 'white'
+                      }}>
+                      <button type="button"> 목록으로 가기 </button>
+                    </div>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -452,5 +477,9 @@ function BreadHoustList() {
     </>
   );
 }
+
+BreadHoustList.propTypes = {
+  match: PropTypes.instanceOf(Object).isRequired
+};
 
 export default BreadHoustList;

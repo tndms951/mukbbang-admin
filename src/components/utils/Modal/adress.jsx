@@ -97,7 +97,7 @@ function Modal({ closeModal, el, handleAddress }) {
     <>
       <div className="Modal-overlay" ref={el} onClick={closeModal} />
       <div className="Modal">
-        <div>
+        <div className="form-wrap">
           <form className="d-flex" onSubmit={handleSubmit}>
             <input
               type="text"
@@ -111,26 +111,12 @@ function Modal({ closeModal, el, handleAddress }) {
             <button type="submit" className="btn btn-primary">
               검색
             </button>
-            <button className="xbutton" type="button" onClick={closeModal}>
-              X
+            <button className="xbutton material-icons" type="button" onClick={closeModal}>
+              close
             </button>
           </form>
         </div>
         <div className="content">
-          {/* <ul>
-            <li>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel tempora nulla, non
-              molestiae dicta ducimus. Et unde laborum eveniet ex quod doloribus quae, aliquam
-              beatae atque, vero assumenda rem quo?
-            </li>
-          </ul>
-          <ul className="content">
-            <li>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Vel tempora nulla, non
-              molestiae dicta ducimus. Et unde laborum eveniet ex quod doloribus quae, aliquam
-              beatae atque, vero assumenda rem quo?
-            </li>
-          </ul> */}
           <ul className="address">
             {address.map((addressData, index) => (
               // console.log(addressData);
@@ -157,7 +143,7 @@ function Modal({ closeModal, el, handleAddress }) {
           </ul>
         </div>
         <div className="button-wrap">
-          <button> Confirm </button>
+          <button type="submit"> Confirm </button>
         </div>
       </div>
     </>

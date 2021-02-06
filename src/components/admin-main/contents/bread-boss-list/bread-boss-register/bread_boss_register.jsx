@@ -29,11 +29,11 @@ function BreadBossRegister({ history }) {
 
     try {
       if (!name) {
-        sweetAlert('이름을 입력해주세요');
+        sweetAlert('이름을 입력해 주세요');
       } else if (!phoneNumber) {
         sweetAlert('핸드폰 번호를 입력해 주세요');
       } else if (!profile) {
-        sweetAlert('이미지를 넣어주세요');
+        sweetAlert('이미지를 넣어 주세요');
       } else {
         const shopObject = {
           name,

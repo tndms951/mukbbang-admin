@@ -4,7 +4,8 @@ import { Link } from 'react-router-dom';
 function Footer() {
   return (
     <>
-      <footer className="main-footer d-flex p-2 px-3 bg-white border-top">
+      <footer
+        className="main-footer d-flex p-2 px-3 bg-white border-top">
         <ul className="nav">
           <li className="nav-item">
             <Link to="/" className="nav-link">

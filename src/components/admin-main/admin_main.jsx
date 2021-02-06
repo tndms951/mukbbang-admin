@@ -7,7 +7,7 @@ import Header from './header/header';
 
 import Content from './main_content';
 import BreadHouseRouter from './contents/bread-house-list/bread_house_router';
-import BreadList from './contents/bread-list/bread_list';
+import BreadListRouter from './contents/bread-list/bread_router';
 import BreadBossRouter from './contents/bread-boss-list/bread_boss_router';
 import YoutubeList from './contents/youtube/youtube';
 import NoticeRouter from './contents/notice/notice_router';
@@ -87,7 +87,7 @@ function AdminMain() {
               <Switch>
                 <Route exact path="/" component={Content} />
                 <Route path="/bread_house_list" component={BreadHouseRouter} />
-                <Route path="/bread_list" component={BreadList} />
+                <Route path="/bread_list" component={BreadListRouter} />
                 <Route path="/bread_boss_list" component={BreadBossRouter} />
                 <Route path="/youtube_list" component={YoutubeList} />
                 <Route path="/event" component={Event} />

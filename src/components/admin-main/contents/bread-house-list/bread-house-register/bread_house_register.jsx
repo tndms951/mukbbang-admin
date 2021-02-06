@@ -1,12 +1,10 @@
+/* eslint-disable react/no-array-index-key */
 import React, { useState, useRef, useEffect } from 'react';
-// import axios from '../../../../utils/axios';
-// import { errorhandler } from '../../../../utils/common';
+import qs from 'qs';
+import axios from '../../../../utils/axios';
+import { errorhandler, daysList, sweetAlertWarning, sweetAlert } from '../../../../utils/common';
 
 import Modal from '../../../../utils/Modal/adress';
-import { daysList } from '../../../../utils/common';
-
-import arrowDown from '../../../../../images/arrow.png';
-import ReactImage from '../../../../../images/react.png';
 
 import './bread_house_register.css';
 
@@ -14,7 +12,7 @@ import './bread_house_register.css';
  * @author 송지은
  * */
 
-function BreadHoustList() {
+function BreadHoustList({ history }) {
   const [breadRegister, setBreadRegister] = useState({
     name: '',
     addressName: '',
@@ -22,6 +20,7 @@ function BreadHoustList() {
     addressLon: '',
     detailAddress: '',
     number: '',
+    parkingEnabled: true,
     opentime: '',
     closetime: '',
     homepage: '',
@@ -31,25 +30,54 @@ function BreadHoustList() {
     picture: '',
     menuPicture: '',
     choosebread: '',
-    bossaccount: ''
+    bossaccount: '',
+    bossaccountId: ''
   });
 
   const {
     name,
+    addressLat,
+    addressLon,
     number,
+    parkingEnabled,
     homepage,
+    holiday,
     choosebread,
     bossaccount,
     detailAddress,
     addressName,
     opentime,
     closetime,
-    checked
+    checked,
+    bossaccountId
   } = breadRegister;
 
   // 영업시간 리스트
   const [openTimeList, setOpneTimeList] = useState([]);
   const [closeTimeList, setCloseTimeList] = useState([]);
+
+  // 내부사진 업로드
+  const [image, setImage] = useState([]);
+  console.log(image);
+
+  // 메뉴사진 업로드
+  const [menuImage, setMenuImage] = useState([]);
+
+  // 빵 선택 서버에서 받아온 값
+  const [chooseBreadData, setChooseBreadData] = useState([]);
+  // console.log(chooseBreadData);
+
+  // 선택 이미지 매개변수 담는 함수
+  const [selectedImagesID, setSelectedImagesID] = useState([]);
+  console.log(selectedImagesID);
+
+  // 선택 이미지 서버에서 받아온 값으로 보여주는 함수
+  const [showBreadChoose, setShowBreadChoose] = useState([]);
+  console.log(showBreadChoose);
+
+  // 빵집 사장 서버에서 받온 값
+  const [breadBossAccountData, setBreadBossAccountData] = useState([]);
+  console.log(breadBossAccountData);
 
   useEffect(() => {
     const newTime = [];
@@ -73,12 +101,63 @@ function BreadHoustList() {
     setCloseTimeList(closeTime);
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // setBreadRegister({
-    //   holiday:
-    // });
 
+    try {
+      if (!name) {
+        sweetAlert('빵집이름을 입력해 주세요');
+      } else if (!addressName) {
+        sweetAlert('주소를 입력해 주세요');
+      } else if (!detailAddress) {
+        sweetAlert('상세주소를 입력해 주세요');
+      } else if (!number) {
+        sweetAlert('빵집 전화번호를 입력해 주세요');
+      } else if (!opentime) {
+        sweetAlert('오픈시간을 입력해 주세요');
+      } else if (!closetime) {
+        sweetAlert('마감시간을 입력해 주세요');
+      } else if (!parkingEnabled) {
+        sweetAlert('주차가능 여부를 선택해 주세요');
+      } else if (!homepage) {
+        sweetAlert('홈페이지를 입력해 주세요');
+      } else if (!holiday) {
+        sweetAlert('휴일을 체크해 주세요');
+      } else if (!image.length) {
+        sweetAlert('내부 이미지를 넣어 주세요');
+      } else if (!menuImage.length) {
+        sweetAlert('메뉴 이미지를 넣어 주세요');
+      } else if (!showBreadChoose.length) {
+        sweetAlert('빵 선택을 해주세요');
+      } else if (!bossaccountId) {
+        sweetAlert('빵집 사장 계정을 입력해 주세요');
+      } else {
+        return;
+        const shopObject = {
+          title: name,
+          link: homepage,
+          parkingEnabled,
+          openTime: opentime,
+          closeTime: closetime,
+          shopUserId: bossaccountId,
+          lat: addressLat,
+          lon: addressLon,
+          address: detailAddress,
+          imageUrlShop: image,
+          imageUrlMenu: menuImage,
+          day: holiday,
+          breadId: selectedImagesID
+        };
+
+        const { status } = await axios.post('/admin/bread/shop', shopObject);
+        if (status === 201) {
+          history.push('/bread_house_list');
+        }
+      }
+    } catch (err) {
+      errorhandler(err);
+      console.log(err.message);
+    }
     console.log(breadRegister);
   };
 
@@ -109,13 +188,29 @@ function BreadHoustList() {
     });
   };
 
+  // 주차가능 핸들 체인지
+  const enableParkingHandleChange = (e) => {
+    console.log(e.target.value);
+    // const obj = [];
+    setBreadRegister({
+      ...breadRegister,
+      parkingEnabled: !parkingEnabled
+    });
+  };
+
   // 휴일 핸들 체인지
   const holidayHandleChange = (e) => {
     checked[e.target.value] = e.target.checked;
+    // setBreadRegister({
+    //   ...breadRegister,
+    //   checked
+    // });
     setBreadRegister({
       ...breadRegister,
-      checked
+      holiday: [e.target.value]
     });
+
+    console.log([breadRegister.checked]);
   };
 
   // 모달
@@ -132,507 +227,560 @@ function BreadHoustList() {
     setModalOpen(false);
   };
 
+  // 주소 핸들체인지
   const handleAddress = (addressData) => {
     console.log(addressData);
     setBreadRegister({
       ...breadRegister,
       addressLat: addressData.addressLat,
       addressLon: addressData.addressLon,
-      addressName: addressData.addressName
-      // address: ''
+      addressName: addressData.addressName,
+      address: ''
     });
     closeModal();
   };
 
+  // 내부사진 핸들체인지
+  const imageHandleChange = async (e) => {
+    console.log('qwe');
+    const imageFormData = new FormData();
+    const file = e.target.files;
+
+    try {
+      const imagesArr = image.length + file.length;
+      if (imagesArr > 8) {
+        sweetAlertWarning('이미지는 최대 8장까지 입니다.');
+        return;
+      }
+
+      for (let i = 0; i < file.length; i += 1) {
+        imageFormData.append('imgFile', e.target.files[i]);
+      }
+      const { status, data: imageData } = await axios.post('/upload/bread/shop', imageFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      if (status === 200) {
+        const { data: { imageUrl: imagesUrl } } = imageData;
+        console.log(imagesUrl);
+
+        setImage([...image, ...imagesUrl]);
+      }
+    } catch (err) {
+      errorhandler(err);
+    }
+  };
+
+  // 메뉴사진 핸들체인지
+  const menuImageHandleChange = async (e) => {
+    console.log('메뉴 사진 업데이트 !!!');
+    const imageFormData = new FormData();
+
+    try {
+      const menuImageArr = menuImage.length + e.target.files.length;
+      if (menuImageArr > 8) {
+        sweetAlertWarning('이미지는 최대 8장까지 입니다.');
+      }
+      for (let i = 0; i < e.target.files.length; i += 1) {
+        imageFormData.append('imgFile', e.target.files[i]);
+      }
+      const { status, data: menuData } = await axios.post('/upload/bread/menu', imageFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      console.log(menuData.data.imageUrl);
+
+      if (status === 200) {
+        const { imageUrl } = menuData.data;
+        setMenuImage([...menuImage, ...imageUrl]);
+      }
+    } catch (err) {
+      errorhandler(err);
+    }
+  };
+
+  // 빵 선택 온클릭
+  const breadSelectOnclick = async () => {
+    try {
+      const queryObject = {
+        title: choosebread
+      };
+
+      const queryData = qs.stringify(queryObject);
+
+      const { status, data: breadData } = await axios.get(`/admin/bread?${queryData}`);
+      if (!choosebread) {
+        sweetAlert('빵 선택 값을 입력하세요');
+      } else if (status === 200) {
+        console.log('200 연결 완료 !!!! ');
+        setChooseBreadData(breadData.list);
+      }
+    } catch (err) {
+      errorhandler(err);
+    }
+  };
+
+  // 빵집 사장 계정 온클릭
+  const breadBossAccountOnClick = async () => {
+    console.log(bossaccount);
+    try {
+      console.log('try문 진입');
+      const queryObjct = {
+        name: bossaccount
+      };
+
+      const queryData = qs.stringify(queryObjct);
+
+      const { status, data: accountData } = await axios.get(`/admin/shop?${queryData}`);
+      if (status === 200) {
+        console.log(accountData);
+        setBreadBossAccountData(accountData.list);
+      }
+    } catch (err) {
+      errorhandler(err);
+    }
+  };
+
+  // 빵집 사장 계정 리스트 온클릭
+  const BossAccountListOnclick = (accountData) => {
+    console.log('빵집 사장 계정 리스트 입니당');
+    console.log(accountData.id);
+    setBreadRegister({
+      ...breadRegister,
+      bossaccountId: accountData.id
+    });
+    // setShowBreadChoose(accountData.imageUrl);
+  };
+
+  // 빵 선택 키다운
+  const breadSelectKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      if (breadRegister.choosebread) {
+        breadSelectOnclick();
+      }
+    }
+  };
+
+  // 빵집 사장 계정 키다운
+  const breadBossAccountKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      if (breadRegister.bossaccount) {
+        breadBossAccountOnClick();
+      }
+    }
+  };
+
+  // 선택된 빵 온클릭
+  const imageListOnclick = (breadData) => {
+    console.log('이미지 클릭 !!!!!');
+    console.log(chooseBreadData);
+    setSelectedImagesID([breadData.id]);
+    console.log(selectedImagesID);
+    console.log([breadData.id]);
+    setShowBreadChoose(breadData.images[0].imageUrl);
+  };
+
+  console.log(parkingEnabled);
+
   return (
     <>
       {modalOpen && <Modal closeModal={closeModal} el={el} handleAddress={handleAddress} />}
-      <div className="col-lg-12 mb-4 mt-10">
+      <div
+        className="col-lg-12 mb-4 mt-10"
+        style={{
+          width: '90%', margin: '0 auto'
+        }}>
         <form onSubmit={handleSubmit}>
           <div
             className="card card-small mb-5 mt-5"
             style={{
               padding: '5%'
             }}>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집이름
-              </span>
+            <div className="form-wrap">
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집이름
+                </span>
 
-              <div className="form-group col-5">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="내용을 입력해 주세요"
-                  name="name"
-                  value={name}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집주소
-              </span>
-
-              <div className="form-group col-5 addressbox">
-                {addressName ? (
-                  <span className="mr-3">{breadRegister.addressName}</span>
-                ) : (
-                  <span>{breadRegister.addressName}</span>
-                )}
-
-                <button type="button" className="btn" onClick={opneModal}>
-                  주소검색
-                </button>
-                {addressName && (
+                <div className="form-group col-5">
                   <input
                     type="text"
-                    className="form-control mt-3"
-                    placeholder="상세주소를 입력해 주세요"
-                    name="detailAddress"
-                    value={detailAddress}
+                    className="form-control"
+                    placeholder="내용을 입력해 주세요"
+                    name="name"
+                    value={name}
                     onChange={handleChange}
-                  />
-                )}
-              </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집 전화번호
-              </span>
-              <div className="form-group col-5">
-                <input
-                  type="number"
-                  className="form-control"
-                  id="inputPassword4"
-                  placeholder="핸드폰 번호를 입력해 주세요"
-                  name="number"
-                  value={number}
-                  onChange={handleChange}
                 />
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                영업시간
-              </span>
-              <div className="form-group col-5 date">
-                {/* <input
-                  type="time"
-                  name="time"
+
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
                   style={{
-                    padding: '4px 11px 4px',
-                    border: '1px solid #d9d9d9'
-                  }}
-                  id="timepicker"
-                  value="00:00"
-                /> */}
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집주소
+                </span>
 
-                <select value={opentime} onChange={selectOpenHandleChange}>
-                  <option value="시작시간" disabled>
-                    시작시간
-                  </option>
-                  {openTimeList.map((list, index) => (
-                    <option value={list} key={`time-list${index}`} name={list}>
-                      {list}
-                    </option>
-                  ))}
-                </select>
-                {/* <img className="arrow_image" src={arrowDown} alt="화살표" /> */}
+                <div className="form-group col-5 addressbox">
+                  {addressName ? (
+                    <span className="mr-3">{breadRegister.addressName}</span>
+                  ) : (
+                    <span>{breadRegister.addressName}</span>
+                  )}
 
-                <span className="col-3"> ~ </span>
-
-                <select value={closetime} onChange={selectCloseHandleChange}>
-                  <option value="마감시간" disabled>
-                    마감시간
-                  </option>
-                  {closeTimeList.map((lista, index) => (
-                    <option value={lista} key={`time-list${index}`}>
-                      {lista}
-                    </option>
-                  ))}
-                </select>
-                {/* <input
-                  type="time"
-                  name="time"
-                  style={{
-                    padding: '4px 11px 4px',
-                    border: '1px solid #d9d9d9'
-                  }}
-                  id="timepicker"
-                  value="00:00"
-                /> */}
+                  <button type="button" className="btn" onClick={opneModal}>
+                    주소검색
+                  </button>
+                  {addressName && (
+                    <input
+                      type="text"
+                      className="form-control mt-3"
+                      placeholder="상세주소를 입력해 주세요"
+                      name="detailAddress"
+                      value={detailAddress}
+                      onChange={handleChange} />
+                  )}
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                홈페이지
-              </span>
-
-              <div className="form-group col-5">
-                <input
-                  type="url"
-                  className="form-control"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="homepage"
-                  value={homepage}
-                  onChange={handleChange}
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집 전화번호
+                </span>
+                <div className="form-group col-5">
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="inputPassword4"
+                    placeholder="핸드폰 번호를 입력해 주세요"
+                    name="number"
+                    value={number}
+                    onChange={handleChange}
                 />
+                </div>
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                휴일
-              </span>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  영업시간
+                </span>
+                <div className="form-group col-7 date">
+                  <select value={opentime} onChange={selectOpenHandleChange}>
+                    <option value="" hidden>
+                      시작시간
+                    </option>
+                    {openTimeList.map((list, index) => (
+                      <option value={list} key={`time-list${index}`} name={list}>
+                        {list}
+                      </option>
+                    ))}
+                  </select>
 
-              <div className="form-group col-5 checkbox">
-                {daysList.map((days, index) => (
-                  <label key={`holiday-list${index}`}>
-                    <input type="checkbox" name="date" value={days} onChange={holidayHandleChange} checked={!!checked[days]} />{days}
+                  <span className="col-3"> ~ </span>
+
+                  <select value={closetime} onChange={selectCloseHandleChange}>
+                    <option value="" hidden>
+                      마감시간
+                    </option>
+                    {closeTimeList.map((lista, index) => (
+                      <option value={lista} key={`time-list${index}`}>
+                        {lista}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  주차가능 여부
+                </span>
+                {/*
+                <div className="form-group col-5">
+                  <input
+                    type="url"
+                    className="form-control"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="homepage"
+                    value={homepage}
+                    onChange={handleChange}
+                />
+                </div> */}
+                <div className="form-group col-8 checkbox">
+                  <label>
+                    <input className="mr-2" type="radio" name="enableparking" checked={!!parkingEnabled} onChange={enableParkingHandleChange} />가능
                   </label>
-                ))}
+                  <label>
+                    <input className="mr-2" type="radio" name="enableparking" checked={!parkingEnabled} onChange={enableParkingHandleChange} />불가능
+                  </label>
+                </div>
               </div>
-            </div>
-            {/* <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                휴일
-              </span>
 
-              <div className="form-group col-5">
-                <input
-                  type="text"
-                  className="form-control"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="name"
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  홈페이지
+                </span>
+
+                <div className="form-group col-5">
+                  <input
+                    type="url"
+                    className="form-control"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="homepage"
+                    value={homepage}
+                    onChange={handleChange}
                 />
+                </div>
               </div>
-            </div> */}
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                사진
-              </span>
 
-              <div className="form-group col-5 filebox">
-                {/* <button type="file" className="btn btn-primary">
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  휴일
+                </span>
+
+                <div className="form-group col-8 checkbox">
+                  {daysList.map((days, index) => (
+                    <label key={`holiday-list${index}`}>
+                      <input type="checkbox" name="date" value={days} onChange={holidayHandleChange} checked={!!checked[days]} />{days}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  내부사진
+                </span>
+
+                <div className="form-group col-5 filebox">
+                  {/* <button type="file" className="btn btn-primary">
                   인풋 사진 업로드
                 </button> */}
-                <label htmlFor="ex_file">사진 업로드</label>
-                <input type="file" id="ex_file" />
-              </div>
-            </div>
-            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box">
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
+                  <label htmlFor="insideImages">사진 업로드</label>
+                  <input type="file" id="insideImages" onChange={imageHandleChange} multiple accept="image/*" />
+                  {/* <button>사진 업로드</button> */}
                 </div>
               </div>
 
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
+              <div className="d-flex row">
+                <div className="col-2" />
+                {image.length ? (
+                  <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
+                    {image.map((img, index) => (
+                      <div
+                        className="card col-5 mb-3 mt-3 bread_interior rounded"
+                        key={`image-url${index}`}>
+                        <img
+                          className="card-img-top"
+                          src={img}
+                          alt="사진"
+                          style={{
+                            marginTop: '10px'
+                          }} />
+                      </div>
+                    ))}
+                  </div>
+                ) : ''}
+              </div>
+
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  메뉴사진
+                </span>
+
+                <div className="form-group col-5 filebox">
+                  <label htmlFor="menuImages">사진 업로드</label>
+                  <input type="file" id="menuImages" onChange={menuImageHandleChange} multiple accept="image/*" />
                 </div>
               </div>
 
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
+              <div className="d-flex row">
+                <div className="col-2" />
+                {menuImage.length ? (
+                  <div className="d-flex rounded row mb-3 ml-3 bread_image_box col-8">
+                    {menuImage.map((menu, index) => (
+                      <div
+                        className="col-5 mb-3 mt-3 bread_container rounded"
+                        style={{
+                          maxWidth: '13rem',
+                          background: 'pink'
+                        }}
+                        key={`image-menu-url${index}`}
+                    >
+                        <img className="card-img-top" src={menu} alt="사진" />
+                      </div>
+                    ))}
+                  </div>
+                ) : ''}
+              </div>
+
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵 선택
+                </span>
+
+                <div className="form-group col-5 d-flex bread_search">
+                  <input
+                    type="text"
+                    className="form-control mr-2"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="choosebread"
+                    value={choosebread}
+                    onChange={handleChange}
+                    onKeyDown={breadSelectKeyDown}
+                    />
+                  <button type="button" className="btn btn-primary" onClick={breadSelectOnclick}>
+                    검색
+                  </button>
                 </div>
               </div>
 
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
+              <div className="d-flex row">
+                <div className="col-2" />
+                {chooseBreadData.length ? (
+                  <div className="d-flex rounded row mb-3 ml-3 bread_image_box col-8">
+                    {chooseBreadData.map((breadData, index) => {
+                      console.log(breadData.images);
+                      console.log(breadData.images[0].imageUrl);
+                      return (
+                        <div
+                          className="col-5 mb-3 mt-3 bread_container rounded"
+                          key={`choose-Bread${index}`}
+                          onClick={() => imageListOnclick(breadData)}>
+                          <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                ) : ''}
               </div>
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
+
+              {/* // 빵 선택 */}
+              <div className="d-flex row">
+                <div className="col-2" />
+                {showBreadChoose.length ? (
+                  <div className="rounded mb-3 ml-3 bread_image_box col-8">
+                    <h4 className="choosebread">선택된 빵</h4>
+                    {showBreadChoose.length ? (
+                      <div className="col-5 mb-3 mt-3 bread_container rounded">
+                        <img
+                          className="card-img-top"
+                          src={showBreadChoose}
+                          alt="사진" />
+                      </div>
+                    ) : ''}
+                  </div>
+                ) : ''}
+
               </div>
-            </div>
 
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                메뉴사진
-              </span>
+              <div className="row justify-content-start mb-3">
+                <span
+                  className="col-2 input_title"
+                  style={{
+                    fontSize: '14px',
+                    fontWeight: '600'
+                  }}>
+                  빵집 사장 계정
+                </span>
 
-              <div className="form-group col-5 filebox">
-                {/* <button type="button" className="btn btn-primary">
-                  사진업로드
-                </button> */}
-                <label htmlFor="ex_file">사진 업로드</label>
-                <input type="file" id="ex_file" />
-              </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵 선택
-              </span>
-
-              <div className="form-group col-7 d-flex bread_search">
-                <input
-                  type="text"
-                  className="form-control mr-2"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="choosebread"
-                  value={choosebread}
-                  onChange={handleChange}
+                <div className="form-group col-5 d-flex">
+                  <input
+                    type="text"
+                    className="form-control mr-2"
+                    id="inputPassword4"
+                    placeholder="내용을 입력해 주세요"
+                    name="bossaccount"
+                    value={bossaccount}
+                    onChange={handleChange}
+                    onKeyDown={breadBossAccountKeyDown}
                 />
-                <button type="submit" className="btn btn-primary">
-                  검색
-                </button>
-              </div>
-            </div>
-
-            <div className="d-flex justify-content-between rounded row mb-3 ml-5 bread_image_box">
-              {/* <span className="col-2"> </span> */}
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
+                  <button type="button" className="btn btn-primary" onClick={breadBossAccountOnClick}>
+                    검색
+                  </button>
                 </div>
               </div>
 
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={arrowDown} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-              <div
-                className="card col-5 mb-3 mt-3 bread_container"
-                style={{
-                  maxWidth: '13rem'
-                }}>
-                <img className="card-img-top" src={ReactImage} alt="사진" />
-                <div className="card-body">
-                  <p className="card-text">This is Pizza bread.</p>
-                </div>
-              </div>
-            </div>
-            <div className="rounded row mb-3 ml-5 bread_image_box">
-              <h4
-                className="col-5 "
-                style={{
-                  outline: '1px solid red'
-                }}>
-                선택한 빵
-              </h4>
-              <div
-                className="d-flex justify-content-between"
-                style={{
-                  width: '100%'
-                }}>
-                <div
-                  className="card col-5 mb-3 mt-3 bread_container"
-                  style={{
-                    maxWidth: '13rem'
-                  }}>
-                  <img className="card-img-top" src={ReactImage} alt="사진" />
-                  <div className="card-body">
-                    <p className="card-text">This is Pizza bread.</p>
+              <div className="row justify-content-start mb-3">
+                <div className="col-2" />
+                {breadBossAccountData.length ? (
+                  <div
+                    className="d-flex rounded row mb-3 ml-3 col-8 bread-boss-account-wrap"
+                    style={{
+                      background: '#f2f2f2',
+                      borderRadius: '20px'
+                    }}>
+                    <ul className="bread-boss-account">
+                      {breadBossAccountData.map((accountData) => (
+                        <li className="bread-boss-account-list" key={`accound-id${accountData.id}`} onClick={() => BossAccountListOnclick(accountData)}>{accountData.name}</li>
+                      ))}
+                    </ul>
                   </div>
-                </div>
-                <div
-                  className="card col-5 mb-3 mt-3 bread_container"
-                  style={{
-                    maxWidth: '13rem'
-                  }}>
-                  <img className="card-img-top" src={ReactImage} alt="사진" />
-                  <div className="card-body">
-                    <p className="card-text">This is Pizza bread.</p>
-                  </div>
-                </div>
-                <div
-                  className="card col-5 mb-3 mt-3 bread_container"
-                  style={{
-                    maxWidth: '13rem'
-                  }}>
-                  <img className="card-img-top" src={ReactImage} alt="사진" />
-                  <div className="card-body">
-                    <p className="card-text">This is Pizza bread.</p>
-                  </div>
-                </div>
+                ) : ''}
               </div>
-            </div>
-            <div className="row justify-content-start mb-3">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                빵집 사장 계정
-              </span>
-
-              <div className="form-group col-5 d-flex">
-                <input
-                  type="text"
-                  className="form-control mr-2"
-                  id="inputPassword4"
-                  placeholder="내용을 입력해 주세요"
-                  name="bossaccount"
-                  value={bossaccount}
-                  onChange={handleChange}
-                />
-                <button type="submit" className="btn btn-primary">
-                  검색
-                </button>
-              </div>
-            </div>
-            {/* <div className="row justify-content-start">
-              <span
-                className="col-2"
-                style={{
-                  fontSize: '14px',
-                  fontWeight: '600'
-                }}>
-                프로필 사진
-              </span>
-              <div className="form-group col-5">
-                <div className="input-group mb-3">
-                  <input type="file" className="form-control" name="profileName" />
-                  <label className="input-group-text">Upload</label>
+              <div className="col mb-4 mt-5">
+                <div className="col text-right">
+                  <button type="button" className="mb-2 btn btn-secondary mr-2">
+                    취소
+                  </button>
+                  <button type="submit" className="mb-2 btn btn-primary mr-2">
+                    등록
+                  </button>
                 </div>
-                <div className="image_wrap">
-                  <img className="img" alt="bread_boss" />
-                  <div className="button_wrap" role="button" tabIndex={0} aria-hidden="true">
-                    <Xbutton />
-                  </div>
-                </div>
-              </div>
-            </div> */}
-            <div className="col mb-4 mt-5">
-              <div className="col text-right">
-                <button type="button" className="mb-2 btn btn-secondary mr-2">
-                  취소
-                </button>
-                <button type="submit" className="mb-2 btn btn-primary mr-2">
-                  등록
-                </button>
               </div>
             </div>
           </div>
