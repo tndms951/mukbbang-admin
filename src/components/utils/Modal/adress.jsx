@@ -103,7 +103,7 @@ function Modal({ closeModal, el, handleAddress }) {
               type="text"
               className="form-control title col-9 mr-2"
               id="inputPassword4"
-              placeholder="내용을 입력해 주세요"
+              placeholder="도로명 주소를 입력해 주세요"
               name="name"
               value={name}
               onChange={handlerChange}

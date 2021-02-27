@@ -24,7 +24,7 @@ function BreadHoustList({ history }) {
     opentime: '',
     closetime: '',
     homepage: '',
-    holiday: '',
+    holiday: [],
     checked: {
     },
     picture: '',
@@ -48,7 +48,6 @@ function BreadHoustList({ history }) {
     addressName,
     opentime,
     closetime,
-    checked,
     bossaccountId
   } = breadRegister;
 
@@ -132,17 +131,18 @@ function BreadHoustList({ history }) {
       } else if (!bossaccountId) {
         sweetAlert('빵집 사장 계정을 입력해 주세요');
       } else {
-        return;
         const shopObject = {
           title: name,
           link: homepage,
+          storeNumber: number,
           parkingEnabled,
           openTime: opentime,
           closeTime: closetime,
           shopUserId: bossaccountId,
           lat: addressLat,
           lon: addressLon,
-          address: detailAddress,
+          address: addressName,
+          detailAddress,
           imageUrlShop: image,
           imageUrlMenu: menuImage,
           day: holiday,
@@ -200,17 +200,22 @@ function BreadHoustList({ history }) {
 
   // 휴일 핸들 체인지
   const holidayHandleChange = (e) => {
-    checked[e.target.value] = e.target.checked;
-    // setBreadRegister({
-    //   ...breadRegister,
-    //   checked
-    // });
+    console.log(e.target.value);
+    const updateHoliday = [...breadRegister.holiday];
+    const idx = updateHoliday.findIndex((item) => item === e.target.value);
+    console.log(idx);
+
+    if (idx === -1) {
+      updateHoliday.push(e.target.value);
+    } else {
+      updateHoliday.splice(idx, 1);
+      console.log(updateHoliday);
+    }
+
     setBreadRegister({
       ...breadRegister,
-      holiday: [e.target.value]
+      holiday: updateHoliday
     });
-
-    console.log([breadRegister.checked]);
   };
 
   // 모달
@@ -376,17 +381,23 @@ function BreadHoustList({ history }) {
     }
   };
 
-  // 선택된 빵 온클릭
+  // 빵 선택 온클릭
   const imageListOnclick = (breadData) => {
-    console.log('이미지 클릭 !!!!!');
-    console.log(chooseBreadData);
     setSelectedImagesID([breadData.id]);
-    console.log(selectedImagesID);
-    console.log([breadData.id]);
     setShowBreadChoose(breadData.images[0].imageUrl);
-  };
 
-  console.log(parkingEnabled);
+    const updateBread = [...chooseBreadData];
+    const idx = updateBread.findIndex((item) => item === breadData.images[0].imageUrl);
+    console.log(idx);
+    console.log(updateBread);
+
+    if (idx === -1) {
+      updateBread.push(breadData.images[0].imageUrl);
+    } else {
+      updateBread.splice(idx, 1);
+      console.log(updateBread);
+    }
+  };
 
   return (
     <>
@@ -579,7 +590,7 @@ function BreadHoustList({ history }) {
                 <div className="form-group col-8 checkbox">
                   {daysList.map((days, index) => (
                     <label key={`holiday-list${index}`}>
-                      <input type="checkbox" name="date" value={days} onChange={holidayHandleChange} checked={!!checked[days]} />{days}
+                      <input type="checkbox" name="date" value={days} onChange={holidayHandleChange} checked={holiday.includes(days)} />{days}
                     </label>
                   ))}
                 </div>
@@ -648,11 +659,7 @@ function BreadHoustList({ history }) {
                   <div className="d-flex rounded row mb-3 ml-3 bread_image_box col-8">
                     {menuImage.map((menu, index) => (
                       <div
-                        className="col-5 mb-3 mt-3 bread_container rounded"
-                        style={{
-                          maxWidth: '13rem',
-                          background: 'pink'
-                        }}
+                        className="card col-5 mb-3 mt-3 bread_container rounded"
                         key={`image-menu-url${index}`}
                     >
                         <img className="card-img-top" src={menu} alt="사진" />
