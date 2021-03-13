@@ -40,15 +40,12 @@ function Modal({ closeModal, el, handleAddress }) {
         page: currentPage,
         limit
       };
-      console.log(queryObject);
       const query = qs.stringify(queryObject);
-      console.log(`/util/address?${query}`);
-
       const { status, data: addressData } = await axios.get(`/util/address?${query}`);
-      console.log(addressData);
       const { data } = addressData;
       setIsLoading(false);
       if (status === 200) {
+        console.log(data);
         setAddress(currentPage === 1 ? data.list : [...address, ...data.list]);
         setPage(currentPage);
         setIsEnd(data.pagination.isEnd);
