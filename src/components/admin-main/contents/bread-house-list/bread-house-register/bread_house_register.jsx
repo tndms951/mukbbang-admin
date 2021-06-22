@@ -1,5 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React, { useState, useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import qs from 'qs';
 import axios from '../../../../utils/axios';
 import { errorhandler, daysList, sweetAlertWarning, sweetAlert } from '../../../../utils/common';
@@ -781,9 +782,11 @@ function BreadHoustList({ history }) {
               </div>
               <div className="col mb-4 mt-5">
                 <div className="col text-right">
-                  <button type="button" className="mb-2 btn btn-secondary mr-2">
-                    취소
-                  </button>
+                  <Link to="/bread_house_list">
+                    <button type="button" className="mb-2 btn btn-secondary mr-2">
+                      취소
+                    </button>
+                  </Link>
                   <button type="submit" className="mb-2 btn btn-primary mr-2">
                     등록
                   </button>

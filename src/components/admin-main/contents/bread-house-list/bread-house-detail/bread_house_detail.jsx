@@ -27,8 +27,9 @@ function BreadHoustList({ match }) {
     const BreadHouseDetailApiCall = async () => {
       try {
         const { status, data: houseData } = await axios.get(`/admin/bread/shop/${houseId}`);
+        console.log(houseData);
+
         if (status === 200) {
-          console.log(' 200 연결 성공');
           setHouseDetail(houseData.data);
         }
       } catch (err) {
@@ -451,11 +452,11 @@ function BreadHoustList({ match }) {
             </div> */}
               <div className="col mb-4 mt-5">
                 <div className="col text-right">
-                  <button type="button" className="mb-2 btn btn-secondary mr-2">
+                  <button type="button" className="mb-2 btn btn-danger mr-2">
                     취소
                   </button>
-                  <button type="submit" className="mb-2 btn btn-primary mr-2">
-                    등록
+                  <button type="button" className="mb-2 btn btn-primary mr-2">
+                    수정
                   </button>
                 </div>
                 <div className="col text-right mt-3">
@@ -465,7 +466,7 @@ function BreadHoustList({ match }) {
                       style={{
                         color: 'white'
                       }}>
-                      <button type="button"> 목록으로 가기 </button>
+                      <button type="button" className="btn-secondary"> 목록으로 가기 </button>
                     </div>
                   </Link>
                 </div>

@@ -19,17 +19,17 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
   const [name, setName] = useState('');
   const [account, setAccount] = useState('');
 
+  console.log(breadHouseList);
+
   useEffect(() => {
     const breadHouseApiCall = async () => {
       try {
         const query = qs.parse(location.search, {
           ignoreQueryPrefix: true
         });
-        console.log(query);
 
         const { status, data: houseData } = await axios.get(`/admin/bread/shop${location.search}`);
         if (status === 200) {
-          console.log(houseData);
           onBreadHouseList(houseData.list);
           setName(query.title || '');
           setAccount(query.account);
@@ -54,7 +54,6 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
       queryObject.account = account;
     }
     const queryData = qs.stringify(queryObject);
-    console.log(name);
     history.push(`/bread_house_list${queryData ? `?${queryData}` : ''}`);
   };
 
@@ -148,7 +147,7 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
                         </Link>
                       </td>
                       <td>{list.bread.map((detailBread) => (
-                        <Link to={`/bread_list/detail/${detailBread.id}`}>{detailBread.title}</Link>
+                        <Link to={`/bread_list/detail/${detailBread.id}`} key={`bread-title${detailBread.id}`}>{detailBread.title}</Link>
                       ))}
                       </td>
                       <td>
