@@ -164,13 +164,13 @@ function BreadBossRegister({ history }) {
               <div className="form-group col-5">
                 {!profile.profileUrl ? (
                   <div className="input-group mb-3">
+                    {/* <label className="input-group-text" name="profileName">사진 업로드</label> */}
                     <input
                       type="file"
                       className="form-control"
                       name="profileName"
                       onChange={profileHandleChange}
                     />
-                    <label className="input-group-text">Upload</label>
                   </div>
                 ) : (
                   <div className="image_wrap">

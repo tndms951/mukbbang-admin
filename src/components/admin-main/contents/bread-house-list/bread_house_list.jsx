@@ -130,7 +130,7 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
                     <th scope="col">주소</th>
                     <th scope="col">빵집계정</th>
                     <th scope="col">빵목록</th>
-                    <th scope="col">리뷰</th>
+                    {/* <th scope="col">리뷰</th> */}
                   </tr>
                 </thead>
                 <tbody>
@@ -150,11 +150,11 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
                         <Link to={`/bread_list/detail/${detailBread.id}`} key={`bread-title${detailBread.id}`}>{detailBread.title}</Link>
                       ))}
                       </td>
-                      <td>
+                      {/* <td>
                         <button type="button" className="btn btn-primary">
                           리뷰보기
                         </button>
-                      </td>
+                      </td> */}
                     </tr>
 
                   ))}

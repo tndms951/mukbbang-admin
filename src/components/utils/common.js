@@ -71,4 +71,4 @@ export const sweetAlertConfirm = async (title) => new Promise((resolve) => {
 });
 
 // 날짜 체크박스
-export const daysList = ['월', '화', '수', '목', '금', '토', '일'];
+export const daysList = ['월', '화', '수', '목', '금', '토', '일', '없음'];

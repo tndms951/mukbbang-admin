@@ -55,13 +55,14 @@ function BreadHoustList({ history }) {
   // 영업시간 리스트
   const [openTimeList, setOpneTimeList] = useState([]);
   const [closeTimeList, setCloseTimeList] = useState([]);
-
+  console.log(openTimeList);
   // 내부사진 업로드
   const [image, setImage] = useState([]);
   console.log(image);
 
   // 메뉴사진 업로드
   const [menuImage, setMenuImage] = useState([]);
+  console.log(menuImage);
 
   // 빵 선택 서버에서 받아온 값
   const [chooseBreadData, setChooseBreadData] = useState([]);
@@ -117,8 +118,6 @@ function BreadHoustList({ history }) {
         sweetAlert('오픈시간을 입력해 주세요');
       } else if (!closetime) {
         sweetAlert('마감시간을 입력해 주세요');
-      } else if (!parkingEnabled) {
-        sweetAlert('주차가능 여부를 선택해 주세요');
       } else if (!homepage) {
         sweetAlert('홈페이지를 입력해 주세요');
       } else if (!holiday) {
@@ -190,9 +189,7 @@ function BreadHoustList({ history }) {
   };
 
   // 주차가능 핸들 체인지
-  const enableParkingHandleChange = (e) => {
-    console.log(e.target.value);
-    // const obj = [];
+  const enableParkingHandleChange = () => {
     setBreadRegister({
       ...breadRegister,
       parkingEnabled: !parkingEnabled
@@ -201,10 +198,8 @@ function BreadHoustList({ history }) {
 
   // 휴일 핸들 체인지
   const holidayHandleChange = (e) => {
-    console.log(e.target.value);
     const updateHoliday = [...breadRegister.holiday];
     const idx = updateHoliday.findIndex((item) => item === e.target.value);
-    console.log(idx);
 
     if (idx === -1) {
       updateHoliday.push(e.target.value);
@@ -248,7 +243,6 @@ function BreadHoustList({ history }) {
 
   // 내부사진 핸들체인지
   const imageHandleChange = async (e) => {
-    console.log('qwe');
     const imageFormData = new FormData();
     const file = e.target.files;
 
@@ -270,7 +264,6 @@ function BreadHoustList({ history }) {
 
       if (status === 200) {
         const { data: { imageUrl: imagesUrl } } = imageData;
-        console.log(imagesUrl);
 
         setImage([...image, ...imagesUrl]);
       }
@@ -281,7 +274,6 @@ function BreadHoustList({ history }) {
 
   // 메뉴사진 핸들체인지
   const menuImageHandleChange = async (e) => {
-    console.log('메뉴 사진 업데이트 !!!');
     const imageFormData = new FormData();
 
     try {
