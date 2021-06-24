@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Footer from './footer/footer';
 import MainSidebar from './sidebar/sidebar_main';
@@ -7,13 +9,34 @@ import Header from './header/header';
 
 import Content from './main_content';
 import BreadHouseList from './contents/bread-house-list/bread_house_list';
-import BreadList from './contents/bread-list/bread_list';
+import BreadRouter from './contents/bread-list/bread_router';
 import BreadBossRouter from './contents/bread-boss-list/bread_boss_router';
-import YoutubeList from './contents/youtube/youtube';
+import YoutubeRouter from './contents/youtube/youtube_router';
 import NoticeRouter from './contents/notice/notice_router';
-import Event from './contents/event/event_list';
+import EventRouter from './contents/event/event_router';
+import { errorhandler } from '../utils/common';
+import { setCurrentUser } from '../../redux/user/user.actions';
+import axios, { setAuthorization } from '../utils/axios';
 
-function AdminMain() {
+function AdminMain({ onUserData }) {
+  useEffect(() => {
+    const bringUserToken = localStorage.getItem('user');
+    async function userTokenData() {
+      try {
+        setAuthorization(bringUserToken);
+        const { status, data } = await axios.get('/admin/current');
+        if (status === 200) {
+          onUserData(data.data, bringUserToken);
+        }
+      } catch (err) {
+        errorhandler(err);
+      }
+    }
+
+    if (bringUserToken) {
+      userTokenData();
+    }
+  }, [onUserData]);
   return (
     <>
       <div className="h-100">
@@ -76,9 +99,7 @@ function AdminMain() {
             <i className="material-icons">close</i>
           </div>
         </div>
-        <div className="color-switcher-toggle animated pulse infinite">
-          <i className="material-icons">settings</i>
-        </div>
+
         <div className="container-fluid">
           <div className="row">
             <MainSidebar />
@@ -87,10 +108,10 @@ function AdminMain() {
               <Switch>
                 <Route exact path="/" component={Content} />
                 <Route path="/bread_house_list" component={BreadHouseList} />
-                <Route path="/bread_list" component={BreadList} />
+                <Route path="/bread_list" component={BreadRouter} />
                 <Route path="/bread_boss_list" component={BreadBossRouter} />
-                <Route path="/youtube_list" component={YoutubeList} />
-                <Route path="/event" component={Event} />
+                <Route path="/youtube_list" component={YoutubeRouter} />
+                <Route path="/event" component={EventRouter} />
                 <Route path="/notice" component={NoticeRouter} />
               </Switch>
               <Footer />
@@ -121,4 +142,11 @@ function AdminMain() {
   );
 }
 
-export default AdminMain;
+AdminMain.propTypes = {
+  onUserData: PropTypes.func.isRequired
+};
+const userDispathchToProps = (dispatch) => ({
+  onUserData: (user, token) => dispatch(setCurrentUser(user, token))
+});
+
+export default connect(null, userDispathchToProps)(AdminMain);

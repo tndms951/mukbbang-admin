@@ -17,7 +17,8 @@ const Detail = ({ match, history }) => {
     startAt: '',
     endAt: '',
     imageName: '이미지를 첨부해주세요',
-    imageUrl: ''
+    imageUrl: '',
+    banner: 0
   });
 
   // 서버에 받아온 값 저장
@@ -25,12 +26,12 @@ const Detail = ({ match, history }) => {
 
   // 수정,취소 값 버튼
   const [modify, setModify] = useState(false);
-
   useEffect(() => {
     async function fetchData() {
       try {
         const { eventId } = match.params;
         const { status, data: detailData } = await axios.get(`/admin/event/${eventId}`);
+
         if (status === 200) {
           const { data } = detailData;
           setListDate(data);
@@ -53,7 +54,8 @@ const Detail = ({ match, history }) => {
       imageUrl: listDate.imageUrl,
       link: listDate.link,
       startAt: new Date(listDate.startAt),
-      endAt: new Date(listDate.endAt)
+      endAt: new Date(listDate.endAt),
+      banner: listDate.banner
     });
   };
 
@@ -298,9 +300,33 @@ const Detail = ({ match, history }) => {
           )}
         </div>
 
+        <div className="d-flex mt-3">
+          <label
+            htmlFor="colFormLabelLg"
+            className="col-xs-3 col-form-label col-form-label-lg event-title">
+            <span className="text1">배너 여부</span>
+          </label>
+          {modify ? (
+            <div className="col-sm-3 myContainer mt-3">
+              <select className="custom-select">
+                <option>{listDate && listDate.banner}</option>
+                <option value={value.banner}>true</option>
+                <option value={value.banner}>false</option>
+              </select>
+            </div>
+          ) : (
+            <div className="col-sm-5 myContainer wrap1 contentName">
+              {listDate && listDate.banner}
+            </div>
+          )}
+        </div>
+
         <div className="event-search nav justify-content-end row">
           {modify ? (
-            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleEdit}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 button_init"
+              onClick={handleEdit}>
               취소
             </button>
           ) : (
