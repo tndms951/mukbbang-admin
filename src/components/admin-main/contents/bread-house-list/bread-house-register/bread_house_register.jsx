@@ -55,30 +55,21 @@ function BreadHoustList({ history }) {
   // 영업시간 리스트
   const [openTimeList, setOpneTimeList] = useState([]);
   const [closeTimeList, setCloseTimeList] = useState([]);
-  console.log(openTimeList);
   // 내부사진 업로드
   const [image, setImage] = useState([]);
-  console.log(image);
 
   // 메뉴사진 업로드
   const [menuImage, setMenuImage] = useState([]);
-  console.log(menuImage);
 
   // 빵 선택 서버에서 받아온 값
   const [chooseBreadData, setChooseBreadData] = useState([]);
-  // console.log(chooseBreadData);
 
   // 선택 이미지 매개변수 담는 함수
   const [selectedImagesID, setSelectedImagesID] = useState([]);
-  console.log(selectedImagesID);
-
-  // 선택 이미지 서버에서 받아온 값으로 보여주는 함수
-  const [showBreadChoose, setShowBreadChoose] = useState([]);
-  console.log(showBreadChoose);
+  console.log(selectedImagesID.map((list) => list.id));
 
   // 빵집 사장 서버에서 받온 값
   const [breadBossAccountData, setBreadBossAccountData] = useState([]);
-  console.log(breadBossAccountData);
 
   useEffect(() => {
     const newTime = [];
@@ -126,7 +117,7 @@ function BreadHoustList({ history }) {
         sweetAlert('내부 이미지를 넣어 주세요');
       } else if (!menuImage.length) {
         sweetAlert('메뉴 이미지를 넣어 주세요');
-      } else if (!showBreadChoose.length) {
+      } else if (!selectedImagesID.length) {
         sweetAlert('빵 선택을 해주세요');
       } else if (!bossaccountId) {
         sweetAlert('빵집 사장 계정을 입력해 주세요');
@@ -146,7 +137,7 @@ function BreadHoustList({ history }) {
           imageUrlShop: image,
           imageUrlMenu: menuImage,
           day: holiday,
-          breadId: selectedImagesID
+          breadId: selectedImagesID.map((list) => list.id)
         };
 
         const { status } = await axios.post('/admin/bread/shop', shopObject);
@@ -156,9 +147,7 @@ function BreadHoustList({ history }) {
       }
     } catch (err) {
       errorhandler(err);
-      console.log(err.message);
     }
-    console.log(breadRegister);
   };
 
   // 인풋 핸들체인지
@@ -171,9 +160,6 @@ function BreadHoustList({ history }) {
 
   // 오픈시간 핸들 체인지
   const selectOpenHandleChange = (e) => {
-    // openTimeList(e.target.value);
-    // closeTimeList(e.target.value);
-    // console.log(openTimeList);
     setBreadRegister({
       ...breadRegister,
       opentime: e.target.value
@@ -205,7 +191,6 @@ function BreadHoustList({ history }) {
       updateHoliday.push(e.target.value);
     } else {
       updateHoliday.splice(idx, 1);
-      console.log(updateHoliday);
     }
 
     setBreadRegister({
@@ -230,7 +215,6 @@ function BreadHoustList({ history }) {
 
   // 주소 핸들체인지
   const handleAddress = (addressData) => {
-    console.log(addressData);
     setBreadRegister({
       ...breadRegister,
       addressLat: addressData.addressLat,
@@ -290,8 +274,6 @@ function BreadHoustList({ history }) {
         }
       });
 
-      console.log(menuData.data.imageUrl);
-
       if (status === 200) {
         const { imageUrl } = menuData.data;
         setMenuImage([...menuImage, ...imageUrl]);
@@ -314,7 +296,6 @@ function BreadHoustList({ history }) {
       if (!choosebread) {
         sweetAlert('빵 선택 값을 입력하세요');
       } else if (status === 200) {
-        console.log('200 연결 완료 !!!! ');
         setChooseBreadData(breadData.list);
       }
     } catch (err) {
@@ -324,9 +305,7 @@ function BreadHoustList({ history }) {
 
   // 빵집 사장 계정 온클릭
   const breadBossAccountOnClick = async () => {
-    console.log(bossaccount);
     try {
-      console.log('try문 진입');
       const queryObjct = {
         name: bossaccount
       };
@@ -335,7 +314,6 @@ function BreadHoustList({ history }) {
 
       const { status, data: accountData } = await axios.get(`/admin/shop?${queryData}`);
       if (status === 200) {
-        console.log(accountData);
         setBreadBossAccountData(accountData.list);
       }
     } catch (err) {
@@ -345,8 +323,6 @@ function BreadHoustList({ history }) {
 
   // 빵집 사장 계정 리스트 온클릭
   const BossAccountListOnclick = (accountData) => {
-    console.log('빵집 사장 계정 리스트 입니당');
-    console.log(accountData.id);
     setBreadRegister({
       ...breadRegister,
       bossaccountId: accountData.id
@@ -376,19 +352,27 @@ function BreadHoustList({ history }) {
 
   // 빵 선택 온클릭
   const imageListOnclick = (breadData) => {
-    setSelectedImagesID([breadData.id]);
-    setShowBreadChoose(breadData.images[0].imageUrl);
-
-    const updateBread = [...chooseBreadData];
-    const idx = updateBread.findIndex((item) => item === breadData.images[0].imageUrl);
-    console.log(idx);
-    console.log(updateBread);
+    const copyArray = [...selectedImagesID];
+    const idx = copyArray.findIndex((list) => list.id === breadData.id);
 
     if (idx === -1) {
-      updateBread.push(breadData.images[0].imageUrl);
+      const index = chooseBreadData.findIndex((list) => list.id === breadData.id);
+
+      copyArray.push(chooseBreadData[index]);
+      setSelectedImagesID(copyArray);
     } else {
-      updateBread.splice(idx, 1);
-      console.log(updateBread);
+      sweetAlert('이미 선택된 빵 입니다');
+    }
+  };
+
+  // 선택된 빵 삭제
+  const removeImageListOnclick = (breadData) => {
+    const copyArray = [...selectedImagesID];
+    const idx = copyArray.findIndex((list) => list.id === breadData.id);
+
+    if (idx > -1) {
+      copyArray.splice(idx, 1);
+      setSelectedImagesID(copyArray);
     }
   };
 
@@ -693,36 +677,32 @@ function BreadHoustList({ history }) {
                 <div className="col-2" />
                 {chooseBreadData.length ? (
                   <div className="d-flex rounded row mb-3 ml-3 bread_image_box col-8">
-                    {chooseBreadData.map((breadData, index) => {
-                      console.log(breadData.images);
-                      console.log(breadData.images[0].imageUrl);
-                      return (
-                        <div
-                          className="col-5 mb-3 mt-3 bread_container rounded"
-                          key={`choose-Bread${index}`}
-                          onClick={() => imageListOnclick(breadData)}>
-                          <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
-                        </div>
-                      );
-                    })}
+                    {chooseBreadData.map((breadData, index) => (
+                      <div
+                        className="col-5 mb-3 mt-3 bread_container rounded"
+                        key={`choose-Bread${index}`}
+                        onClick={() => imageListOnclick(breadData)}>
+                        <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                      </div>
+                    ))}
                   </div>
                 ) : ''}
               </div>
 
-              {/* // 빵 선택 */}
+              {/* // 선택된 빵 */}
               <div className="d-flex row">
                 <div className="col-2" />
-                {showBreadChoose.length ? (
+                {selectedImagesID.length ? (
                   <div className="rounded mb-3 ml-3 bread_image_box col-8">
                     <h4 className="choosebread">선택된 빵</h4>
-                    {showBreadChoose.length ? (
-                      <div className="col-5 mb-3 mt-3 bread_container rounded">
-                        <img
-                          className="card-img-top"
-                          src={showBreadChoose}
-                          alt="사진" />
+                    {selectedImagesID.map((breadData, index) => (
+                      <div
+                        className="col-5 mb-3 mt-3 bread_container rounded"
+                        key={`choosed-Bread${index}`}
+                        onClick={() => removeImageListOnclick(breadData)}>
+                        <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
                       </div>
-                    ) : ''}
+                    ))}
                   </div>
                 ) : ''}
 

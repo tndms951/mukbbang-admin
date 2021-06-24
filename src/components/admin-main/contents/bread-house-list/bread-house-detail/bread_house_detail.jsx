@@ -16,6 +16,8 @@ import Modal from '../../../../utils/Modal/adress';
  * */
 
 function BreadHoustList({ match, history }) {
+  console.log(daysList);
+
   const [value, setValue] = useState({
     name: '',
     addressName: '',
@@ -27,12 +29,12 @@ function BreadHoustList({ match, history }) {
     opentime: '',
     closetime: '',
     homepage: '',
-    holiday: [],
+    holidays: [],
     checked: {
     },
     picture: '',
-    menuPicture: '',
-    choosebread: '',
+    menuPicture: [],
+    choosebread: [],
     bossaccount: '',
     bossaccountId: ''
   });
@@ -48,7 +50,7 @@ function BreadHoustList({ match, history }) {
     opentime,
     closetime,
     homepage,
-    holiday,
+    holidays,
     checked,
     picture,
     menuPicture,
@@ -57,8 +59,10 @@ function BreadHoustList({ match, history }) {
     bossaccountId
   } = value;
 
+  console.log(value);
+
   // 서버에서 받아온 값 저장
-  const [houseDetail, setHouseDetail] = useState([]);
+  const [houseDetail, setHouseDetail] = useState(null);
   console.log(houseDetail);
 
   // 모달
@@ -83,6 +87,15 @@ function BreadHoustList({ match, history }) {
 
   // 빵 선택 서버에서 받아온 값
   const [chooseBreadData, setChooseBreadData] = useState([]);
+  console.log(chooseBreadData);
+
+  // 선택 이미지 매개변수 담는 함수
+  const [selectedImagesID, setSelectedImagesID] = useState([]);
+  console.log(selectedImagesID);
+
+  // 선택 이미지 서버에서 받아온 값으로 보여주는 함수
+  const [showBreadChoose, setShowBreadChoose] = useState([]);
+  console.log(showBreadChoose);
 
   useEffect(() => {
     const { houseId } = match.params;
@@ -164,12 +177,12 @@ function BreadHoustList({ match, history }) {
       opentime: houseDetail.openTime,
       closetime: houseDetail.closeTime,
       homepage: houseDetail.link,
-      holiday: houseDetail.holiday,
+      holidays: houseDetail.holidays,
       checked: {
       },
-      picture: '',
+      picture: selectedImagesID,
       menuPicture: [houseDetail.menuImages],
-      choosebread: [],
+      choosebread: [houseDetail.bread],
       bossaccount: houseDetail.shopUser.name,
       bossaccountId: houseDetail.shopUser.id
     });
@@ -212,11 +225,10 @@ function BreadHoustList({ match, history }) {
       openTime: value.opentime,
       closeTime: value.closetime,
       link: value.homepage,
-      day: value.holiday,
-      imageUrlMenu: value.menuPicture,
-      choosebread,
-      bossaccount,
-      breadId: value.bossaccountId
+      day: value.holidays,
+      imageUrlMenu: menuImage,
+      breadId: value.choosebread.id,
+      imageUrlShop: image
     };
     try {
       const { status } = await axios.put(`/admin/bread/shop/${houseId}`, modifyObject);
@@ -224,20 +236,20 @@ function BreadHoustList({ match, history }) {
         setHouseDetail({
           ...houseDetail,
           name: value.name,
-          addressName,
-          detailAddress,
-          number,
-          parkingEnabled,
-          opentime,
-          closetime,
-          homepage,
-          holiday,
-          checked,
-          picture,
-          menuPicture,
-          choosebread,
-          bossaccount,
-          bossaccountId
+          addressName: value.addressName,
+          detailAddress: value.detailAddress,
+          number: value.number,
+          parkingEnabled: value.parkingEnabled,
+          opentime: value.opentime,
+          closetime: value.closetime,
+          homepage: value.homepage,
+          holidays: value.holidays,
+          checked: value.checked,
+          picture: value.picture,
+          menuPicture: value.menuPicture,
+          choosebread: value.choosebread,
+          bossaccount: value.bossaccount,
+          bossaccountId: value.bossaccountId
         });
       }
     } catch (err) {
@@ -263,9 +275,22 @@ function BreadHoustList({ match, history }) {
   };
 
   // 휴일 핸들 체인지
-  const holidayHandleChange = () => {
-    const updateHoliday = [...value.holiday];
-    console.log(updateHoliday);
+  const holidayHandleChange = (e) => {
+    const updateHoliday = [...value.holidays];
+
+    const idx = updateHoliday.findIndex((item) => item === e.target.value);
+
+    if (idx === -1) {
+      updateHoliday.push(e.target.value);
+    } else {
+      updateHoliday.splice(idx, 1);
+      console.log(updateHoliday);
+    }
+
+    setValue({
+      ...value,
+      holidays: updateHoliday
+    });
   };
 
   // 홈페이지 핸들체인지
@@ -346,6 +371,7 @@ function BreadHoustList({ match, history }) {
       };
 
       const queryData = qs.stringify(queryObject);
+      // console.log(queryData);
 
       const { status, data: breadData } = await axios.get(`/admin/bread?${queryData}`);
       if (!choosebread) {
@@ -369,6 +395,21 @@ function BreadHoustList({ match, history }) {
       address: ''
     });
     closeModal();
+  };
+
+  // 빵 선택 온클릭
+  const imageListOnclick = (breadData) => {
+    setSelectedImagesID([breadData.id]);
+    setShowBreadChoose(breadData.images[0].imageUrl);
+
+    const updateBread = [...chooseBreadData];
+    const idx = updateBread.findIndex((item) => item === breadData.images[0].imageUrl);
+
+    if (idx === -1) {
+      updateBread.push(breadData.images[0].imageUrl);
+    } else {
+      updateBread.splice(idx, 1);
+    }
   };
 
   return (
@@ -398,7 +439,7 @@ function BreadHoustList({ match, history }) {
 
                 <div className="form-group col-5">
                   {!edit ? (
-                    <span className="col-sm-8"> {houseDetail.title} </span>)
+                    <span className="col-sm-8">{houseDetail?.title || ''}</span>)
                     : (
                       <input
                         type="text"
@@ -425,7 +466,8 @@ function BreadHoustList({ match, history }) {
                 <div className="form-group col-5 adressbox">
                   {!edit ? (
                     <>
-                      <span className="col-sm-8">주소</span><span className="col-sm-8">상세주소</span>
+                      {/* <span className="col-sm-8">주소</span><span className="col-sm-8">상세주소</span> */}
+                      <span className="col-sm-8">{houseDetail ? houseDetail.address.address : ''}</span><span className="col-sm-8">ss</span>
                     </>
                   ) : (
                     <>
@@ -460,7 +502,7 @@ function BreadHoustList({ match, history }) {
                   빵집 전화번호
                 </span>
                 <div className="form-group col-5">
-                  {!edit ? <span className="col-sm-8">{houseDetail.storeNumber}</span> : (
+                  {!edit ? <span className="col-sm-8">{houseDetail?.storeNumber || ''}</span> : (
                     <input
                       type="number"
                       className="form-control"
@@ -484,9 +526,9 @@ function BreadHoustList({ match, history }) {
                 <div className="form-group col-7 date">
                   {!edit ? (
                     <>
-                      <span className="col-sm-8"> {houseDetail.openTime}</span>
+                      <span className="col-sm-8"> {houseDetail?.openTime || ''}</span>
                       <span className="col-3"> ~ </span>
-                      <span className="col-sm-8"> {houseDetail.closeTime}</span>
+                      <span className="col-sm-8"> {houseDetail?.closeTime || ''}</span>
                     </>
                   ) : (
                     <>
@@ -495,7 +537,7 @@ function BreadHoustList({ match, history }) {
                           오픈시간
                         </option>
                         {openTimeList.map((openList, index) => (
-                          <option value={opentime} key={`open-time-list${index}`}>{openList}</option>
+                          <option value={openList} key={`open-time-list${index}`}>{openList}</option>
                         ))}
                       </select>
                       <span className="col-3"> ~ </span>
@@ -504,7 +546,7 @@ function BreadHoustList({ match, history }) {
                           마감시간
                         </option>
                         {closeTimeList.map((closeList, index) => (
-                          <option value={closetime} key={`close-time-list${index}`}>{closeList}</option>
+                          <option value={closeList} key={`close-time-list${index}`}>{closeList}</option>
                         ))}
                       </select>
                     </>
@@ -523,7 +565,8 @@ function BreadHoustList({ match, history }) {
                 </span>
                 {!edit ? (
                   <div className="form-group col-5">
-                    <span className="col-sm-8">{houseDetail.parkingEnabled ? '가능' : '불가능'}</span>
+                    {/* eslint-disable-next-line no-nested-ternary */}
+                    <span className="col-sm-8">{houseDetail ? houseDetail.parkingEnabled ? '가능' : '불가능' : ''}</span>
                   </div>
 
                 ) : (
@@ -549,7 +592,7 @@ function BreadHoustList({ match, history }) {
                 </span>
 
                 <div className="form-group col-5">
-                  {!edit ? <span className="col-sm-8">{houseDetail.link}</span> : (
+                  {!edit ? <span className="col-sm-8">{houseDetail?.link || ''}</span> : (
                     <input
                       type="text"
                       className="form-control"
@@ -574,12 +617,12 @@ function BreadHoustList({ match, history }) {
                 <div className="form-group col-5 checkbox">
                   {!edit ? (
                     <span className="col-sm-8">
-                      {houseDetail.holiday}
+                      {houseDetail ? houseDetail.holidays.join(', ') : ''}
                     </span>
                   ) : (
                     daysList.map((dayList, index) => (
                       <label key={`holiday-list${index}`}>
-                        <input type="checkbox" name="date" value={dayList} onChange={holidayHandleChange} checked={holiday} />{dayList}
+                        <input type="checkbox" name="date" value={dayList} onChange={holidayHandleChange} checked={holidays.includes(dayList)} />{dayList}
                       </label>
                     )))}
                 </div>
@@ -604,27 +647,18 @@ function BreadHoustList({ match, history }) {
               <div className="d-flex row">
                 <div className="col-2" />
                 <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
-                  <div
-                    className="card col-5 mb-3 mt-3 bread_interior rounded">
-                    {image.map((list, index) => (
+                  {houseDetail && houseDetail.images.map((list, index) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`interior-images${index}`}>
                       <img
-                        key={`interior-photo${index}`}
                         className="card-img-top"
                         src={list}
                         alt="사진"
                         style={{
                           marginTop: '10px'
-                        }} />
-                    ))}
-
-                    <img
-                      className="card-img-top"
-                      src={houseDetail.images}
-                      alt="사진"
-                      style={{
-                        marginTop: '10px'
-                      }} />
-                  </div>
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -648,16 +682,17 @@ function BreadHoustList({ match, history }) {
               <div className="d-flex row">
                 <div className="col-2" />
                 <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
-                  <div
-                    className="card col-5 mb-3 mt-3 bread_interior rounded">
-                    <img
-                      className="card-img-top"
-                      src={arrowDown}
-                      alt="사진"
-                      style={{
-                        marginTop: '10px'
-                      }} />
-                  </div>
+                  {houseDetail && houseDetail.menuImages.map((menuimage, index) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`menu-images${index}`}>
+                      <img
+                        className="card-img-top"
+                        src={menuimage}
+                        alt="사진"
+                        style={{
+                          marginTop: '10px'
+                        }} />
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -678,7 +713,7 @@ function BreadHoustList({ match, history }) {
                       id="inputPassword4"
                       placeholder="내용을 입력해 주세요"
                       name="name" />
-                    <button type="submit" className="btn btn-primary" onClick={breadSelectOnclick}>
+                    <button type="button" className="btn btn-primary" onClick={breadSelectOnclick}>
                       검색
                     </button>
                   </div>
@@ -687,17 +722,37 @@ function BreadHoustList({ match, history }) {
 
               <div className="d-flex row">
                 <div className="col-2" />
-                <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
-                  <div
-                    className="card col-5 mb-3 mt-3 bread_interior rounded">
-                    <img
-                      className="card-img-top"
-                      src={arrowDown}
-                      alt="사진"
-                      style={{
-                        marginTop: '10px'
-                      }} />
+                {showBreadChoose.length ? (
+                  <div className="d-flex rounded row mb-3 ml-3 bread_image_box col-8">
+                    {chooseBreadData.map((breadData, index) => (
+                      <div
+                        className="col-5 mb-3 mt-3 bread_container rounded"
+                        key={`choose-Bread${index}`}
+                        onClick={() => imageListOnclick(breadData)}>
+                        <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                      </div>
+                    ))}
                   </div>
+                ) : ''}
+
+                <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
+                  <h4
+                    className="choosebread"
+                    style={{
+                      width: '100%'
+                    }}>선택된 빵
+                  </h4>
+                  {houseDetail && houseDetail.bread.map((breadlist) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`bread-list${breadlist.id}`}>
+                      <img
+                        className="card-img-top"
+                        src={breadlist.image}
+                        alt={breadlist.title}
+                        style={{
+                          marginTop: '10px'
+                        }} />
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="row justify-content-start mb-3">
@@ -709,20 +764,27 @@ function BreadHoustList({ match, history }) {
                   }}>
                   빵집 사장 계정
                 </span>
-                {/*
+
                 <div className="form-group col-5 d-flex">
-                  <input
-                    type="text"
-                    className="form-control mr-2"
-                    id="inputPassword4"
-                    placeholder="내용을 입력해 주세요"
-                    name="name"
-                />
-                  <button type="submit" className="btn btn-primary">
-                    검색
-                  </button>
-                </div> */}
-                <span className="col-sm-8">{houseDetail.id}</span>
+                  {!edit ? (
+                    <span className="col-sm-8">{houseDetail ? houseDetail.shopUser.name : ''}</span>
+                  ) : (
+                    <>
+                      <input
+                        type="text"
+                        className="form-control mr-2"
+                        id="inputPassword4"
+                        placeholder="내용을 입력해 주세요"
+                        value={bossaccount}
+                        name="bossaccount"
+                        onChange={handleChange}
+                        />
+                      <button type="button" className="btn btn-primary">
+                        검색
+                      </button>
+                    </>
+                  )}
+                </div>
               </div>
               {/* <div className="row justify-content-start">
               <span
@@ -738,7 +800,7 @@ function BreadHoustList({ match, history }) {
                   <input type="file" className="form-control" name="profileName" />
                   <label className="input-group-text">Upload</label>
                 </div>
-                <div className="image_wrap">
+">
                   <img className="img" alt="bread_boss" />
                   <div className="button_wrap" role="button" tabIndex={0} aria-hidden="true">
                     <Xbutton />
