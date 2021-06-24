@@ -128,7 +128,10 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           </div>
 
           <div className="event-search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleReset}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 button_init"
+              onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">

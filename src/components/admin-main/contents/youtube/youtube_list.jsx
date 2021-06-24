@@ -86,7 +86,9 @@ const YoutubeList = ({ youtubeList, onYoutubeList, history, location }) => {
 
         <form className="form_wrap" onSubmit={handleSearch}>
           <div className="form-group row mt-4">
-            <label htmlFor="colFormLabelLg" className="col-xs-2 col-form-label col-form-label-lg ml-3 youtube-title">
+            <label
+              htmlFor="colFormLabelLg"
+              className="col-xs-2 col-form-label col-form-label-lg ml-3 youtube-title">
               <span>유튜브 제목</span>
             </label>
             <div className="col-sm-8">
@@ -96,11 +98,14 @@ const YoutubeList = ({ youtubeList, onYoutubeList, history, location }) => {
                 placeholder="제목을 입력해주세요"
                 value={title}
                 onChange={handleChange}
-                />
+              />
             </div>
           </div>
           <div className="youtube-search nav justify-content-end mt-3 mr-3">
-            <button type="button" className="btn btn-secondary btn-sm col-1 mr-2" onClick={handleReset}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 mr-2"
+              onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">
@@ -108,7 +113,7 @@ const YoutubeList = ({ youtubeList, onYoutubeList, history, location }) => {
             </button>
           </div>
 
-          <div className="mr-3">
+          <div className="mr-3 mt-4">
             <div className="mt-3 nav justify-content-end ">
               <Link to="/youtube_list/youtube_register" className="btn btn-primary col-2 register">
                 등록하러가기
@@ -137,27 +142,35 @@ const YoutubeList = ({ youtubeList, onYoutubeList, history, location }) => {
                         링크
                       </th>
                       <th scope="col" className="border-0">
-                        &#160;
+                        등록일
                       </th>
                     </tr>
                   </thead>
                   <tbody>
-
                     {youtubeList.map((youtubeData) => (
                       <tr key={`youtubeData-${youtubeData.id}`}>
-
                         <th>{youtubeData.id}</th>
                         <td>
-                          <Link to={`/youtube_list/youtube_detail/${youtubeData.id}`}>{youtubeData.title}</Link>
+                          <Link to={`/youtube_list/youtube_detail/${youtubeData.id}`}>
+                            {youtubeData.title}
+                          </Link>
                         </td>
                         <td>
                           <a href={youtubeData.link} target="_blank" rel="noopener noreferrer">
-                            <YouTube videoId={youtubeData.link.replace('https://www.youtube.com/embed/', '')} opts={opts} onReady={_onReady} />
+                            <YouTube
+                              videoId={youtubeData.link.replace(
+                                'https://www.youtube.com/embed/',
+                                ''
+                              )}
+                              opts={opts}
+                              onReady={_onReady}
+                            />
                           </a>
                         </td>
 
-                        <td><Moment format="YYYY/MM/DD">{youtubeData.createdAt}</Moment></td>
-
+                        <td>
+                          <Moment format="YYYY/MM/DD">{youtubeData.createdAt}</Moment>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

@@ -22,7 +22,7 @@ function YoutubeRegister({ history, location }) {
 
   // 페이지 이동시(queryId)
   const [youtubeIdd, setYoutubeIdd] = useState(0);
-  // console.log(youtubeIdd);
+
   // 리스트 값 저장(빵집 정보)
   const [breadShopList, setBreadShopList] = useState([]);
 
@@ -33,7 +33,7 @@ function YoutubeRegister({ history, location }) {
     });
     async function fetchData(youtubequeryId) {
       const { status, data: youtubeData } = await axios.get(`/admin/youtube/${youtubequeryId}`);
-      console.log(youtubeData);
+
       try {
         if (status === 200) {
           const { data } = youtubeData;
@@ -77,7 +77,8 @@ function YoutubeRegister({ history, location }) {
           breadShopId
         };
 
-        const { status } = youtubeIdd ? await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject)
+        const { status } = youtubeIdd
+          ? await axios.put(`/admin/youtube/${youtubeIdd}`, youtubeObject)
           : await axios.post('/admin/youtube', youtubeObject);
         if (status === 201) {
           history.push(youtubeIdd ? `/youtube_list/youtube_detail/${youtubeIdd}` : '/youtube_list');
@@ -107,7 +108,9 @@ function YoutubeRegister({ history, location }) {
         sweetAlert('값없음');
         return;
       }
-      const { status, data: searchData } = await axios.get(`/admin/bread/shop?title=${information}`);
+      const { status, data: searchData } = await axios.get(
+        `/admin/bread/shop?title=${information}`
+      );
 
       if (status === 200) {
         const { list } = searchData;
@@ -174,7 +177,7 @@ function YoutubeRegister({ history, location }) {
               name="content"
               value={content}
               onChange={handleChange}
-              />
+            />
           </div>
         </div>
 
@@ -192,7 +195,7 @@ function YoutubeRegister({ history, location }) {
               name="link"
               value={link}
               onChange={handleChange}
-              />
+            />
           </div>
         </div>
 
@@ -200,7 +203,7 @@ function YoutubeRegister({ history, location }) {
           <label
             htmlFor="colFormLabelLg"
             className="col-xs-2 col-form-label col-form-label-lg ml-3 youtube-title">
-            <span className="text1">  &nbsp; 빵집 정보 &nbsp; </span>
+            <span className="text1"> &nbsp; 빵집 정보 &nbsp; </span>
           </label>
           <div className="col-sm-7">
             <input
@@ -212,13 +215,11 @@ function YoutubeRegister({ history, location }) {
               value={information}
               onChange={handleChange}
               onKeyDown={handleKeyPress}
-              />
+            />
             {breadShopList.length ? (
-
               <div className="youtube_infor">
                 <ul className="youtube_input">
                   {breadShopList.map((breadShop) => (
-
                     <li
                       key={`breadShop-${breadShop.id}`}
                       className={`search_list ${breadShop.id === breadShopId ? 'active' : ''}`}
@@ -227,20 +228,24 @@ function YoutubeRegister({ history, location }) {
                       <h4>{breadShop.title}</h4>
                       {breadShop.id === breadShopId && <div className="backgroundCover" />}
                     </li>
-
                   ))}
                 </ul>
               </div>
             ) : null}
-
           </div>
-          <button type="button" className="btn btn-secondary btn-sm col-1 mr-2 youtube_search" onClick={onSearch}>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm col-1 mr-2 youtube_search"
+            onClick={onSearch}>
             검색
           </button>
         </div>
 
         <div className="event-search nav justify-content-end row w-100">
-          <button type="button" className="btn btn-secondary btn-sm col-1 mr-2" onClick={handlegoBack}>
+          <button
+            type="button"
+            className="btn btn-secondary btn-sm col-1 mr-2"
+            onClick={handlegoBack}>
             취소
           </button>
 

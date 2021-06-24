@@ -21,7 +21,8 @@ registerLocale('ko', ko);
 function Resgister({ history }) {
   const [value, setValue] = useState({
     title: '',
-    link: ''
+    link: '',
+    banner: 0
   });
 
   // 달력 날짜 변경 시 기준점이 되는 날짜
@@ -84,6 +85,7 @@ function Resgister({ history }) {
       }
     } catch (err) {
       errorhandler(err);
+      console.log(err);
     }
   };
 
@@ -102,6 +104,7 @@ function Resgister({ history }) {
       const registerObject = {
         title: value.title,
         link: value.link,
+        banner: value.banner,
         imageUrl: registerImage.imageUrl,
         startAt: moment(startDate).format('YYYY-MM-DD'),
         endAt: moment(endDate).format('YYYY-MM-DD')
@@ -120,7 +123,8 @@ function Resgister({ history }) {
   const handleRemove = () => {
     setValue({
       title: '',
-      link: ''
+      link: '',
+      banner: 0
     });
     setRegisterImage({
       imageName: '이미지를 첨부해주세요',
@@ -246,8 +250,25 @@ function Resgister({ history }) {
               />
             </div>
           </div>
+          <div className="d-flex mt-3">
+            <label
+              htmlFor="colFormLabelLg"
+              className="col-xs-3 col-form-label col-form-label-lg event-title">
+              <span className="text1">배너 여부</span>
+            </label>
+            <div className="col-sm-3 myContainer mt-3">
+              <select className="custom-select">
+                <option selected>{value.banner ? 'true' : 'false'}</option>
+                <option value="1">true</option>
+              </select>
+            </div>
+          </div>
+
           <div className="event-search nav justify-content-end row">
-            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleRemove}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 button_init"
+              onClick={handleRemove}>
               취소
             </button>
 

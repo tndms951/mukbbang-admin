@@ -79,7 +79,10 @@ function BreadList({ history, location }) {
             </div>
           </div>
           <div className="bread-search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1 mr-2" onClick={handleReset}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 mr-2"
+              onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">

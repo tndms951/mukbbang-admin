@@ -8,7 +8,7 @@ const youtubeReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case YoutubeListTypes.SET_CUTTENT_YOUTUBE: {
       const { list } = action.payload;
-      console.log(list);
+
       return {
         ...state,
         youtubeList: list

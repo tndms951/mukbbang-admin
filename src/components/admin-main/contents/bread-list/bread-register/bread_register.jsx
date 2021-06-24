@@ -89,7 +89,9 @@ const BreadRegister = ({ history, location }) => {
         }
       });
       if (status === 200) {
-        const { data: { imageUrl: newImageUrlList } } = imageData;
+        const {
+          data: { imageUrl: newImageUrlList }
+        } = imageData;
 
         const newimageList = [];
         newImageUrlList.forEach((image) => {
@@ -149,7 +151,6 @@ const BreadRegister = ({ history, location }) => {
   };
 
   return (
-
     <>
       <div className="container p-5 bg-light">
         <form className="form_wrap" onSubmit={handleSubmit}>
@@ -167,7 +168,7 @@ const BreadRegister = ({ history, location }) => {
                 name="title"
                 onChange={handleChange}
                 value={title}
-                />
+              />
             </div>
           </div>
 
@@ -196,35 +197,20 @@ const BreadRegister = ({ history, location }) => {
               <span className="text1">빵 이미지</span>
             </div>
 
-            <div
-              className="register_file_wrap"
-             >
-              <label
-                className="btn btn-primary btn-file col-xs-1"
-               >
+            <div className="register_file_wrap">
+              <label className="btn btn-primary btn-file col-xs-1">
                 파일추가
                 {registerImageList.length !== 8 && (
-                <input
-                  type="file"
-                  onChange={ImagehandleChange}
-                  name="breadImage"
-                  multiple
-               />
+                  <input type="file" onChange={ImagehandleChange} name="breadImage" multiple />
                 )}
-
               </label>
             </div>
 
             <div className="image_file1 w-100 mt-30">
               <div className="image_wrap1 w-50">
-
                 {registerImageList.map((imageDataA, index) => (
                   <div className="d-flex bread-image" key={`image-${index}`}>
-                    <img
-                      src={imageDataA.imageUrl}
-                      alt=""
-                      className="bread_image1"
-                         />
+                    <img src={imageDataA.imageUrl} alt="" className="bread_image1" />
                     <div
                       className="bread_button_wrap"
                       onClick={() => resetInput(index)}
@@ -233,7 +219,6 @@ const BreadRegister = ({ history, location }) => {
                       aria-hidden="true">
                       <CloseButton />
                     </div>
-
                   </div>
                 ))}
               </div>
@@ -241,7 +226,10 @@ const BreadRegister = ({ history, location }) => {
           </div>
 
           <div className="bread-search nav justify-content-end row w-100 mr-2 mb-3">
-            <button type="button" className="btn btn-secondary btn-sm col-1 mr-1 h-50" onClick={goback}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 mr-1 h-50"
+              onClick={goback}>
               취소
             </button>
 
