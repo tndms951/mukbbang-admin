@@ -4,7 +4,6 @@ body {
 }
 
 #menu{
-  /* outline: 1px solid pink; */
   width: 100%;
   height: 50%;
   right: 0%;
@@ -15,13 +14,11 @@ body {
 }
 #menu span:first-of-type {
   transform: rotate(42deg) translate(7.5px, 7.5px);
-  /* opacity: 0.8; */
   background: #777;
 }
 
 #menu span:last-of-type {
   transform: rotate(-42deg) translate(7.5px, -7.5px);
-  /* opacity: 0.8; */
   background: #777;
 }
 #menu span:nth-child(2) {
@@ -29,7 +26,6 @@ body {
 }
 
 #menu span {
-  /* outline: 1px solid red; */
   width: 100%;
   height: 3px;
   display: block;

@@ -215,7 +215,7 @@ function BreadHoustList({ match, history }) {
   const saveHandleSubmit = async () => {
     const { houseId } = match.params;
     const modifyObject = {
-      title: value.name,
+      title: name,
       address: value.addressName,
       lat: value.addressLat,
       lon: value.addressLon,
@@ -230,6 +230,7 @@ function BreadHoustList({ match, history }) {
       breadId: value.choosebread.id,
       imageUrlShop: image
     };
+
     try {
       const { status } = await axios.put(`/admin/bread/shop/${houseId}`, modifyObject);
       if (status === 201) {
@@ -463,11 +464,11 @@ function BreadHoustList({ match, history }) {
                   빵집주소
                 </span>
 
-                <div className="form-group col-5 adressbox">
+                <div className="form-group col-7 adressbox">
                   {!edit ? (
                     <>
                       {/* <span className="col-sm-8">주소</span><span className="col-sm-8">상세주소</span> */}
-                      <span className="col-sm-8">{houseDetail ? houseDetail.address.address : ''}</span><span className="col-sm-8">ss</span>
+                      <span className="col-sm-8">{houseDetail ? houseDetail.address.address : ''}</span><span className="col-sm-8">{houseDetail ? houseDetail.address.detailAddress : ''}</span>
                     </>
                   ) : (
                     <>

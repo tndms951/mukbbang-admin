@@ -55,11 +55,13 @@ function BreadHoustList({ history }) {
   // 영업시간 리스트
   const [openTimeList, setOpneTimeList] = useState([]);
   const [closeTimeList, setCloseTimeList] = useState([]);
+
   // 내부사진 업로드
   const [image, setImage] = useState([]);
 
   // 메뉴사진 업로드
   const [menuImage, setMenuImage] = useState([]);
+  console.log(menuImage);
 
   // 빵 선택 서버에서 받아온 값
   const [chooseBreadData, setChooseBreadData] = useState([]);
@@ -281,6 +283,27 @@ function BreadHoustList({ history }) {
     } catch (err) {
       errorhandler(err);
     }
+  };
+
+  // 메뉴사진 클릭시 삭제
+  const menuPicOnclick = (menuImage) => {
+    console.log(menuImage);
+
+    const copyArray = [...menuImage];
+    const inx = copyArray.findIndex((list) => list.id === menuImage.id);
+
+    console.log(inx);
+    if (inx > -1) {
+      copyArray.splice(inx, 1);
+    }
+
+    // const copyArray = [...selectedImagesID];
+    // const idx = copyArray.findIndex((list) => list.id === breadData.id);
+
+    // if (idx > -1) {
+    //   copyArray.splice(idx, 1);
+    //   setSelectedImagesID(copyArray);
+    // }
   };
 
   // 빵 선택 온클릭
@@ -638,7 +661,7 @@ function BreadHoustList({ history }) {
                       <div
                         className="card col-5 mb-3 mt-3 bread_container rounded"
                         key={`image-menu-url${index}`}
-                    >
+                        onClick={() => menuPicOnclick(menuImage)}>
                         <img className="card-img-top" src={menu} alt="사진" />
                       </div>
                     ))}
@@ -695,17 +718,18 @@ function BreadHoustList({ history }) {
                 {selectedImagesID.length ? (
                   <div className="rounded mb-3 ml-3 bread_image_box col-8">
                     <h4 className="choosebread">선택된 빵</h4>
-                    {selectedImagesID.map((breadData, index) => (
-                      <div
-                        className="col-5 mb-3 mt-3 bread_container rounded"
-                        key={`choosed-Bread${index}`}
-                        onClick={() => removeImageListOnclick(breadData)}>
-                        <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
-                      </div>
-                    ))}
+                    <div className="wraped_bread">
+                      {selectedImagesID.map((breadData, index) => (
+                        <div
+                          className="col-5 mb-3 mt-3 bread_container rounded"
+                          key={`choosed-Bread${index}`}
+                          onClick={() => removeImageListOnclick(breadData)}>
+                          <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 ) : ''}
-
               </div>
 
               <div className="row justify-content-start mb-3">
