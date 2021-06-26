@@ -1,0 +1,35 @@
+.main_wrap {
+  padding: 2rem;
+}
+
+.main_title {
+  font-size: 20px;
+  color:#007bff;
+  font-weight: 600;
+}
+.bread-house {
+margin: 50px;
+}
+
+.title {
+  background-color: #4792e2;
+  color: white;
+  font-weight: 700;
+
+}
+
+.bread-house tr td {
+  font-size: 16px;
+  text-align: center;
+  padding: 5px;
+  font-weight: 500;
+  /* color: #5c5c5c; */
+  margin: 10px 0;
+}
+
+.content:hover {
+  background: #ddd;
+  transition: 0.3s;
+}
+
+
