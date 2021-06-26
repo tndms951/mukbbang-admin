@@ -15,21 +15,8 @@ const MainNavbar = ({ currentUser, onLogout }) => {
     <>
       <div className="main-navbar sticky-top bg-white">
         <nav className="navbar align-items-stretch navbar-light flex-md-nowrap p-0">
-          <form action="#" className="main-navbar__search w-100 d-none d-md-flex d-lg-flex">
-            <div className="input-group input-group-seamless ml-3">
-              <div className="input-group-prepend">
-                <div className="input-group-text">
-                  <i className="fas fa-search" />
-                </div>
-              </div>
-              <input
-                className="navbar-search form-control"
-                type="text"
-                placeholder="검색어를 입력해주세요"
-                aria-label="Search"
-              />
-            </div>
-          </form>
+          <div className="input-group input-group-seamless ml-3" />
+
           <ul className="navbar-nav border-left flex-row ">
             {currentUser ? (
               <div
