@@ -29,6 +29,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
         const query = qs.parse(location.search, {
           ignoreQueryPrefix: true
         });
+
         const { status, data: eventData } = await axios.get(`/admin/event${location.search}`);
         if (status === 200) {
           onEventList(eventData.list);
@@ -55,6 +56,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
     setEndDate(null);
   };
 
+  // 검색조회
   const handleSearch = (e) => {
     e.preventDefault();
 
@@ -71,6 +73,7 @@ const EventList = ({ eventList, onEventList, history, location }) => {
       queryObject.endDate = moment(endDate).format('YYYY-MM-DD');
     }
     const queryData = qs.stringify(queryObject);
+
     history.push(`/event${queryData ? `?${queryData}` : ''}`);
   };
 
@@ -125,7 +128,10 @@ const EventList = ({ eventList, onEventList, history, location }) => {
           </div>
 
           <div className="event-search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={handleReset}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 button_init"
+              onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">

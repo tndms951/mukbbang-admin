@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import qs from 'qs';
-
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
 import axios from '../../../utils/axios';
 import { errorhandler } from '../../../utils/common';
 
@@ -44,7 +44,6 @@ function BreadList({ history, location }) {
     e.preventDefault();
     // eslint-disable-next-line object-curly-newline
     const queryObject = {};
-
     if (title) {
       queryObject.title = title;
     }
@@ -66,7 +65,7 @@ function BreadList({ history, location }) {
           <div className="form-group row mt-4">
             <label
               htmlFor="colFormLabelLg"
-              className="col-xs-2 col-form-label col-form-label-lg event-title">
+              className="col-xs-2 col-form-label col-form-label-lg bread-title">
               <span>빵이름</span>
             </label>
             <div className="col-sm-8">
@@ -80,7 +79,10 @@ function BreadList({ history, location }) {
             </div>
           </div>
           <div className="bread-search nav justify-content-end">
-            <button type="button" className="btn btn-secondary btn-sm col-1" onClick={handleReset}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 mr-2"
+              onClick={handleReset}>
               초기화
             </button>
             <button type="submit" className="btn btn-primary btn-sm col-1">
@@ -88,7 +90,7 @@ function BreadList({ history, location }) {
             </button>
           </div>
 
-          <div className="event_table">
+          <div className="bread_table">
             <div className="event_button_wrap nav justify-content-end ">
               <Link to="/bread_list/bread_register" className="btn btn-primary col-2 register">
                 등록하러가기
@@ -96,6 +98,7 @@ function BreadList({ history, location }) {
             </div>
           </div>
         </form>
+
         <div className="row w-100">
           <div className="col mr-5 ml-5">
             <div className="card card-small mb-4">
@@ -132,7 +135,6 @@ function BreadList({ history, location }) {
                           <td>
                             <Link to={`/bread_list/detail/${breadData.id}`}>{breadData.title}</Link>
                           </td>
-
                           <td>&#160;</td>
                           <td>&#160;</td>
                           <td>&#160;</td>

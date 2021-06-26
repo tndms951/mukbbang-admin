@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import axios from '../../../../utils/axios';
 import { errorhandler } from '../../../../utils/common';
-import CloseButton from '../../../../shared/button/close_button';
 
 import './bread_detail.css';
 
@@ -16,8 +15,6 @@ function Detail({ match, history }) {
 
   // 이미지 값 저장
   const [breadImageList, setBreadImageList] = useState([]);
-  
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -26,12 +23,11 @@ function Detail({ match, history }) {
 
         const { status, data: detailData } = await axios.get(`/admin/bread/${breadId}`);
         
-        
-
         if (status === 200) {
           const { data } = detailData;
           setDataList(data);
           setBreadImageList(data.images); 
+          
         }
       } catch (err) {
         errorhandler(err);
@@ -82,10 +78,13 @@ function Detail({ match, history }) {
               <span className="contentName">
                 <div className="image_wrap">
                     {dataList?.images.map((imageData, index) => (
+                 
                       <div className="d-flex bread-image" key={`image-${index}`}>
                         <img src={imageData.imageUrl} alt="빵 이미지" className="bread_image1" />
                       </div>
                     ))}
+                    
+                    
                 </div>
               </span>
             </div>
@@ -102,7 +101,7 @@ function Detail({ match, history }) {
             </button>
 
             <div className="row">
-              <div className=" nav justify-content-end">
+              <div className="nav justify-content-end">
                 <Link
                   to={`/bread_list/bread_register?breadId=${dataList?.id}`}
                   className="btn btn-primary modify">

@@ -143,7 +143,7 @@ function Signup({ onUserSet, history }) {
     <div className="background">
       <div className="main">
         <section className="signup">
-          <div className="container">
+          <div className="container-singup">
             <div className="signup-content">
               <form id="signup-form" className="signup-form" onSubmit={handleSubmit}>
                 <h2 className="form-title">Create account</h2>

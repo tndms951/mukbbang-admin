@@ -1,15 +1,15 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './signin_style.css';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import qs from 'qs';
 
-import { setAuthorization } from '../utils/axios';
+import axios, { setAuthorization } from '../utils/axios';
 import { errorhandler, isEmailValid, sweetAlert } from '../utils/common';
 import { setCurrentUser } from '../../redux/user/user.actions';
 
-function Signin({ onUserSet, history }) {
+function Signin({ onUserSet, history, location }) {
   const [inputs, setInputs] = useState({
     email: '',
     password: '',
@@ -17,9 +17,16 @@ function Signin({ onUserSet, history }) {
   });
 
   const [errorMessageEmail, setErrorMessageEmail] = useState('');
-  const [submitStatus, setSubmitStatus] = useState(false);
+  // const [submitStatus, setSubmitStatus] = useState(false);
 
   const { email, password, remember } = inputs;
+
+  useEffect(() => {
+    const bringUserToken = localStorage.getItem('token');
+    if (bringUserToken) {
+      history.replace('/');
+    }
+  }, []);
 
   const valueRef = {
     emailRef: useRef(null),
@@ -28,13 +35,13 @@ function Signin({ onUserSet, history }) {
 
   // form
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
       const signinObject = {
         email,
         password
       };
-
-      e.preventDefault();
 
       const { emailRef, passwordRef } = valueRef;
       if (!email) {
@@ -46,20 +53,26 @@ function Signin({ onUserSet, history }) {
         sweetAlert('비밀번호를 입력해주세요.');
         passwordRef.current.focus();
       } else {
-        setSubmitStatus(true);
+        const { data, status } = await axios.post('/admin/signin', signinObject);
+
+        if (status === 200) {
+          const { token } = data.data;
+          setAuthorization(token);
+
+          const { status: signinStatus, data: currentData } = await axios.get('/admin/current');
+
+          if (signinStatus === 200) {
+            onUserSet(currentData.data, token);
+            const query = qs.parse(location.search, {
+              ignoreQueryPrefix: true
+            });
+
+            history.push(query?.moveAddress || '/');
+          }
+        }
       }
-      const { data } = await axios.post('/admin/signin', signinObject);
-      const { token } = data.data;
-      // console.log(token);
-      setAuthorization(token);
-      const { data: currentData } = await axios.get('/admin/current'); //
-      const { data: userInfo } = currentData;
-      onUserSet(userInfo, token);
-      history.push('/');
     } catch (err) {
       errorhandler(err);
-    } finally {
-      setSubmitStatus(false);
     }
   };
 
@@ -149,7 +162,7 @@ function Signin({ onUserSet, history }) {
                 </div>
 
                 <div className="container-login100-form-btn">
-                  <button type="submit" className="login100-form-btn" disabled={submitStatus}>
+                  <button type="submit" className="login100-form-btn">
                     Login
                   </button>
                 </div>
@@ -164,7 +177,8 @@ function Signin({ onUserSet, history }) {
 
 Signin.propTypes = {
   onUserSet: PropTypes.func.isRequired, // isRequired은 무조건 값이있어 라는뜻!
-  history: PropTypes.objectOf(PropTypes.object).isRequired
+  history: PropTypes.instanceOf(Object).isRequired,
+  location: PropTypes.instanceOf(Object).isRequired
 };
 
 const mapToPropsDispatch = (dispatch) => ({

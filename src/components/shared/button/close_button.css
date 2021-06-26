@@ -1,17 +1,16 @@
-
-
-#menu span:first-of-type {
+#image_close_menu span:first-of-type {
   transform: rotate(42deg) translate(5.5px, 2.5px);
 }
 
-#menu span:last-of-type {
+#image_close_menu span:last-of-type {
   transform: rotate(-42deg) translate(5.5px, -2.5px);
 }
-#menu span {
+#image_close_menu span {
   width: 26px;
   height: 3px;
   display: block;
   margin: 8px auto 0;
   background: #8F8E8E;
+ 
 }
 

@@ -1,0 +1,43 @@
+.login_box {
+  width: 150px;
+  text-align: center;
+}
+
+.login_box span {
+  font-size: 14px;
+  height: 100%;
+  line-height: 60px;
+  margin: 0 10px;
+}
+
+.nav-link{
+cursor: pointer;
+}
+
+.dropdown-menu {
+  border: 1px solid #b4b4b4;
+  float: right;
+  width: 160px;
+  padding: 18px 16px;
+  position: absolute;
+  z-index: 1000000;
+  top: 40px;
+  right: 20px;
+  background: white;
+}
+
+.dropdown-item {
+  border: 1px solid #e1e5eb;
+  height: 100px;
+  background-color: white;
+}
+
+.profile_box {
+  display: block;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+
+
+

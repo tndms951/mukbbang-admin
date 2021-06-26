@@ -22,7 +22,7 @@ const MainSidebar = () => (
                         src="images/shards-dashboards-logo.svg"
                         alt="Shards Dashboard"
                       /> */}
-              <span className="d-none d-md-inline ml-1">Shards Dashboard</span>
+              <span className="d-none d-md-inline ml-1">MEOK-PPANG</span>
             </div>
           </Link>
           <div className="toggle-sidebar d-sm-inline d-md-none d-lg-none">
@@ -52,7 +52,7 @@ const MainSidebar = () => (
           <li className="nav-item">
             <Link to="/" className="nav-link active">
               <i className="material-icons">supervisor_account</i>
-              <span>회원 목록</span>
+              <span>메인 목록</span>
             </Link>
           </li>
           <li className="nav-item">

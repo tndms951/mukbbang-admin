@@ -1,4 +1,5 @@
 import UserActionTypes from './user.types';
+import { setAuthorizationReset } from '../../components/utils/axios';
 
 const INITIAL_STATE = {
   currentUser: null,
@@ -9,12 +10,20 @@ const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case UserActionTypes.SET_CURRENT_USER: {
       const { user, token } = action.payload;
-      window.localStorage.setItem('token', token);
-      // 웹에 토큰 값을 저장하기 위해서 사용.
+      localStorage.setItem('token', token);
       return {
         ...state,
         currentUser: user,
         token
+      };
+    }
+    case UserActionTypes.SET_LOGOUT: {
+      localStorage.removeItem('token');
+      setAuthorizationReset();
+      return {
+        ...state,
+        currentUser: null,
+        token: ''
       };
     }
     default:
