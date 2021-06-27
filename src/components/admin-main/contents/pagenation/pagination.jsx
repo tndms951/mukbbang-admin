@@ -2,9 +2,6 @@ import { number } from 'prop-types';
 import React from 'react';
 
 function Pagenation({ totalPages, currentPage }) {
-  console.log(totalPages);
-  console.log(currentPage);
-
   const numberArray = [];
 
   const startNumber = 0;
@@ -16,18 +13,11 @@ function Pagenation({ totalPages, currentPage }) {
   const secondEndPagge = 10;
 
   for (let i = startNumber; i < endNumber; i += 1) {
-    // console.log(i);
     numberArray.push(i);
   }
   for (let i = secondPage; i < secondEndPagge; i += 1) {
     secondeArray.push(i);
   }
-  // console.log(numberArray);
-
-  // for (let i = startNumber; i < endNumber; i += 1) {
-  //   // console.log(i);
-  //   numberArray(i);
-  // }
 
   return (
     <nav aria-label="Page navigation example" className="d-flex">
@@ -37,8 +27,8 @@ function Pagenation({ totalPages, currentPage }) {
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        {numberArray.map((pageNumber) => (
-          <li className="page-item">
+        {numberArray.map((pageNumber, index) => (
+          <li className="page-item" key={`pagination-${index}`}>
             <a className="page-link" href="#">
               {pageNumber + 1}
             </a>
@@ -57,8 +47,8 @@ function Pagenation({ totalPages, currentPage }) {
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        {secondeArray.map((pageNumber) => (
-          <li className="page-item">
+        {secondeArray.map((pageNumber, index) => (
+          <li className="page-item" key={`pagination-${index}`}>
             <a className="page-link" href="#">
               {pageNumber + 1}
             </a>

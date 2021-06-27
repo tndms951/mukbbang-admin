@@ -17,9 +17,6 @@ function Modal({ closeModal, el, handleAddress }) {
   const [isEnd, setIsEnd] = useState(false);
   const [page, setPage] = useState(0);
 
-  // console.log(address);
-  // console.log(isEnd);
-
   useEffect(() => {
     document.body.classList.add('Modal_Overflow');
     return () => {
@@ -45,7 +42,6 @@ function Modal({ closeModal, el, handleAddress }) {
       const { data } = addressData;
       setIsLoading(false);
       if (status === 200) {
-        console.log(data);
         setAddress(currentPage === 1 ? data.list : [...address, ...data.list]);
         setPage(currentPage);
         setIsEnd(data.pagination.isEnd);
@@ -57,38 +53,17 @@ function Modal({ closeModal, el, handleAddress }) {
   };
 
   const loadMoreHandler = () => {
-    // const newlistArr = [...address, ...visiable];
-    // console.log(visiable);
-    // console.log(newlistArr);
-    // setVisiable((preValue) => preValue + 20);
-    // setIsEnd(!isEnd);
-    //   try {
-    //     console.log('가능 합니다 !!!!!');
-    //     if (page === 2) {
-    //       console.log('2장이야');
-    //     }
-    //   } catch (err) {
-    //     console.log('불가능 !!!!!!');
-    //   }
-    console.log('더보기 입니다');
     if (!isLoading) {
       addressApiCall(name, page + 1);
     }
-    console.log(name);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // addressApiCall(name, page + 1);
     if (!isLoading) {
       addressApiCall(name, 1);
     }
   };
-
-  // const onClick = () => {
-  //   console.log(address.index);
-  //   console.log('뭔데');
-  // };
 
   return (
     <>
@@ -116,7 +91,6 @@ function Modal({ closeModal, el, handleAddress }) {
         <div className="content">
           <ul className="address">
             {address.map((addressData, index) => (
-              // console.log(addressData);
               // eslint-disable-next-line react/no-array-index-key
               <li
                 className="addresslist"

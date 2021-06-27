@@ -61,14 +61,12 @@ function BreadHoustList({ history }) {
 
   // 메뉴사진 업로드
   const [menuImage, setMenuImage] = useState([]);
-  console.log(menuImage);
 
   // 빵 선택 서버에서 받아온 값
   const [chooseBreadData, setChooseBreadData] = useState([]);
 
   // 선택 이미지 매개변수 담는 함수
   const [selectedImagesID, setSelectedImagesID] = useState([]);
-  console.log(selectedImagesID.map((list) => list.id));
 
   // 빵집 사장 서버에서 받온 값
   const [breadBossAccountData, setBreadBossAccountData] = useState([]);
@@ -97,7 +95,6 @@ function BreadHoustList({ history }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       if (!name) {
         sweetAlert('빵집이름을 입력해 주세요');
@@ -286,24 +283,13 @@ function BreadHoustList({ history }) {
   };
 
   // 메뉴사진 클릭시 삭제
-  const menuPicOnclick = (menuImage) => {
-    console.log(menuImage);
-
+  const menuPicOnclick = (index) => {
     const copyArray = [...menuImage];
-    const inx = copyArray.findIndex((list) => list.id === menuImage.id);
 
-    console.log(inx);
-    if (inx > -1) {
-      copyArray.splice(inx, 1);
+    if (index !== -1) {
+      copyArray.splice(index, 1);
+      setMenuImage(copyArray);
     }
-
-    // const copyArray = [...selectedImagesID];
-    // const idx = copyArray.findIndex((list) => list.id === breadData.id);
-
-    // if (idx > -1) {
-    //   copyArray.splice(idx, 1);
-    //   setSelectedImagesID(copyArray);
-    // }
   };
 
   // 빵 선택 온클릭
@@ -396,6 +382,16 @@ function BreadHoustList({ history }) {
     if (idx > -1) {
       copyArray.splice(idx, 1);
       setSelectedImagesID(copyArray);
+    }
+  };
+
+  // 내부사진 삭제
+  const removeOnClick = (index) => {
+    const copyArray = [...image];
+
+    if (index !== -1) {
+      copyArray.splice(index, 1);
+      setImage(copyArray);
     }
   };
 
@@ -623,7 +619,8 @@ function BreadHoustList({ history }) {
                     {image.map((img, index) => (
                       <div
                         className="card col-5 mb-3 mt-3 bread_interior rounded"
-                        key={`image-url${index}`}>
+                        key={`image-url${index}`}
+                        onClick={() => removeOnClick(index)}>
                         <img
                           className="card-img-top"
                           src={img}
@@ -661,7 +658,7 @@ function BreadHoustList({ history }) {
                       <div
                         className="card col-5 mb-3 mt-3 bread_container rounded"
                         key={`image-menu-url${index}`}
-                        onClick={() => menuPicOnclick(menuImage)}>
+                        onClick={() => menuPicOnclick(index)}>
                         <img className="card-img-top" src={menu} alt="사진" />
                       </div>
                     ))}

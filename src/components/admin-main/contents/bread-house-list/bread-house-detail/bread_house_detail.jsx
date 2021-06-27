@@ -16,8 +16,6 @@ import Modal from '../../../../utils/Modal/adress';
  * */
 
 function BreadHoustList({ match, history }) {
-  console.log(daysList);
-
   const [value, setValue] = useState({
     name: '',
     addressName: '',
@@ -59,11 +57,8 @@ function BreadHoustList({ match, history }) {
     bossaccountId
   } = value;
 
-  console.log(value);
-
   // 서버에서 받아온 값 저장
   const [houseDetail, setHouseDetail] = useState(null);
-  console.log(houseDetail);
 
   // 모달
   const el = useRef();
@@ -80,39 +75,31 @@ function BreadHoustList({ match, history }) {
 
   // 내부사진 업로드
   const [image, setImage] = useState([]);
-  console.log(image);
 
   // 메뉴사진 업로드
   const [menuImage, setMenuImage] = useState([]);
 
   // 빵 선택 서버에서 받아온 값
   const [chooseBreadData, setChooseBreadData] = useState([]);
-  console.log(chooseBreadData);
 
   // 선택 이미지 매개변수 담는 함수
   const [selectedImagesID, setSelectedImagesID] = useState([]);
-  console.log(selectedImagesID);
 
-  // 선택 이미지 서버에서 받아온 값으로 보여주는 함수
-  const [showBreadChoose, setShowBreadChoose] = useState([]);
-  console.log(showBreadChoose);
+  const BreadHouseDetailApiCall = async () => {
+    try {
+      const { houseId } = match.params;
+      const { status, data: houseData } = await axios.get(`/admin/bread/shop/${houseId}`);
+
+      if (status === 200) {
+        setHouseDetail(houseData.data);
+        setEdit(false);
+      }
+    } catch (err) {
+      errorhandler(err);
+    }
+  };
 
   useEffect(() => {
-    const { houseId } = match.params;
-
-    const BreadHouseDetailApiCall = async () => {
-      try {
-        const { status, data: houseData } = await axios.get(`/admin/bread/shop/${houseId}`);
-        console.log(houseData);
-
-        if (status === 200) {
-          setHouseDetail(houseData.data);
-          setImage(houseData.images);
-        }
-      } catch (err) {
-        errorhandler(err);
-      }
-    };
     BreadHouseDetailApiCall();
   }, [match.params]);
 
@@ -143,8 +130,6 @@ function BreadHoustList({ match, history }) {
 
   // 삭제 핸들써브밋
   const deleteHandleSubmit = async () => {
-    console.log(match.params);
-
     const { houseId } = match.params;
     const confirm = await sweetAlertConfirm(
       '해당 게시물을 삭제하시겠습니까?\n삭제된 데이터는 복구할 수 없습니다.'
@@ -180,12 +165,13 @@ function BreadHoustList({ match, history }) {
       holidays: houseDetail.holidays,
       checked: {
       },
-      picture: selectedImagesID,
-      menuPicture: [houseDetail.menuImages],
-      choosebread: [houseDetail.bread],
+      // image: selectedImagesID,
+      // menuPicture: [houseDetail.menuImages],
       bossaccount: houseDetail.shopUser.name,
       bossaccountId: houseDetail.shopUser.id
     });
+    setImage(houseDetail.images);
+    setMenuImage(houseDetail.menuImages);
 
     // 영업시간 인풋 값
     const openTime = [];
@@ -209,54 +195,66 @@ function BreadHoustList({ match, history }) {
 
     setOpenTimeList(openTime);
     setCloseTimeList(closeTime);
+    setSelectedImagesID(houseDetail.bread);
+    setImage(houseDetail.images);
+    setMenuImage(houseDetail.menuImages);
   };
 
   // 저장 핸들써브밋
   const saveHandleSubmit = async () => {
-    const { houseId } = match.params;
-    const modifyObject = {
-      title: name,
-      address: value.addressName,
-      lat: value.addressLat,
-      lon: value.addressLon,
-      detailAddress: value.detailAddress,
-      storeNumber: value.number,
-      parkingEnabled: value.parkingEnabled,
-      openTime: value.opentime,
-      closeTime: value.closetime,
-      link: value.homepage,
-      day: value.holidays,
-      imageUrlMenu: menuImage,
-      breadId: value.choosebread.id,
-      imageUrlShop: image
-    };
-
     try {
-      const { status } = await axios.put(`/admin/bread/shop/${houseId}`, modifyObject);
-      if (status === 201) {
-        setHouseDetail({
-          ...houseDetail,
-          name: value.name,
-          addressName: value.addressName,
-          detailAddress: value.detailAddress,
-          number: value.number,
-          parkingEnabled: value.parkingEnabled,
-          opentime: value.opentime,
-          closetime: value.closetime,
-          homepage: value.homepage,
-          holidays: value.holidays,
-          checked: value.checked,
-          picture: value.picture,
-          menuPicture: value.menuPicture,
-          choosebread: value.choosebread,
-          bossaccount: value.bossaccount,
-          bossaccountId: value.bossaccountId
-        });
+      if (!name) {
+        sweetAlert('빵집이름을 입력해 주세요');
+      } else if (!addressName) {
+        sweetAlert('주소를 입력해 주세요');
+      } else if (!detailAddress) {
+        sweetAlert('상세주소를 입력해 주세요');
+      } else if (!number) {
+        sweetAlert('빵집 전화번호를 입력해 주세요');
+      } else if (!opentime) {
+        sweetAlert('오픈시간을 입력해 주세요');
+      } else if (!closetime) {
+        sweetAlert('마감시간을 입력해 주세요');
+      } else if (!homepage) {
+        sweetAlert('홈페이지를 입력해 주세요');
+      } else if (!holidays) {
+        sweetAlert('휴일을 체크해 주세요');
+      } else if (!image.length) {
+        sweetAlert('내부 이미지를 넣어 주세요');
+      } else if (!menuImage.length) {
+        sweetAlert('메뉴 이미지를 넣어 주세요');
+      } else if (!selectedImagesID.length) {
+        sweetAlert('빵 선택을 해주세요');
+      } else if (!bossaccountId) {
+        sweetAlert('빵집 사장 계정을 입력해 주세요');
+      } else {
+        const { houseId } = match.params;
+        const shopObject = {
+          title: name,
+          link: homepage,
+          storeNumber: number,
+          parkingEnabled,
+          openTime: opentime,
+          closeTime: closetime,
+          shopUserId: bossaccountId,
+          lat: addressLat,
+          lon: addressLon,
+          address: addressName,
+          detailAddress,
+          imageUrlShop: image,
+          imageUrlMenu: menuImage,
+          day: holidays,
+          breadId: selectedImagesID.map((list) => list.id)
+        };
+
+        const { status } = await axios.put(`/admin/bread/shop/${houseId}`, shopObject);
+        if (status === 201) {
+          BreadHouseDetailApiCall();
+        }
       }
     } catch (err) {
       errorhandler(err);
     }
-    setEdit(!edit);
   };
 
   // 빵집 텍스트 수정 핸들체인지
@@ -285,7 +283,6 @@ function BreadHoustList({ match, history }) {
       updateHoliday.push(e.target.value);
     } else {
       updateHoliday.splice(idx, 1);
-      console.log(updateHoliday);
     }
 
     setValue({
@@ -293,14 +290,6 @@ function BreadHoustList({ match, history }) {
       holidays: updateHoliday
     });
   };
-
-  // 홈페이지 핸들체인지
-  // const homePageHandleChange = (e) => {
-  //   setValue({
-  //     ...value,
-  //     [e.target.name]: e.target.value
-  //   });
-  // };
 
   // 내부사진 핸들체인지
   const imageHandleChange = async (e) => {
@@ -325,7 +314,6 @@ function BreadHoustList({ match, history }) {
 
       if (status === 200) {
         const { data: { imageUrl: imagesUrl } } = imageData;
-        console.log(imagesUrl);
 
         setImage([...image, ...imagesUrl]);
       }
@@ -336,7 +324,6 @@ function BreadHoustList({ match, history }) {
 
   // 메뉴사진 핸들체인지
   const menuImageHandleChange = async (e) => {
-    console.log('메뉴 사진 업데이트 !!!');
     const imageFormData = new FormData();
 
     try {
@@ -352,8 +339,6 @@ function BreadHoustList({ match, history }) {
           'Content-Type': 'multipart/form-data'
         }
       });
-
-      console.log(menuData.data.imageUrl);
 
       if (status === 200) {
         const { imageUrl } = menuData.data;
@@ -372,7 +357,6 @@ function BreadHoustList({ match, history }) {
       };
 
       const queryData = qs.stringify(queryObject);
-      // console.log(queryData);
 
       const { status, data: breadData } = await axios.get(`/admin/bread?${queryData}`);
       if (!choosebread) {
@@ -385,9 +369,18 @@ function BreadHoustList({ match, history }) {
     }
   };
 
+  // 빵 선택 키다운
+  const breadSelectKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      if (value.choosebread) {
+        breadSelectOnclick();
+      }
+    }
+  };
+
   // 주소 핸들체인지
   const handleAddress = (addressData) => {
-    console.log(addressData);
     setValue({
       ...value,
       addressLat: addressData.addressLat,
@@ -400,16 +393,47 @@ function BreadHoustList({ match, history }) {
 
   // 빵 선택 온클릭
   const imageListOnclick = (breadData) => {
-    setSelectedImagesID([breadData.id]);
-    setShowBreadChoose(breadData.images[0].imageUrl);
-
-    const updateBread = [...chooseBreadData];
-    const idx = updateBread.findIndex((item) => item === breadData.images[0].imageUrl);
+    const copyArray = [...selectedImagesID];
+    const idx = copyArray.findIndex((list) => list.id === breadData.id);
 
     if (idx === -1) {
-      updateBread.push(breadData.images[0].imageUrl);
+      const index = chooseBreadData.findIndex((list) => list.id === breadData.id);
+
+      copyArray.push(chooseBreadData[index]);
+      setSelectedImagesID(copyArray);
     } else {
-      updateBread.splice(idx, 1);
+      sweetAlert('이미 선택된 빵 입니다');
+    }
+  };
+
+  // 선택된 빵 삭제
+  const removeImageListOnclick = (breadData) => {
+    const copyArray = [...selectedImagesID];
+    const idx = copyArray.findIndex((list) => list.id === breadData.id);
+
+    if (idx > -1) {
+      copyArray.splice(idx, 1);
+      setSelectedImagesID(copyArray);
+    }
+  };
+
+  // 내부사진 삭제
+  const removeOnClick = (index) => {
+    const copyArray = [...image];
+
+    if (index !== -1) {
+      copyArray.splice(index, 1);
+      setImage(copyArray);
+    }
+  };
+
+  // 메뉴사진 클릭시 삭제
+  const menuPicOnclick = (index) => {
+    const copyArray = [...menuImage];
+
+    if (index !== -1) {
+      copyArray.splice(index, 1);
+      setMenuImage(copyArray);
     }
   };
 
@@ -639,8 +663,8 @@ function BreadHoustList({ match, history }) {
                 </span>
                 {edit ? (
                   <div className="form-group col-5 filebox">
-                    <label htmlFor="ex_file">사진 업로드</label>
-                    <input type="file" id="ex_file" onChange={imageHandleChange} multiple accept="image/*" />
+                    <label htmlFor="interrior_images">사진 업로드</label>
+                    <input type="file" id="interrior_images" onChange={imageHandleChange} multiple accept="image/*" />
                   </div>
                 ) : '' }
               </div>
@@ -648,16 +672,25 @@ function BreadHoustList({ match, history }) {
               <div className="d-flex row">
                 <div className="col-2" />
                 <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
-                  {houseDetail && houseDetail.images.map((list, index) => (
-                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`interior-images${index}`}>
+                  {edit ? image && image.map((list, index) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`interior-images${index}`} onClick={() => removeOnClick(index)}>
                       <img
                         className="card-img-top"
                         src={list}
                         alt="사진"
                         style={{
                           marginTop: '10px'
-                        }}
-                      />
+                        }} />
+                    </div>
+                  )) : houseDetail && houseDetail.images.map((list, index) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`interior-images${index}`} onClick={() => removeOnClick(index)}>
+                      <img
+                        className="card-img-top"
+                        src={list}
+                        alt="사진"
+                        style={{
+                          marginTop: '10px'
+                        }} />
                     </div>
                   ))}
                 </div>
@@ -674,8 +707,8 @@ function BreadHoustList({ match, history }) {
                 </span>
                 {edit ? (
                   <div className="form-group col-5 filebox">
-                    <label htmlFor="ex_file">사진 업로드</label>
-                    <input type="file" id="ex_file" onChange={menuImageHandleChange} multiple accept="image/*" />
+                    <label htmlFor="menu_images">사진 업로드</label>
+                    <input type="file" id="menu_images" onChange={menuImageHandleChange} multiple accept="image/*" />
                   </div>
                 ) : ''}
               </div>
@@ -683,8 +716,8 @@ function BreadHoustList({ match, history }) {
               <div className="d-flex row">
                 <div className="col-2" />
                 <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
-                  {houseDetail && houseDetail.menuImages.map((menuimage, index) => (
-                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`menu-images${index}`}>
+                  {edit ? menuImage && menuImage.map((menuimage, index) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`menu-images${index}`} onClick={() => menuPicOnclick(index)}>
                       <img
                         className="card-img-top"
                         src={menuimage}
@@ -693,7 +726,18 @@ function BreadHoustList({ match, history }) {
                           marginTop: '10px'
                         }} />
                     </div>
+                  )) : houseDetail && houseDetail.menuImages.map((list, index) => (
+                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`interior-images${index}`} onClick={() => removeOnClick(index)}>
+                      <img
+                        className="card-img-top"
+                        src={list}
+                        alt="사진"
+                        style={{
+                          marginTop: '10px'
+                        }} />
+                    </div>
                   ))}
+                  {}
                 </div>
               </div>
 
@@ -713,7 +757,11 @@ function BreadHoustList({ match, history }) {
                       className="form-control mr-2"
                       id="inputPassword4"
                       placeholder="내용을 입력해 주세요"
-                      name="name" />
+                      name="choosebread"
+                      value={choosebread}
+                      onChange={handleChange}
+                      onKeyDown={breadSelectKeyDown}
+                      />
                     <button type="button" className="btn btn-primary" onClick={breadSelectOnclick}>
                       검색
                     </button>
@@ -723,7 +771,7 @@ function BreadHoustList({ match, history }) {
 
               <div className="d-flex row">
                 <div className="col-2" />
-                {showBreadChoose.length ? (
+                {chooseBreadData.length ? (
                   <div className="d-flex rounded row mb-3 ml-3 bread_image_box col-8">
                     {chooseBreadData.map((breadData, index) => (
                       <div
@@ -735,26 +783,46 @@ function BreadHoustList({ match, history }) {
                     ))}
                   </div>
                 ) : ''}
-
-                <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
-                  <h4
-                    className="choosebread"
-                    style={{
-                      width: '100%'
-                    }}>선택된 빵
-                  </h4>
-                  {houseDetail && houseDetail.bread.map((breadlist) => (
-                    <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`bread-list${breadlist.id}`}>
-                      <img
-                        className="card-img-top"
-                        src={breadlist.image}
-                        alt={breadlist.title}
-                        style={{
-                          marginTop: '10px'
-                        }} />
-                    </div>
-                  ))}
-                </div>
+                {edit ? (
+                  <div className="d-flex row">
+                    <div className="col-2" />
+                    {selectedImagesID.length ? (
+                      <div className="rounded mb-3 ml-3 bread_image_box col-8">
+                        <h4 className="choosebread">선택된 빵</h4>
+                        <div className="wraped_bread">
+                          {selectedImagesID.map((breadData, index) => (
+                            <div
+                              className="col-5 mb-3 mt-3 bread_container rounded"
+                              key={`choosed-Bread${index}`}
+                              onClick={() => removeImageListOnclick(breadData)}>
+                              <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : ''}
+                  </div>
+                ) : (
+                  <div className="d-flex rounded row mb-5 ml-3 bread_image_box col-8">
+                    <h4
+                      className="choosebread"
+                      style={{
+                        width: '100%'
+                      }}>선택된 빵
+                    </h4>
+                    {houseDetail && houseDetail.bread.map((breadlist) => (
+                      <div className="card col-5 mb-3 mt-3 bread_interior rounded" key={`bread-list${breadlist.id}`}>
+                        <img
+                          className="card-img-top"
+                          src={breadlist.images[0].imageUrl}
+                          alt={breadlist.title}
+                          style={{
+                            marginTop: '10px'
+                          }} />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
               <div className="row justify-content-start mb-3">
                 <span
