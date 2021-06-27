@@ -7,7 +7,6 @@ import BreadHouseRegister from './bread-house-register/bread_house_register';
 import BreadHouseDetail from './bread-house-detail/bread_house_detail';
 
 function BreadHouseRouter({ match }) {
-  console.log(match);
   return (
     <Switch>
       <Route path={`${match.path}/bread_house_register`} component={BreadHouseRegister} />

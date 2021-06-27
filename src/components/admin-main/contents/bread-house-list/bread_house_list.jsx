@@ -19,8 +19,6 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
   const [name, setName] = useState('');
   const [account, setAccount] = useState('');
 
-  console.log(breadHouseList);
-
   useEffect(() => {
     const breadHouseApiCall = async () => {
       try {

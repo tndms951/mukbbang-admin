@@ -24,7 +24,6 @@ function BreadBossDetail({ match }) {
 
   // 서버에서 받아온 값 저장
   const [boss, setBoss] = useState(null);
-  console.log(boss);
 
   // 취소, 수정 값
   const [edit, setEdit] = useState(false);
