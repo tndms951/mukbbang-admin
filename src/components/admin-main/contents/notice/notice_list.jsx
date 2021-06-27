@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import qs from 'qs';
+
 // 리덕스 부분
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
@@ -23,7 +24,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 function NoticeList({ noticeList, onNoticeList, location, history }) {
   // 달력 날짜 변경 시 기준점이 되는 시작 날짜 끝 날짜
   const [startDate, setStartDate] = useState(null);
-
   const [title, setTitle] = useState('');
 
   useEffect(() => {

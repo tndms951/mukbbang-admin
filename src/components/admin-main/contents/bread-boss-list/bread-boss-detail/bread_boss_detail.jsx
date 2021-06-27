@@ -74,7 +74,7 @@ function BreadBossDetail({ match }) {
   };
 
   // 탈퇴 핸들써브밋
-  const handleSubmit2 = async () => {
+  const quitHandleSubmit = async () => {
     const { bossId } = match.params;
     try {
       const modifyObject = {
@@ -293,19 +293,17 @@ function BreadBossDetail({ match }) {
                   <button
                     type="button"
                     className="mb-2 btn btn-danger mr-2"
-                    onClick={handleSubmit2}>
+                    onClick={quitHandleSubmit}>
                     탈퇴
                   </button>
                 )}
                 {edit ? (
-                  <>
-                    <button
-                      type="submit"
-                      className="mb-2 btn btn-primary mr-2"
-                      onClick={handleSubmit}>
-                      저장
-                    </button>
-                  </>
+                  <button
+                    type="submit"
+                    className="mb-2 btn btn-primary mr-2"
+                    onClick={handleSubmit}>
+                    저장
+                  </button>
                 ) : (
                   <button
                     type="submit"

@@ -1,3 +1,4 @@
+import { Pagination } from 'antd';
 import React from 'react';
 
 const PageNation = ({ totalPage, currentPage }) => {
@@ -17,14 +18,12 @@ const PageNation = ({ totalPage, currentPage }) => {
             <span aria-hidden="true">&laquo;</span>
           </a>
         </li>
-        {output.map((nationData) => (
-          <>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                {nationData + 1}
-              </a>
-            </li>
-          </>
+        {output.map((nationData, index) => (
+          <li className="page-item" key={`pagination-${index}`}>
+            <a className="page-link" href="#">
+              {nationData + 1}
+            </a>
+          </li>
         ))}
         <li className="page-item">
           <a className="page-link" href="#" aria-label="Next">

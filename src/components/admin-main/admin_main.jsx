@@ -8,7 +8,7 @@ import MainSidebar from './sidebar/sidebar_main';
 import Header from './header/header';
 
 import Content from './main_content';
-import BreadHouseList from './contents/bread-house-list/bread_house_list';
+import BreadHouseRouter from './contents/bread-house-list/bread_house_router';
 import BreadRouter from './contents/bread-list/bread_router';
 import BreadBossRouter from './contents/bread-boss-list/bread_boss_router';
 import YoutubeRouter from './contents/youtube/youtube_router';
@@ -47,7 +47,7 @@ function AdminMain({ onUserData }) {
               <Header />
               <Switch>
                 <Route exact path="/" component={Content} />
-                <Route path="/bread_house_list" component={BreadHouseList} />
+                <Route path="/bread_house_list" component={BreadHouseRouter} />
                 <Route path="/bread_list" component={BreadRouter} />
                 <Route path="/bread_boss_list" component={BreadBossRouter} />
                 <Route path="/youtube_list" component={YoutubeRouter} />

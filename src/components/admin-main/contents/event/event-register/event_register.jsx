@@ -85,7 +85,6 @@ function Resgister({ history }) {
       }
     } catch (err) {
       errorhandler(err);
-      console.log(err);
     }
   };
 

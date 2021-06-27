@@ -29,11 +29,11 @@ function BreadBossRegister({ history }) {
 
     try {
       if (!name) {
-        sweetAlert('이름을 입력해주세요');
+        sweetAlert('이름을 입력해 주세요');
       } else if (!phoneNumber) {
         sweetAlert('핸드폰 번호를 입력해 주세요');
       } else if (!profile) {
-        sweetAlert('이미지를 넣어주세요');
+        sweetAlert('이미지를 넣어 주세요');
       } else {
         const shopObject = {
           name,
@@ -164,13 +164,13 @@ function BreadBossRegister({ history }) {
               <div className="form-group col-5">
                 {!profile.profileUrl ? (
                   <div className="input-group mb-3">
+                    {/* <label className="input-group-text" name="profileName">사진 업로드</label> */}
                     <input
                       type="file"
                       className="form-control"
                       name="profileName"
                       onChange={profileHandleChange}
                     />
-                    <label className="input-group-text">Upload</label>
                   </div>
                 ) : (
                   <div className="image_wrap">

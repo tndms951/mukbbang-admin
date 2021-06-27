@@ -1,7 +1,6 @@
 .wrap {
     width: 50%;
     display: block;
-    outline: 1px solid red;
     background: orange;
 }
 .delete {
@@ -11,5 +10,4 @@
 .block {
     width: 100%;
     display: block;
-    outline: 1px solid red;
 }

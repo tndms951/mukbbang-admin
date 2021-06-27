@@ -1,0 +1,24 @@
+.Modal .form-wrap {
+  margin: 20px 30px;
+}
+.address {
+  height: 300px;
+  width: 500px;
+  overflow: auto;
+}
+.addresslist {
+  cursor: pointer;
+}
+.addresslist:hover {
+  color: black;
+  background-color: rgba(167, 167, 167, 0.5);
+  transition: all ease 0.5s;
+}
+.xbutton {
+  width: 100%;
+  text-align: right;
+  font-size: 30px;
+  font-weight: 500;
+  color: gray;
+  margin-left: 15px;
+}

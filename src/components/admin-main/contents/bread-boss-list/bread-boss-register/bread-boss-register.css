@@ -1,7 +1,6 @@
 .image_wrap {
   width: 300px;
   position: relative;
-  /* outline: 1px solid red; */
   margin-top: 10px;
 }
 .img {
@@ -13,6 +12,5 @@
     top: 0;
     right: 0;
     width: 7%;
-    /* outline: 1px solid blue; */
     margin-right: 10px;
 }
