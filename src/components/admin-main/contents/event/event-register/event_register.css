@@ -3,6 +3,13 @@
     background-color: white;
 }
 
+.event_register_wrap {
+    background-color: #fff;
+    border: none;
+    border-radius: .625rem;
+    padding: 3rem;
+}
+
 .text1 {
     margin-right: 30px;
 }

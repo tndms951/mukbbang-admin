@@ -136,7 +136,7 @@ function Resgister({ history }) {
 
   return (
     <>
-      <div className="container event_wrap">
+      <div className="container event_register_wrap">
         <form className="form_wrap" onSubmit={handleSubmit}>
           <div className="event-form-group row justify-content-start">
             <label

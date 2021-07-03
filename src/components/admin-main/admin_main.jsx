@@ -3,9 +3,9 @@ import { Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import Footer from './footer/footer';
-import MainSidebar from './sidebar/sidebar_main';
-import Header from './header/header';
+import Footer from './Footer/footer';
+import MainSidebar from './Sidebar/sidebar_main';
+import Header from './Header/header';
 
 import Content from './main_content';
 import BreadHouseRouter from './contents/bread-house-list/bread_house_router';

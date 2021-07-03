@@ -23,11 +23,10 @@ margin: 50px;
   text-align: center;
   padding: 5px;
   font-weight: 500;
-  /* color: #5c5c5c; */
   margin: 10px 0;
 }
 
-.content:hover {
+.main_content:hover {
   background: #ddd;
   transition: 0.3s;
 }

@@ -240,7 +240,7 @@ function Signup({ onUserSet, history }) {
               </form>
               <p className="loginhere">
                 Have already an account ?{' '}
-                <Link to="/login" className="loginhere-link">
+                <Link to="/signin" className="loginhere-link">
                   Login here
                 </Link>
               </p>

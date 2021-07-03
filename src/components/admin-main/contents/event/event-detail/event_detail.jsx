@@ -160,7 +160,7 @@ const Detail = ({ match, history }) => {
   };
 
   return (
-    <div className="container event_wrap">
+    <div className="container event_register_wrap">
       <form className="form_wrap">
         <div className="event-form-group row justify-content-start">
           <label
@@ -308,15 +308,14 @@ const Detail = ({ match, history }) => {
           </label>
           {modify ? (
             <div className="col-sm-3 myContainer mt-3">
-              <select className="custom-select">
-                <option>{listDate && listDate.banner}</option>
+              <select className="custom-select" value={value.banner}>
                 <option value={value.banner}>true</option>
                 <option value={value.banner}>false</option>
               </select>
             </div>
           ) : (
             <div className="col-sm-5 myContainer wrap1 contentName">
-              {listDate && listDate.banner}
+              {listDate && listDate.banner ? '유효' : '무효'}
             </div>
           )}
         </div>

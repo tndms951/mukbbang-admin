@@ -8,10 +8,8 @@ import { errorhandler } from '../../../../utils/common';
 import './bread_detail.css';
 
 function Detail({ match, history }) {
-
   // 서버에 받아온값 저장
   const [dataList, setDataList] = useState(null);
-  
 
   // 이미지 값 저장
   const [breadImageList, setBreadImageList] = useState([]);
@@ -19,15 +17,13 @@ function Detail({ match, history }) {
     async function fetchData() {
       try {
         const { breadId } = match.params;
-        
 
         const { status, data: detailData } = await axios.get(`/admin/bread/${breadId}`);
-        
+
         if (status === 200) {
           const { data } = detailData;
           setDataList(data);
-          setBreadImageList(data.images); 
-          
+          setBreadImageList(data.images);
         }
       } catch (err) {
         errorhandler(err);
@@ -49,10 +45,9 @@ function Detail({ match, history }) {
     }
   };
 
-
   return (
     <>
-      <div className="container event_wrap">
+      <div className="container event_register_wrap">
         <form className="form_wrap">
           <div className="form-group row justify-content-start">
             <div
@@ -77,14 +72,11 @@ function Detail({ match, history }) {
               <span className="text1">빵 이미지</span>
               <span className="contentName">
                 <div className="image_wrap">
-                    {dataList?.images.map((imageData, index) => (
-                 
-                      <div className="d-flex bread-image" key={`image-${index}`}>
-                        <img src={imageData.imageUrl} alt="빵 이미지" className="bread_image1" />
-                      </div>
-                    ))}
-                    
-                    
+                  {dataList?.images.map((imageData, index) => (
+                    <div className="d-flex bread-image" key={`image-${index}`}>
+                      <img src={imageData.imageUrl} alt="빵 이미지" className="bread_image1" />
+                    </div>
+                  ))}
                 </div>
               </span>
             </div>
@@ -96,7 +88,10 @@ function Detail({ match, history }) {
             />
           </div>
           <div className="event-search nav justify-content-end row">
-            <button type="button" className="btn btn-secondary btn-sm col-1 button_init" onClick={onDelete}>
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm col-1 button_init"
+              onClick={onDelete}>
               삭제
             </button>
 
