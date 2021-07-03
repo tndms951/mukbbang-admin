@@ -26,8 +26,7 @@ function BreadHoustList({ history }) {
     closetime: '',
     homepage: '',
     holiday: [],
-    checked: {
-    },
+    checked: {},
     picture: '',
     menuPicture: '',
     choosebread: '',
@@ -246,7 +245,9 @@ function BreadHoustList({ history }) {
       });
 
       if (status === 200) {
-        const { data: { imageUrl: imagesUrl } } = imageData;
+        const {
+          data: { imageUrl: imagesUrl }
+        } = imageData;
 
         setImage([...image, ...imagesUrl]);
       }
@@ -401,7 +402,8 @@ function BreadHoustList({ history }) {
       <div
         className="col-lg-12 mb-4 mt-10"
         style={{
-          width: '90%', margin: '0 auto'
+          width: '90%',
+          margin: '0 auto'
         }}>
         <form onSubmit={handleSubmit}>
           <div
@@ -428,7 +430,7 @@ function BreadHoustList({ history }) {
                     name="name"
                     value={name}
                     onChange={handleChange}
-                />
+                  />
                 </div>
               </div>
 
@@ -459,7 +461,8 @@ function BreadHoustList({ history }) {
                       placeholder="상세주소를 입력해 주세요"
                       name="detailAddress"
                       value={detailAddress}
-                      onChange={handleChange} />
+                      onChange={handleChange}
+                    />
                   )}
                 </div>
               </div>
@@ -481,7 +484,7 @@ function BreadHoustList({ history }) {
                     name="number"
                     value={number}
                     onChange={handleChange}
-                />
+                  />
                 </div>
               </div>
               <div className="row justify-content-start mb-3">
@@ -542,10 +545,24 @@ function BreadHoustList({ history }) {
                 </div> */}
                 <div className="form-group col-8 checkbox">
                   <label>
-                    <input className="mr-2" type="radio" name="enableparking" checked={!!parkingEnabled} onChange={enableParkingHandleChange} />가능
+                    <input
+                      className="mr-2"
+                      type="radio"
+                      name="enableparking"
+                      checked={!!parkingEnabled}
+                      onChange={enableParkingHandleChange}
+                    />
+                    가능
                   </label>
                   <label>
-                    <input className="mr-2" type="radio" name="enableparking" checked={!parkingEnabled} onChange={enableParkingHandleChange} />불가능
+                    <input
+                      className="mr-2"
+                      type="radio"
+                      name="enableparking"
+                      checked={!parkingEnabled}
+                      onChange={enableParkingHandleChange}
+                    />
+                    불가능
                   </label>
                 </div>
               </div>
@@ -569,7 +586,7 @@ function BreadHoustList({ history }) {
                     name="homepage"
                     value={homepage}
                     onChange={handleChange}
-                />
+                  />
                 </div>
               </div>
 
@@ -586,7 +603,14 @@ function BreadHoustList({ history }) {
                 <div className="form-group col-8 checkbox">
                   {daysList.map((days, index) => (
                     <label key={`holiday-list${index}`}>
-                      <input type="checkbox" name="date" value={days} onChange={holidayHandleChange} checked={holiday.includes(days)} />{days}
+                      <input
+                        type="checkbox"
+                        name="date"
+                        value={days}
+                        onChange={holidayHandleChange}
+                        checked={holiday.includes(days)}
+                      />
+                      {days}
                     </label>
                   ))}
                 </div>
@@ -607,7 +631,13 @@ function BreadHoustList({ history }) {
                   인풋 사진 업로드
                 </button> */}
                   <label htmlFor="insideImages">사진 업로드</label>
-                  <input type="file" id="insideImages" onChange={imageHandleChange} multiple accept="image/*" />
+                  <input
+                    type="file"
+                    id="insideImages"
+                    onChange={imageHandleChange}
+                    multiple
+                    accept="image/*"
+                  />
                   {/* <button>사진 업로드</button> */}
                 </div>
               </div>
@@ -627,11 +657,14 @@ function BreadHoustList({ history }) {
                           alt="사진"
                           style={{
                             marginTop: '10px'
-                          }} />
+                          }}
+                        />
                       </div>
                     ))}
                   </div>
-                ) : ''}
+                ) : (
+                  ''
+                )}
               </div>
 
               <div className="row justify-content-start mb-3">
@@ -646,7 +679,13 @@ function BreadHoustList({ history }) {
 
                 <div className="form-group col-5 filebox">
                   <label htmlFor="menuImages">사진 업로드</label>
-                  <input type="file" id="menuImages" onChange={menuImageHandleChange} multiple accept="image/*" />
+                  <input
+                    type="file"
+                    id="menuImages"
+                    onChange={menuImageHandleChange}
+                    multiple
+                    accept="image/*"
+                  />
                 </div>
               </div>
 
@@ -663,7 +702,9 @@ function BreadHoustList({ history }) {
                       </div>
                     ))}
                   </div>
-                ) : ''}
+                ) : (
+                  ''
+                )}
               </div>
 
               <div className="row justify-content-start mb-3">
@@ -686,7 +727,7 @@ function BreadHoustList({ history }) {
                     value={choosebread}
                     onChange={handleChange}
                     onKeyDown={breadSelectKeyDown}
-                    />
+                  />
                   <button type="button" className="btn btn-primary" onClick={breadSelectOnclick}>
                     검색
                   </button>
@@ -702,11 +743,17 @@ function BreadHoustList({ history }) {
                         className="col-5 mb-3 mt-3 bread_container rounded"
                         key={`choose-Bread${index}`}
                         onClick={() => imageListOnclick(breadData)}>
-                        <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                        <img
+                          className="card-img-top"
+                          src={breadData.images[0].imageUrl}
+                          alt="사진"
+                        />
                       </div>
                     ))}
                   </div>
-                ) : ''}
+                ) : (
+                  ''
+                )}
               </div>
 
               {/* // 선택된 빵 */}
@@ -721,12 +768,18 @@ function BreadHoustList({ history }) {
                           className="col-5 mb-3 mt-3 bread_container rounded"
                           key={`choosed-Bread${index}`}
                           onClick={() => removeImageListOnclick(breadData)}>
-                          <img className="card-img-top" src={breadData.images[0].imageUrl} alt="사진" />
+                          <img
+                            className="card-img-top"
+                            src={breadData.images[0].imageUrl}
+                            alt="사진"
+                          />
                         </div>
                       ))}
                     </div>
                   </div>
-                ) : ''}
+                ) : (
+                  ''
+                )}
               </div>
 
               <div className="row justify-content-start mb-3">
@@ -749,8 +802,11 @@ function BreadHoustList({ history }) {
                     value={bossaccount}
                     onChange={handleChange}
                     onKeyDown={breadBossAccountKeyDown}
-                />
-                  <button type="button" className="btn btn-primary" onClick={breadBossAccountOnClick}>
+                  />
+                  <button
+                    type="button"
+                    className="btn btn-primary"
+                    onClick={breadBossAccountOnClick}>
                     검색
                   </button>
                 </div>
@@ -767,11 +823,18 @@ function BreadHoustList({ history }) {
                     }}>
                     <ul className="bread-boss-account">
                       {breadBossAccountData.map((accountData) => (
-                        <li className="bread-boss-account-list" key={`accound-id${accountData.id}`} onClick={() => BossAccountListOnclick(accountData)}>{accountData.name}</li>
+                        <li
+                          className="bread-boss-account-list"
+                          key={`accound-id${accountData.id}`}
+                          onClick={() => BossAccountListOnclick(accountData)}>
+                          {accountData.name}
+                        </li>
                       ))}
                     </ul>
                   </div>
-                ) : ''}
+                ) : (
+                  ''
+                )}
               </div>
               <div className="col mb-4 mt-5">
                 <div className="col text-right">

@@ -17,7 +17,6 @@ function Signin({ onUserSet, history, location }) {
   });
 
   const [errorMessageEmail, setErrorMessageEmail] = useState('');
-  // const [submitStatus, setSubmitStatus] = useState(false);
 
   const { email, password, remember } = inputs;
 
