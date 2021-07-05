@@ -70,7 +70,8 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
         <div
           className="card card-small mb-3 mt-5"
           style={{
-            width: '90%', margin: '0 auto'
+            width: '90%',
+            margin: '0 auto'
           }}>
           <div className="card-header border-bottom">
             <h2 className="m-0">빵집 목록</h2>
@@ -99,7 +100,10 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
               </div>
               <div className="row mb-3 mt-5">
                 <div className="col text-right">
-                  <button type="button" className="mb-2 btn btn-secondary mr-2" onClick={handleReset}>
+                  <button
+                    type="button"
+                    className="mb-2 btn btn-secondary mr-2"
+                    onClick={handleReset}>
                     초기화
                   </button>
                   <button type="submit" className="mb-2 btn btn-primary mr-2">
@@ -136,7 +140,9 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
                     <tr className="text-center" key={`bread-list${list.id}`}>
                       <td>{list.id}</td>
                       <td>
-                        <Link to={`/bread_house_list/bread_house_detail/${list.id}`}>{list.title}</Link>
+                        <Link to={`/bread_house_list/bread_house_detail/${list.id}`}>
+                          {list.title}
+                        </Link>
                       </td>
                       <td>{list.link}</td>
                       <td>
@@ -144,9 +150,14 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
                           {list.shopUser.name}
                         </Link>
                       </td>
-                      <td>{list.bread.map((detailBread) => (
-                        <Link to={`/bread_list/detail/${detailBread.id}`} key={`bread-title${detailBread.id}`}>{detailBread.title}</Link>
-                      ))}
+                      <td>
+                        {list.bread.map((detailBread) => (
+                          <Link
+                            to={`/bread_list/detail/${detailBread.id}`}
+                            key={`bread-title${detailBread.id}`}>
+                            {detailBread.title}
+                          </Link>
+                        ))}
                       </td>
                       {/* <td>
                         <button type="button" className="btn btn-primary">
@@ -154,7 +165,6 @@ function BreadHouseList({ history, location, onBreadHouseList, breadHouseList })
                         </button>
                       </td> */}
                     </tr>
-
                   ))}
                 </tbody>
               </table>
