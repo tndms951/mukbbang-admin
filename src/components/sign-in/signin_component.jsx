@@ -66,7 +66,7 @@ function Signin({ onUserSet, history, location }) {
               ignoreQueryPrefix: true
             });
 
-            history.push(query?.moveAddress || '/');
+            history.push(query?.move_address || '/');
           }
         }
       }

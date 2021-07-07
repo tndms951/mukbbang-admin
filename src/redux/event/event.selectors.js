@@ -5,14 +5,3 @@ const selectEvent = (state) => state.event;
 
 /* eslint-disable import/prefer-default-export */
 export const selectEventList = createSelector([selectEvent], (event) => event.eventList);
-
-/*
-  const selectEventList = (state) => {
-      console.log(state);
-      return state.event;
-  }
-  export const selectEventList = createSelector([selectEvent], (event) => {
-      console.log(event);
-      return event.list
-  // })
-*/
