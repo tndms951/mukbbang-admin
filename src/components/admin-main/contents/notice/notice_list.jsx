@@ -179,26 +179,31 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
                 }}>
                 <ul className="pagination">
                   <li className="page-item">
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className="page-link" href="#" aria-label="Previous">
                       <span aria-hidden="true">&laquo;</span>
                     </a>
                   </li>
                   <li className="page-item">
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className="page-link" href="#">
                       1
                     </a>
                   </li>
                   <li className="page-item">
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className="page-link" href="#">
                       2
                     </a>
                   </li>
                   <li className="page-item">
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className="page-link" href="#">
                       3
                     </a>
                   </li>
                   <li className="page-item">
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
                     <a className="page-link" href="#" aria-label="Next">
                       <span aria-hidden="true">&raquo;</span>
                     </a>
