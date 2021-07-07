@@ -174,7 +174,6 @@ function NoticeList({ noticeList, onNoticeList, location, history }) {
               <nav
                 aria-label="Page navigation example "
                 style={{
-                  // outline: '1px solid red',
                   width: '18%',
                   margin: '8% auto 0 auto'
                 }}>

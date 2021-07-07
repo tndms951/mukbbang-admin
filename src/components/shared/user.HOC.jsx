@@ -6,7 +6,7 @@ const UserCheckHOC = (WrapperComponent) => {
   const HOC = (props) => {
     const history = useHistory(); // 라우터가 없을때 라이브러리로 가져와서 사용하는것
     const location = useLocation(); // 라우터가 없을때 라이브러리로 가져와서 사용하는것
-    console.log(location);
+
     const bringUserToken = localStorage.getItem('token');
     useEffect(() => {
       if (!bringUserToken) {
