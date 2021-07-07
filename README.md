@@ -10,8 +10,8 @@
 ---
 
 ### 팀구성원
-* 프론트엔드 - [송지은](https://github.com/tndms753 "송지은 깃허브")
 * 프론트엔드 - [송지수](https://github.com/tndms951 "송지수 깃허브")
+* 프론트엔드 - [송지은](https://github.com/tndms753 "송지은 깃허브")
 * 백엔드 - [배동희](https://github.com/Baedonghee "배동희 깃허브")
 
 ---
